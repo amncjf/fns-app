@@ -23,16 +23,23 @@ describe('NameSnippetMobile', () => {
   }
 
   it('should show the expiry date if given', () => {
+    const date = new Date(1654782805000)
     const mockData = {
       ...baseMockData,
-      expiryDate: new Date(1654782805000),
+      expiryDate: date,
       ownerData: {
         owner: '0x983110309620D911731Ac0932219af06091b6744',
         ownershipLevel: 'registrar',
       },
     } as NameDetailSnippetProps
     render(<NameDetailSnippet {...mockData} />)
-    expect(screen.getByText('June 9, 2022')).toBeVisible()
+    expect(
+      screen.getByText(
+        `${date.toLocaleDateString(undefined, {
+          month: 'long',
+        })} ${date.getDate()}, ${date.getFullYear()}`,
+      ),
+    ).toBeVisible()
   })
   it('should show owner if given', () => {
     const mockData = {

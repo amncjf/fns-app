@@ -262,7 +262,11 @@ const groups = [
           valid: false,
           isLoading: false,
           error: 'pccBurned',
-          expiryLabel: 'Jan 1, 2020',
+          expiryLabel: new Date('2020-01-01').toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          }),
         },
       },
       {

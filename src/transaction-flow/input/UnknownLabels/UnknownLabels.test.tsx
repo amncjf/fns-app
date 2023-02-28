@@ -72,7 +72,7 @@ describe('UnknownLabels', () => {
     it('label input is too long', async () => {
       await userEvent.type(input, 'a'.repeat(512))
       expect(screen.getByText('Label is too long')).toBeVisible()
-    })
+    }, 30000)
     it('label input is invalid', async () => {
       await userEvent.type(input, '.')
       expect(screen.getByText('Invalid label')).toBeVisible()

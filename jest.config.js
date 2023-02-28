@@ -14,7 +14,7 @@ const customJestConfig = {
   ],
   testMatch: [
     '<rootDir>/__tests__/**/?(*.)+(spec|test).[jt]s?(x)',
-    '<rootDir>/src/**/?(*.)+(spec|test).[jt]s?(x)',
+    process.platform.startsWith('win') ? process.cwd() + '/src/**/?(*.)+(spec|test).[jt]s?(x)' : '<rootDir>/src/**/?(*.)+(spec|test).[jt]s?(x)',
   ],
   moduleNameMapper: {
     // Handle image imports

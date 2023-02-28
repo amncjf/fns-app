@@ -39,6 +39,10 @@ describe('formatExpiry', () => {
   it('should format the date as expected', () => {
     const expiry = new Date('2020-01-01')
     const result = formatExpiry(expiry)
-    expect(result).toEqual('\nJanuary 1, 2020')
+    expect(result).toEqual(
+      `\n${expiry.toLocaleDateString(undefined, {
+        month: 'long',
+      })} ${expiry.getDate()}, ${expiry.getFullYear()}`,
+    )
   })
 })

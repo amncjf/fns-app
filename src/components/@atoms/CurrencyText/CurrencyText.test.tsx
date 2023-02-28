@@ -14,7 +14,18 @@ mockUseEthPrice.mockReturnValue({ data: 1e8, loading: false })
 describe('CurrencyText', () => {
   it('should render correctly', async () => {
     render(<CurrencyText eth={BigNumber.from('4000000000000000000')} currency="eth" />)
-    expect(screen.getByText('4.0000 ETH')).toBeVisible()
+
+    expect(
+      screen.getByText(
+        new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: 'eth',
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4,
+          currencyDisplay: 'name',
+        }).format(4),
+      ),
+    ).toBeVisible()
   })
 
   it('should append extra decimal to usd if it does not exist', async () => {
@@ -24,6 +35,17 @@ describe('CurrencyText', () => {
 
   it('should cut off at ETH at 4 decimals', async () => {
     render(<CurrencyText eth={BigNumber.from('4444444444444444444')} currency="eth" />)
-    expect(screen.getByText('4.4444 ETH')).toBeVisible()
+
+    expect(
+      screen.getByText(
+        new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: 'eth',
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4,
+          currencyDisplay: 'name',
+        }).format(4.4444),
+      ),
+    ).toBeVisible()
   })
 })

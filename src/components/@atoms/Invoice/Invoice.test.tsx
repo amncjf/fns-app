@@ -26,11 +26,41 @@ describe('Invoice', () => {
   it('should render correctly in eth mode', async () => {
     render(<Invoice items={items} totalLabel="total" unit="eth" />)
     expect(screen.getByText('line 1')).toBeVisible()
-    expect(screen.getByText('1.0000 ETH')).toBeVisible()
+    expect(
+      screen.getByText(
+        new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: 'eth',
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4,
+          currencyDisplay: 'name',
+        }).format(1),
+      ),
+    ).toBeVisible()
     expect(screen.getByText('line 2')).toBeVisible()
-    expect(screen.getByText('2.0000 ETH')).toBeVisible()
+    expect(
+      screen.getByText(
+        new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: 'eth',
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4,
+          currencyDisplay: 'name',
+        }).format(2),
+      ),
+    ).toBeVisible()
     expect(screen.getByText('total')).toBeVisible()
-    expect(screen.getByText('3.0000 ETH')).toBeVisible()
+    expect(
+      screen.getByText(
+        new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: 'eth',
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4,
+          currencyDisplay: 'name',
+        }).format(3),
+      ),
+    ).toBeVisible()
   })
 
   it('should render correctly in usd mode', async () => {

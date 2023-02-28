@@ -1,10 +1,6 @@
-# ENS App V3
+# FNS App
 
-The all new, all cool version of the ENS manager.
-
-## EXTERNAL CONTRIBUTOR NOTICE
-
-**Please note that everything within this repo is currently in alpha. Some contracts are not yet deployed on mainnet which means some functionality may break on the network.**
+The all new, all cool version of the FNS manager.
 
 ## Usage
 
@@ -25,7 +21,7 @@ pnpm install
 ### Running Dev Server
 
 ```bash
-# For mainnet
+# For filecoin
 pnpm dev
 
 # Or with the test environment running
@@ -50,9 +46,6 @@ We recommend installing [this](https://marketplace.visualstudio.com/items?itemNa
 
 ### Test Environment
 
-You must have [Docker](https://docs.docker.com/get-docker/) installed to run the test environment.
-For more information on the environment, see [ens-test-env](https://github.com/ensdomains/ensjs-v3/tree/main/packages/ens-test-env/).
-
 Once installed, you can run:
 
 ```bash
@@ -71,7 +64,7 @@ pnpm denv --save
 
 2. Deploy the subgraph
 
-After the deploy scripts have run, you can deploy the subgraph. Assuming you are in the [ens-subgraph](https://github.com/ensdomains/ens-subgraph) repo, you can use:
+After the deploy scripts have run, you can deploy the subgraph. Assuming you are in the [fns-subgraph](https://github.com/fildomains/fns-subgraph) repo, you can use:
 
 ```bash
 yarn setup
@@ -127,8 +120,8 @@ npm i -g yalc
 2. Run relevant update script within external repo, for example:
 
 ```bash
-# Example publish script for ENSjs, be aware this may have changed.
-pnpm publish:local:ensjs
+# Example publish script for FNSjs, be aware this may have changed.
+pnpm add:local:fnsjs
 ```
 
 3. Run pnpm install within this repo:
