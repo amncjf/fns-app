@@ -20,9 +20,9 @@ if (process.env.NEXT_PUBLIC_GRAPH_URI) {
 
 const defaultValue: FNS = new FNS(opts)
 
-const EnsContext = createContext({ ...defaultValue, ready: false })
+const FnsContext = createContext({ ...defaultValue, ready: false })
 
-const EnsProvider = ({ children }: { children: React.ReactNode }) => {
+const FnsProvider = ({ children }: { children: React.ReactNode }) => {
   const provider = useProvider()
   const ensWithCurrentProvider = useMemo(() => defaultValue, [])
   const [ready, setReady] = useState(false)
@@ -34,16 +34,16 @@ const EnsProvider = ({ children }: { children: React.ReactNode }) => {
   }, [provider])
 
   return (
-    <EnsContext.Provider
+    <FnsContext.Provider
       value={useMemo(() => ({ ...ensWithCurrentProvider, ready }), [ensWithCurrentProvider, ready])}
     >
       {children}
-    </EnsContext.Provider>
+    </FnsContext.Provider>
   )
 }
 
-function useEns() {
-  const context = useContext(EnsContext)
+function useFns() {
+  const context = useContext(FnsContext)
   return context
 }
-export { useEns, EnsProvider }
+export { useFns, FnsProvider }

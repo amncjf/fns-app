@@ -86,7 +86,7 @@ export const routes: RouteItemObj[] = [
   },
   {
     name: 'governance',
-    href: 'https://ens.domains/governance',
+    href: 'https://fns.domains/governance',
     label: 'navigation.governance',
     disabled: false,
     connected: false,
@@ -107,7 +107,7 @@ export const routes: RouteItemObj[] = [
   },
   {
     name: 'support',
-    href: 'https://ens.domains/#get-support',
+    href: 'https://fns.domains/#get-support',
     label: 'navigation.support',
     disabled: false,
     connected: false,

@@ -8,9 +8,9 @@ import {
   transactions as _transactions,
   makeTransactionItem,
 } from '@app/transaction-flow/transaction'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
-type FNS = ReturnType<typeof useEns>
+type FNS = ReturnType<typeof useFns>
 type TransactionItem = ReturnType<typeof makeTransactionItem>
 
 export const fetchEstimateWithConfig =
@@ -36,7 +36,7 @@ export const useEstimateGasLimitForTransactions = (
 ) => {
   const keys = transactions.map((t) => t.name)
 
-  const fns = useEns()
+  const fns = useFns()
   const { ready: ensReady } = fns
   const { data: signer, isLoading: isSignerLoading } = useSigner()
 

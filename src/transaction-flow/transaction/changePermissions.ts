@@ -6,7 +6,7 @@ import {
   ParentFuses as ENSJSParentFuses,
 } from '@fildomains/fnsjs/utils/fuses'
 
-import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
+import { PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 
 export type ParentFuse = ENSJSParentFuses['fuse']
 export type ChildFuse = ENSJSChildFuses['fuse']
@@ -99,7 +99,7 @@ const displayItems = (
   ]
 }
 
-const transaction = (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+const transaction = (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => {
   const { contract } = data
   if (contract === 'setChildFuses') {
     return fns.setChildFuses.populateTransaction(data.name, {

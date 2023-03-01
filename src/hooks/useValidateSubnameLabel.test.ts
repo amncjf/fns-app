@@ -3,7 +3,7 @@ import { mockFunction, renderHook } from '@app/test-utils'
 import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
 
 import { DeepPartial } from '@app/types'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { emptyAddress } from '@app/utils/constants'
 
 import { useGetWrapperData } from './useGetWrapperData'
@@ -12,10 +12,10 @@ import { useValidateSubnameLabel } from './useValidateSubnameLabel'
 const BYTE256 =
   '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 jest.mock('@app/hooks/useGetWrapperData')
 
-const mockUseEns = mockFunction(useEns)
+const mockUseEns = mockFunction(useFns)
 const mockGetOwner = jest.fn()
 mockUseEns.mockReturnValue({
   ready: true,
@@ -24,7 +24,7 @@ mockUseEns.mockReturnValue({
 
 const mockUseGetWrapperData = mockFunction(useGetWrapperData)
 
-type OwnerData = Awaited<ReturnType<ReturnType<typeof useEns>['getOwner']>>
+type OwnerData = Awaited<ReturnType<ReturnType<typeof useFns>['getOwner']>>
 const makeOwnerData = (
   type: 'nameWrapper' | 'registrar' | 'registry',
   overrides: DeepPartial<OwnerData> = {},
@@ -51,7 +51,7 @@ const makeOwnerData = (
   } as OwnerData
 }
 
-type WrapperData = Awaited<ReturnType<ReturnType<typeof useEns>['getWrapperData']>>
+type WrapperData = Awaited<ReturnType<ReturnType<typeof useFns>['getWrapperData']>>
 const makeWrapperData = (overrides: DeepPartial<WrapperData> = {}) => {
   const { parent = {}, child = {}, ...data } = overrides
   return {

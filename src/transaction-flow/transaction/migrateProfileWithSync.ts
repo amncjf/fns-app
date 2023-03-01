@@ -3,7 +3,7 @@ import type { TFunction } from 'react-i18next'
 
 import type { RecordOptions } from '@fildomains/fnsjs/utils/recordHelpers'
 
-import { Profile, PublicENS, RecordItem, Transaction, TransactionDisplayItem } from '@app/types'
+import { Profile, PublicFNS, RecordItem, Transaction, TransactionDisplayItem } from '@app/types'
 import { recordItemToKeyValue } from '@app/utils/editor'
 import { recordOptionsToToupleList } from '@app/utils/records'
 
@@ -91,7 +91,7 @@ export const syncRecords = (
   )
 }
 
-const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+const transaction = async (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => {
   // dynamic import for large dependency
   const contentHashToString = await import('../../utils/contenthash').then(
     (m) => m.contentHashToString,

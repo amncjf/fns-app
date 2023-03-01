@@ -3,7 +3,7 @@ import { TFunction } from 'i18next'
 
 import { RecordOptions } from '@fildomains/fnsjs/utils/recordHelpers'
 
-import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
+import { PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 
 import { recordOptionsToToupleList } from '../../utils/records'
 
@@ -57,7 +57,7 @@ const displayItems = ({ name, records }: Data, t: TFunction): TransactionDisplay
   ]
 }
 
-const transaction = (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+const transaction = (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => {
   return fns.setRecords.populateTransaction(data.name, {
     records: data.records,
     resolverAddress: data.resolver,

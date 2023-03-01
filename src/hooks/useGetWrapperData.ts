@@ -1,9 +1,9 @@
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 export const useGetWrapperData = (name: string, skip?: any) => {
-  const { ready, getWrapperData } = useEns()
+  const { ready, getWrapperData } = useFns()
 
   const {
     data: wrapperData,

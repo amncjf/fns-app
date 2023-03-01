@@ -3,7 +3,7 @@ import type { TFunction } from 'react-i18next'
 
 import { BaseRegistrationParams } from '@fildomains/fnsjs/utils/registerHelpers'
 
-import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
+import { PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 import { secondsToYears } from '@app/utils/utils'
 
 type Data = BaseRegistrationParams & { name: string }
@@ -29,7 +29,7 @@ const displayItems = (
   },
 ]
 
-const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+const transaction = async (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => {
   const price = await fns.getPrice(data.name.split('.')[0], data.duration)
   const value = price!.base.add(price!.premium)
 

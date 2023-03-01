@@ -9,7 +9,7 @@ import { useQuery } from 'wagmi'
 import { Input } from '@ensdomains/thorin'
 
 import { Spacer } from '@app/components/@atoms/Spacer'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { DisplayItems } from './TransactionDialogManager/DisplayItems'
 
 
@@ -34,7 +34,7 @@ export const DogFood = (
     & { label?: string, validations?: any, disabled?: boolean, hideLabel?: boolean },
 ) => {
   const { t } = useTranslation('profile')
-  const { getRecords } = useEns()
+  const { getRecords } = useFns()
   const getRecordsMem = useRef(pMemoize(getRecords))
 
   const inputWatch = watch('dogfoodRaw')

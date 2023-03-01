@@ -1,9 +1,9 @@
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 export const useExpiry = (name: string, skip?: boolean) => {
-  const { ready, getExpiry } = useEns()
+  const { ready, getExpiry } = useFns()
 
   const {
     data,

@@ -17,7 +17,7 @@ import { TransactionStoreProvider } from '@app/hooks/transactions/TransactionSto
 import { Basic } from '@app/layouts/Basic'
 import { TransactionFlowProvider } from '@app/transaction-flow/TransactionFlowProvider'
 import { BreakpointProvider } from '@app/utils/BreakpointProvider'
-import { EnsProvider } from '@app/utils/EnsProvider'
+import { FnsProvider } from '@app/utils/FnsProvider'
 import { makePersistent } from '@app/utils/persist'
 
 import i18n from '../i18n'
@@ -156,7 +156,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <WagmiConfig client={wagmiClient}>
           <RainbowKitProvider theme={rainbowKitTheme} chains={chains}>
             <TransactionStoreProvider>
-              <EnsProvider>
+              <FnsProvider>
                 <ThemeProvider theme={thorinLightTheme}>
                   <BreakpointProvider queries={breakpoints}>
                     <GlobalStyle />
@@ -167,7 +167,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                     </TransactionFlowProvider>
                   </BreakpointProvider>
                 </ThemeProvider>
-              </EnsProvider>
+              </FnsProvider>
             </TransactionStoreProvider>
           </RainbowKitProvider>
         </WagmiConfig>

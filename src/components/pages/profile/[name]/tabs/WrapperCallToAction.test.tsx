@@ -8,13 +8,13 @@ import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useWrapperApprovedForAll from '@app/hooks/useWrapperApprovedForAll'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { WrapperCallToAction } from './WrapperCallToAction'
 
 jest.mock('@app/hooks/useAvatar')
 jest.mock('@app/transaction-flow/TransactionFlowProvider')
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 jest.mock('@app/hooks/useChainId')
 jest.mock('wagmi')
 jest.mock('@app/hooks/useNameDetails')
@@ -25,7 +25,7 @@ jest.mock('@app/assets/NightSky', () => ({
 
 const mockUseNFTImage = mockFunction(useNFTImage)
 const mockUseTransaction = mockFunction(useTransactionFlow)
-const mockUseEns = mockFunction(useEns)
+const mockUseEns = mockFunction(useFns)
 const mockUseChainId = mockFunction(useChainId)
 const mockUseAccount = mockFunction(useAccount)
 const mockUseNameDetails = mockFunction(useNameDetails)

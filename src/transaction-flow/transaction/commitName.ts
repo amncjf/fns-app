@@ -3,7 +3,7 @@ import type { TFunction } from 'react-i18next'
 
 import { BaseRegistrationParams } from '@fildomains/fnsjs/utils/registerHelpers'
 
-import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
+import { PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 
 type Data = BaseRegistrationParams & { name: string }
 
@@ -26,7 +26,7 @@ const displayItems = (
   },
 ]
 
-const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+const transaction = async (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => {
   const { customData: _, ...tx } = await fns.commitName.populateTransaction(data.name, {
     signer,
     ...data,

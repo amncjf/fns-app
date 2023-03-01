@@ -3,7 +3,7 @@ import { useQuery } from 'wagmi'
 import { labelhash } from '@fildomains/fnsjs/utils/labels'
 
 import useCallbackOnTransaction from '@app/hooks/transactions/useCallbackOnTransaction'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 const query = `
   query getNameDates($id: String!) {
@@ -15,7 +15,7 @@ const query = `
 `
 
 export const useNameDates = (name: string) => {
-  const { ready, gqlInstance } = useEns()
+  const { ready, gqlInstance } = useFns()
   const {
     data,
     isLoading,

@@ -3,7 +3,7 @@ import { useInfiniteQuery } from 'wagmi'
 
 import { SortDirection, SortType } from '@app/components/@molecules/NameTableHeader/NameTableHeader'
 import { ReturnedENS } from '@app/types'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { emptyAddress } from '@app/utils/constants'
 
 const PAGE_SIZE = 25
@@ -18,7 +18,7 @@ export const useSubnameInfiniteQuery = (
   orderDirection?: SortDirection,
   search?: string,
 ) => {
-  const { getSubnames } = useEns()
+  const { getSubnames } = useFns()
 
   const queryKey = ['getSubnames', name, orderBy, orderDirection, search]
   const { data, isLoading, isFetching, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery(

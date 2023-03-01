@@ -1,11 +1,11 @@
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { useContractAddress } from './useContractAddress'
 
 const useWrapperApprovedForAll = (address: string, isSubdomain: boolean) => {
-  const { contracts } = useEns()
+  const { contracts } = useFns()
   const nameWrapperAddress = useContractAddress('NameWrapper')
   const { data: approvedForAll, isLoading } = useQuery(
     ['approvedForAll', nameWrapperAddress, address],

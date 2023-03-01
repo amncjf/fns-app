@@ -3,10 +3,10 @@ import { useQuery } from 'wagmi'
 
 import { checkIsDecrypted } from '@fildomains/fnsjs/utils/labels'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 const useDecryptName = (name: string, skip?: boolean) => {
-  const { ready, getDecryptedName } = useEns()
+  const { ready, getDecryptedName } = useFns()
 
   const nameIsEncrypted = useMemo(() => !checkIsDecrypted(name), [name])
 

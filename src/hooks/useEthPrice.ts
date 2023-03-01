@@ -5,14 +5,14 @@ import { useProvider, useQuery } from 'wagmi'
 import AggregatorInterface from '@ensdomains/ens-contracts/build/contracts/AggregatorInterface.json'
 
 import { useChainId } from '@app/hooks/useChainId'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 const ORACLE_ENS = 'fil-usd.data.fil'
 const ORACLE_GOERLI = '0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e'
 
 export const useEthPrice = () => {
   const provider = useProvider()
-  const { getAddr, ready } = useEns()
+  const { getAddr, ready } = useFns()
   const chainId = useChainId()
 
   const { data, isLoading: loading } = useQuery(

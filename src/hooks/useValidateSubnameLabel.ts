@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { emptyAddress } from '@app/utils/constants'
 import { isLabelTooLong } from '@app/utils/utils'
 
@@ -9,7 +9,7 @@ import { useGetWrapperData } from './useGetWrapperData'
 import { useValidate } from './useValidate'
 
 export const useValidateSubnameLabel = (name: string, label: string, isWrapped: boolean) => {
-  const { getOwner, ready } = useEns()
+  const { getOwner, ready } = useFns()
 
   const isParentTLD = name.split('.').length === 1
 

@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
-import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
+import { PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 
 type Data = { address: string }
 
@@ -25,7 +25,7 @@ const displayItems = (
 ]
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const transaction = async (signer: JsonRpcSigner, fns: PublicENS, _: Data) => {
+const transaction = async (signer: JsonRpcSigner, fns: PublicFNS, _: Data) => {
   const registry = (await fns.contracts!.getRegistry()).connect(signer)
   const nameWrapperAddress = (await fns.contracts!.getNameWrapper()).address
   return registry.populateTransaction.setApprovalForAll(nameWrapperAddress, true)

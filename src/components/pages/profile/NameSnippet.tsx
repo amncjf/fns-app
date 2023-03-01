@@ -9,7 +9,7 @@ import { AddressAvatar, AvatarWithZorb } from '@app/components/AvatarWithZorb'
 import { NFTWithPlaceholder } from '@app/components/NFTWithPlaceholder'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { ReturnedENS } from '@app/types'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { shortenAddress } from '@app/utils/utils'
 
 const Container = styled(CacheableComponent)(
@@ -57,7 +57,7 @@ const OwnerWithEns = styled.div(
 )
 
 const NameOwnerItem = ({ address = '', network }: { address?: string; network: number }) => {
-  const { getName } = useEns()
+  const { getName } = useFns()
   const { data } = useQuery(['getName', address], () => getName(address), {
     enabled: !!address,
   })

@@ -3,13 +3,13 @@ import { mockFunction, renderHook } from '@app/test-utils'
 import supportedAddresses from '@app/constants/supportedAddresses.json'
 import supportedProfileItems from '@app/constants/supportedGeneralRecordKeys.json'
 import supportedTexts from '@app/constants/supportedSocialRecordKeys.json'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { useProfile } from './useProfile'
 
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 
-const mockUseEns = mockFunction(useEns)
+const mockUseEns = mockFunction(useFns)
 const mockGetProfile = jest.fn()
 
 describe('useProfile', () => {

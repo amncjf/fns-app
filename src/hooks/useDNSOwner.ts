@@ -1,9 +1,9 @@
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 const useDNSOwner = (name: string, valid: boolean | undefined) => {
-  const { ready, getDNSOwner } = useEns()
+  const { ready, getDNSOwner } = useFns()
 
   const {
     data: dnsOwner,

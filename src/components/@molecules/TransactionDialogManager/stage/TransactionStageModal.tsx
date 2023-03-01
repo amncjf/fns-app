@@ -23,7 +23,7 @@ import {
   TransactionFlowAction,
   TransactionStage,
 } from '@app/transaction-flow/types'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { makeEtherscanLink } from '@app/utils/utils'
 
 import { DisplayItems } from '../DisplayItems'
@@ -238,7 +238,7 @@ export const TransactionStageModal = ({
 
   const addRecentTransaction = useAddRecentTransaction()
   const { data: signer } = useSigner()
-  const fns = useEns()
+  const fns = useFns()
 
   const stage = transaction.stage || 'confirm'
   const recentTransactions = useRecentTransactions()

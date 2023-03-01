@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
-import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
+import { PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 
 type Data = {
   name: string
@@ -24,7 +24,7 @@ const displayItems = (
   },
 ]
 
-const transaction = (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+const transaction = (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => {
   const tx = fns.transferController.populateTransaction(data.name, {
     newOwner: data.newOwner,
     isOwner: data.isOwner,

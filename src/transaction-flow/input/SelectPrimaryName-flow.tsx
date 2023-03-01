@@ -14,7 +14,7 @@ import {
   SpinnerRow,
 } from '@app/components/@molecules/ScrollBoxWithSpinner'
 import { useChainId } from '@app/hooks/useChainId'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { makeTransactionItem } from '../transaction'
 import { TransactionDialogPassthrough } from '../types'
@@ -60,7 +60,7 @@ const SelectPrimaryName = ({ data: { address, existingPrimary }, dispatch, onDis
   const { t } = useTranslation('settings')
 
   const chainId = useChainId()
-  const { gqlInstance } = useEns()
+  const { gqlInstance } = useFns()
 
   const { data, fetchNextPage, isLoading } = useInfiniteQuery(
     [address, 'primaryNameOptions'],

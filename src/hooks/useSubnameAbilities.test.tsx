@@ -1,7 +1,7 @@
 import { mockFunction, renderHook } from '@app/test-utils'
 
 import { DeepPartial } from '@app/types'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { useBasicName } from './useBasicName'
 import { useHasSubnames } from './useHasSubnames'
@@ -19,7 +19,7 @@ mockUseHasSubnames.mockReturnValue({
   isCachedData: false,
 })
 
-type WrapperData = Awaited<ReturnType<ReturnType<typeof useEns>['getWrapperData']>>
+type WrapperData = Awaited<ReturnType<ReturnType<typeof useFns>['getWrapperData']>>
 const makeWrapperData = (overrides: DeepPartial<WrapperData> = {}) => {
   const { parent = {}, child = {}, ...data } = overrides
   return {
@@ -42,7 +42,7 @@ const makeWrapperData = (overrides: DeepPartial<WrapperData> = {}) => {
   } as WrapperData
 }
 
-type OwnerData = Awaited<ReturnType<ReturnType<typeof useEns>['getOwner']>>
+type OwnerData = Awaited<ReturnType<ReturnType<typeof useFns>['getOwner']>>
 const makeOwnerData = (overrides: DeepPartial<OwnerData> = {}) => {
   return {
     registrant: '0xRegistrant',

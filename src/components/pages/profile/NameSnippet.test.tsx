@@ -10,8 +10,8 @@ jest.mock('@app/utils/BreakpointProvider')
 
 jest.setTimeout(5000)
 
-jest.mock('@app/utils/EnsProvider', () => ({
-  useEns: () => ({
+jest.mock('@app/utils/FnsProvider', () => ({
+  useFns: () => ({
     getName: jest.fn(),
   }),
 }))

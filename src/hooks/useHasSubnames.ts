@@ -1,7 +1,7 @@
 import { useQuery } from 'wagmi'
 
 import { ReturnedENS } from '@app/types'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { emptyAddress } from '../utils/constants'
 
@@ -10,7 +10,7 @@ const FETCH_PAGE_SIZE = 50
 type Subnames = ReturnedENS['getSubnames']['subnames']
 
 export const useHasSubnames = (name: string) => {
-  const { getSubnames, ready } = useEns()
+  const { getSubnames, ready } = useFns()
 
   const isSubname = name && name.split('.').length > 2
 

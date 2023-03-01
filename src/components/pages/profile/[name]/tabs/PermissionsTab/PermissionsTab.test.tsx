@@ -4,11 +4,11 @@ import { useGetFusesSetDates } from '@app/hooks/fuses/useGetFusesSetDates'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useBasicName } from '@app/hooks/useBasicName'
 import { DeepPartial } from '@app/types/index'
-import type { useEns } from '@app/utils/EnsProvider'
+import type { useFns } from '@app/utils/FnsProvider'
 
 import { PermissionsTab } from './PermissionsTab'
 
-type WrapperData = Awaited<ReturnType<ReturnType<typeof useEns>['getWrapperData']>>
+type WrapperData = Awaited<ReturnType<ReturnType<typeof useFns>['getWrapperData']>>
 
 const makeWrapperData = (override: DeepPartial<WrapperData> = {}) => {
   const defaultData: DeepPartial<WrapperData> = {

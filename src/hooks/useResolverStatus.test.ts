@@ -1,17 +1,17 @@
 import { mockFunction, renderHook } from '@app/test-utils'
 
-import { useEns } from '../utils/EnsProvider'
+import { useFns } from '../utils/FnsProvider'
 import { useContractAddress } from './useContractAddress'
 import { useProfile } from './useProfile'
 import { useResolverStatus } from './useResolverStatus'
 
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 jest.mock('@app/hooks/useContractAddress')
 jest.mock('@app/hooks/useProfile')
 
 const mockUseContractAddress = mockFunction(useContractAddress)
 const mockUseProfile = mockFunction(useProfile)
-const mockUseEns = mockFunction(useEns)
+const mockUseEns = mockFunction(useFns)
 
 const mockLocalStorage = jest.fn()
 const mockGetItem = jest.fn()

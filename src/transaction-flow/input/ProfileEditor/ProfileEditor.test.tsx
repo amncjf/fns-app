@@ -35,7 +35,7 @@ const mockProfileData = {
         {
           key: 'url',
           type: 'text',
-          value: 'https://ens.domains',
+          value: 'https://fns.domains',
         },
         {
           key: 'avatar',
@@ -109,7 +109,7 @@ const mockProfileData = {
 
 jest.mock('@app/utils/BreakpointProvider')
 jest.mock('@app/hooks/useProfile')
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 jest.mock('@app/transaction-flow/TransactionFlowProvider')
 jest.mock('@app/hooks/useContractAddress')
 jest.mock('@app/hooks/useResolverStatus')

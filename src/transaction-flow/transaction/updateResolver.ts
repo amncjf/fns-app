@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
-import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
+import { PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 
 import { shortenAddress } from '../../utils/utils'
 
@@ -32,7 +32,7 @@ const displayItems = (
   },
 ]
 
-const transaction = (signer: JsonRpcSigner, fns: PublicENS, data: Data) =>
+const transaction = (signer: JsonRpcSigner, fns: PublicFNS, data: Data) =>
   fns.setResolver.populateTransaction(data.name, {
     contract: data.contract,
     resolver: data.resolver,

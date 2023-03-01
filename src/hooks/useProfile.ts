@@ -4,12 +4,12 @@ import { useQuery } from 'wagmi'
 import supportedAddresses from '@app/constants/supportedAddresses.json'
 import supportedProfileItems from '@app/constants/supportedGeneralRecordKeys.json'
 import supportedTexts from '@app/constants/supportedSocialRecordKeys.json'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import useDecryptName from './useDecryptName'
 
 export const useProfile = (name: string, skip?: any) => {
-  const { ready, getProfile } = useEns()
+  const { ready, getProfile } = useFns()
 
   const {
     data: profile,

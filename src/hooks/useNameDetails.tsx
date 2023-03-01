@@ -1,7 +1,7 @@
 import { ReactNode, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { useBasicName } from './useBasicName'
 import useDNSOwner from './useDNSOwner'
@@ -9,7 +9,7 @@ import { useProfile } from './useProfile'
 
 export const useNameDetails = (name: string) => {
   const { t } = useTranslation('profile')
-  const { ready } = useEns()
+  const { ready } = useFns()
 
   const {
     valid,

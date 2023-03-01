@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { Profile } from '@app/types'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { contentHashToString } from '@app/utils/contenthash'
 
 import { useContractAddress } from './useContractAddress'
@@ -57,7 +57,7 @@ type Result = {
 }
 
 export const useResolverStatus = (name: string, skip?: boolean, options?: Options): Result => {
-  const { ready, getProfile } = useEns()
+  const { ready, getProfile } = useFns()
 
   // Profile resolver address check
   const latestResolverAddress = useContractAddress('PublicResolver')

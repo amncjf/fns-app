@@ -3,7 +3,7 @@ import { useQuery } from 'wagmi'
 
 import type { Name } from '@fildomains/fnsjs/functions/getNames'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { GRACE_PERIOD } from '@app/utils/constants'
 import { validateExpiry } from '@app/utils/utils'
 
@@ -42,7 +42,7 @@ export const useNamesFromAddress = ({
   filter?: Name['type']
   search?: string
 }) => {
-  const { ready, getNames } = useEns()
+  const { ready, getNames } = useFns()
 
   const { data: blockTimestamp, isLoading: isBlockTimestampLoading } = useBlockTimestamp()
 

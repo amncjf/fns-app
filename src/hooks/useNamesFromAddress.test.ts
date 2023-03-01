@@ -1,12 +1,12 @@
 import { mockFunction, renderHook } from '@app/test-utils'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { useNamesFromAddress } from './useNamesFromAddress'
 
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 
-const mockUseEns = mockFunction(useEns)
+const mockUseEns = mockFunction(useFns)
 
 const mockGetNames = jest.fn()
 

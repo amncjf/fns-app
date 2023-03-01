@@ -1,9 +1,9 @@
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 export const useResolver = (name: string) => {
-  const { ready, getResolver } = useEns()
+  const { ready, getResolver } = useFns()
   return useQuery(
     ['use-resolver', name],
     async () => {

@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
-import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
+import { PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 
 type Data = {
   name: string
@@ -27,7 +27,7 @@ const displayItems = (
   },
 ]
 
-const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+const transaction = async (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => {
   const options = data.resolverAddress ? { resolverAddress: data.resolverAddress } : undefined
   const profile = await fns.getProfile(data.name, options)
   if (!profile) throw new Error('No profile found')

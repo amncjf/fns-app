@@ -1,9 +1,9 @@
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 export const usePrimary = (address: string, skip?: any) => {
-  const { ready, getName } = useEns()
+  const { ready, getName } = useFns()
 
   const {
     data,

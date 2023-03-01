@@ -1,14 +1,14 @@
 import { mockFunction, renderHook } from '@app/test-utils'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { useChainId } from './useChainId'
 import { useWrapperExists } from './useWrapperExists'
 
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 jest.mock('./useChainId')
 
-const mockUseEns = mockFunction(useEns)
+const mockUseEns = mockFunction(useFns)
 const mockUseChainId = mockFunction(useChainId)
 
 const mockGetContractAddress = jest.fn()

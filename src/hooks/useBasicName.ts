@@ -4,7 +4,7 @@ import { useQuery } from 'wagmi'
 import { truncateFormat } from '@fildomains/fnsjs/utils/format'
 
 import { ReturnedENS } from '@app/types'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { getRegistrationStatus } from '@app/utils/registrationStatus'
 import { checkETH2LDName, checkETHName, isLabelTooLong, yearsToSeconds } from '@app/utils/utils'
 
@@ -16,7 +16,7 @@ type BaseBatchReturn = [ReturnedENS['getOwner'], ReturnedENS['getWrapperData']]
 type ETH2LDBatchReturn = [...BaseBatchReturn, ReturnedENS['getExpiry'], ReturnedENS['getPrice']]
 
 export const useBasicName = (name?: string | null, normalised?: boolean) => {
-  const fns = useEns()
+  const fns = useFns()
 
   const { name: _normalisedName, valid, labelCount } = useValidate(name!, !name)
 

@@ -2,16 +2,16 @@ import { fireEvent, mockFunction, render, screen, waitFor } from '@app/test-util
 
 import { NamePill } from '@app/components/@molecules/NamePill'
 import { useChainId } from '@app/hooks/useChainId'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import SelectPrimaryName from './SelectPrimaryName-flow'
 
 jest.mock('@app/hooks/useChainId')
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 jest.mock('@app/components/@molecules/NamePill')
 
 const mockUseChainId = mockFunction(useChainId)
-const mockUseEns = mockFunction(useEns)
+const mockUseEns = mockFunction(useFns)
 const mockNamePill = mockFunction(NamePill)
 
 const mockComponent = ({ name }: { name: string }) => <div>{name}</div>

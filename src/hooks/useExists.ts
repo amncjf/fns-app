@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 export const useExists = (name: string, skip?: any) => {
-  const { ready, getOwner } = useEns()
+  const { ready, getOwner } = useFns()
 
   const [exists, setExists] = useState(false)
 

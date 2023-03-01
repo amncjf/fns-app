@@ -8,13 +8,13 @@ import { CacheableComponent } from '@app/components/@atoms/CacheableComponent'
 import { useFusesStates } from '@app/hooks/fuses/useFusesStates'
 import { useGetFusesSetDates } from '@app/hooks/fuses/useGetFusesSetDates'
 import { useBasicName } from '@app/hooks/useBasicName'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { ExpiryPermissions } from './ExpiryPermissions'
 import { NameChangePermissions } from './NameChangePermissions'
 import { OwnershipPermissions } from './OwnershipPermissions'
 
-type GetWrapperDataFunc = ReturnType<typeof useEns>['getWrapperData']
+type GetWrapperDataFunc = ReturnType<typeof useFns>['getWrapperData']
 type WrapperData = Awaited<ReturnType<GetWrapperDataFunc>>
 
 type Props = {

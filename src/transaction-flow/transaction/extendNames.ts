@@ -2,7 +2,7 @@ import type { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
-import { HelperProps, PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
+import { HelperProps, PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 import { makeDisplay } from '@app/utils/currency'
 
 import { secondsToYears } from '../../utils/utils'
@@ -50,7 +50,7 @@ const helper = (data: Data, t: TFunction<'translation', undefined>): HelperProps
   }
 }
 
-const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+const transaction = async (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => {
   const { names, duration } = data
   const labels = names.map((name) => {
     const parts = name.split('.')

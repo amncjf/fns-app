@@ -6,11 +6,11 @@ import { Button, Typography } from '@ensdomains/thorin'
 import type { useFusesStates } from '@app/hooks/fuses/useFusesStates'
 import type { useGetFusesSetDates } from '@app/hooks/fuses/useGetFusesSetDates'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
-import type { useEns } from '@app/utils/EnsProvider'
+import type { useFns } from '@app/utils/FnsProvider'
 
 import { Section, SectionFooter, SectionItem } from './Section'
 
-type GetWrapperDataFunc = ReturnType<typeof useEns>['getWrapperData']
+type GetWrapperDataFunc = ReturnType<typeof useFns>['getWrapperData']
 type WrapperData = Awaited<ReturnType<GetWrapperDataFunc>>
 type FusesStates = ReturnType<typeof useFusesStates>
 type FusesSetDates = ReturnType<typeof useGetFusesSetDates>['fusesSetDates']

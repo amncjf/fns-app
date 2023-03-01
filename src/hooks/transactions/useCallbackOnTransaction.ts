@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { useChainId } from '../useChainId'
 import { Transaction } from './transactionStore'
@@ -29,7 +29,7 @@ type GraphResponse = {
 
 const useCallbackOnTransaction = (callback: UpdateCallback) => {
   const queryClient = useQueryClient()
-  const { gqlInstance } = useEns()
+  const { gqlInstance } = useFns()
   const chainId = useChainId()
   const transactions = useRecentTransactions()
   const previousTransactions = useRef<Transaction[]>()

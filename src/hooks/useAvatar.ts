@@ -1,6 +1,6 @@
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { ensNftImageUrl, imageUrlUnknownRecord } from '@app/utils/utils'
 
 const fetchImg = async (url: string) =>
@@ -46,7 +46,7 @@ export const useAvatar = (name: string | undefined, network: number, noCache?: b
 
 export const useNFTImage = (name: string | undefined, network: number) => {
   const isCompatible = !!(name && name.split('.').length === 2)
-  const { ready, contracts } = useEns()
+  const { ready, contracts } = useFns()
   const { data: baseRegistrarAddress } = useQuery(
     ['base-registrar-address'],
     () => contracts?.getBaseRegistrar()!.then((c) => c.address),

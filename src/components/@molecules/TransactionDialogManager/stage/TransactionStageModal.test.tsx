@@ -8,14 +8,14 @@ import { useAddRecentTransaction } from '@app/hooks/transactions/useAddRecentTra
 import { useRecentTransactions } from '@app/hooks/transactions/useRecentTransactions'
 import { useChainName } from '@app/hooks/useChainName'
 import { GenericTransaction } from '@app/transaction-flow/types'
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { TransactionStageModal, handleBackToInput } from './TransactionStageModal'
 
 jest.mock('@app/hooks/useChainName')
 jest.mock('@app/hooks/transactions/useAddRecentTransaction')
 jest.mock('@app/hooks/transactions/useRecentTransactions')
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 
 const mockPopulatedTransaction = {
   data: '0x1896f70a516f53deb2dac3f055f1db1fbd64c12640aa29059477103c3ef28806f15929250000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41',
@@ -49,7 +49,7 @@ jest.mock('@app/transaction-flow/transaction', () => {
   }
 })
 
-const mockUseEns = mockFunction(useEns)
+const mockUseEns = mockFunction(useFns)
 const mockUseAddRecentTransaction = mockFunction(useAddRecentTransaction)
 const mockUseRecentTransactions = mockFunction(useRecentTransactions)
 const mockUseChainName = mockFunction(useChainName)

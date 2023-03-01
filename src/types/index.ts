@@ -68,14 +68,14 @@ export type ProfileEditorType = {
   }
 } & AvatarEditorType
 
-export type PublicENS = PublicInterface<FNS>
+export type PublicFNS = PublicInterface<FNS>
 
 export type HelperProps = ComponentProps<typeof Helper>
-export type ReturnedENS = { [key in keyof PublicENS]: Awaited<ReturnType<PublicENS[key]>> }
+export type ReturnedENS = { [key in keyof PublicFNS]: Awaited<ReturnType<PublicFNS[key]>> }
 
 export interface Transaction<Data> {
   displayItems: (data: any, t: TFunction<'translation', undefined>) => TransactionDisplayItem[]
-  transaction: (signer: JsonRpcSigner, fns: PublicENS, data: Data) => Promise<PopulatedTransaction>
+  transaction: (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => Promise<PopulatedTransaction>
   helper?: (data: any, t: TFunction<'translation', undefined>) => undefined | HelperProps
   backToInput?: boolean
 }

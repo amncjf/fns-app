@@ -1,10 +1,10 @@
 import { useQuery } from 'wagmi'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { yearsToSeconds } from '@app/utils/utils'
 
 export const usePrice = (nameOrNames: string | string[], legacy?: boolean) => {
-  const { ready, getPrice } = useEns()
+  const { ready, getPrice } = useFns()
   const names = Array.isArray(nameOrNames) ? nameOrNames : [nameOrNames]
   const type = legacy ? 'legacy' : 'new'
   const {

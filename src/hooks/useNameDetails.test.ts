@@ -1,18 +1,18 @@
 import { mockFunction, renderHook, waitFor } from '@app/test-utils'
 
-import { useEns } from '@app/utils/EnsProvider'
+import { useFns } from '@app/utils/FnsProvider'
 
 import { useNameDetails } from './useNameDetails'
 import { useProfile } from './useProfile'
 import { useValidate } from './useValidate'
 import { useWrapperExists } from './useWrapperExists'
 
-jest.mock('@app/utils/EnsProvider')
+jest.mock('@app/utils/FnsProvider')
 jest.mock('./useProfile')
 jest.mock('./useValidate')
 jest.mock('./useWrapperExists')
 
-const mockUseEns = mockFunction(useEns)
+const mockUseEns = mockFunction(useFns)
 const mockUseProfile = mockFunction(useProfile)
 const mockUseValidate = mockFunction(useValidate)
 const mockUseWrapperExists = mockFunction(useWrapperExists)
