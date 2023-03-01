@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
-import type { ChildFuses } from '@ensdomains/ensjs'
+import type { ChildFuses } from '@fildomains/fnsjs'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 
@@ -31,8 +31,8 @@ const displayItems = (
   },
 ]
 
-const transaction = (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  const tx = ens.setFuses.populateTransaction(data.name, {
+const transaction = (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+  const tx = fns.setFuses.populateTransaction(data.name, {
     named: data.selectedFuses,
     signer,
   })

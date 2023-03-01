@@ -69,7 +69,7 @@ const FaucetBanner = () => {
         alert="info"
         title="You have unclaimed goETH!"
       >
-        Each address on goerli can claim <b>0.25 ETH</b> to test out the new ENS manager app, as
+        Each address on goerli can claim <b>0.25 ETH</b> to test out the new FNS manager app, as
         well as all the new contracts.
       </StyledBanner>
     </BannerWrapper>

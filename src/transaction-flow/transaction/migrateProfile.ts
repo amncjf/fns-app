@@ -27,13 +27,13 @@ const displayItems = (
   },
 ]
 
-const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
+const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
   const options = data.resolverAddress ? { resolverAddress: data.resolverAddress } : undefined
-  const profile = await ens.getProfile(data.name, options)
+  const profile = await fns.getProfile(data.name, options)
   if (!profile) throw new Error('No profile found')
   if (!profile.records) throw new Error('No records found')
   const { contentHash } = profile.records
-  const resolverAddress = (await ens.contracts!.getPublicResolver()!).address
+  const resolverAddress = (await fns.contracts!.getPublicResolver()!).address
   let migratableContentHash: string | undefined
   if (contentHash) {
     if (typeof contentHash === 'string') {
@@ -55,7 +55,7 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     })),
   }
 
-  return ens.setRecords.populateTransaction(data.name, {
+  return fns.setRecords.populateTransaction(data.name, {
     records: migratableProfile,
     resolverAddress,
     signer,

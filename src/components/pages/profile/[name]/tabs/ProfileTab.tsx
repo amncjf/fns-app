@@ -90,7 +90,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
         button={snippetButton}
         canEdit={selfAbilities.canEdit}
       >
-        {isWrapped && !normalisedName.endsWith('.eth') && (
+        {isWrapped && !normalisedName.endsWith('.fil') && (
           <Helper type="warning" alignment="horizontal">
             {t('tabs.profile.warnings.wrappedDNS')}
           </Helper>

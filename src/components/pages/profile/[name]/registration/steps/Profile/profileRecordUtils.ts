@@ -1,4 +1,4 @@
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
+import { RecordOptions } from '@fildomains/fnsjs/utils/recordHelpers'
 
 import { ProfileRecord } from '@app/constants/profileRecordOptions'
 import type { RegistrationForm } from '@app/hooks/useRegistrationForm'

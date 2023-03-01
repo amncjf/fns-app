@@ -59,7 +59,7 @@ describe('useNameDetails', () => {
     const { result } = renderHook(() => useNameDetails('invalid'))
     expect(result.current.error).toEqual('errors.invalidName')
   })
-  it('should call getDNSOwner if TLD is not .eth', () => {
+  it('should call getDNSOwner if TLD is not .fil', () => {
     mockUseValidate.mockReturnValue({
       valid: true,
       name: 'test.com',
@@ -69,7 +69,7 @@ describe('useNameDetails', () => {
     renderHook(() => useNameDetails('test.com'))
     expect(mockGetDNSOwner).toHaveBeenCalledWith('test.com')
   })
-  it('should return dnsOwner if TLD is not .eth and there is an owner', async () => {
+  it('should return dnsOwner if TLD is not .fil and there is an owner', async () => {
     mockUseValidate.mockReturnValue({
       valid: true,
       name: 'test.com',

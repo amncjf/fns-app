@@ -29,8 +29,8 @@ const displayItems = (
   },
 ]
 
-const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
-  ens.createSubname.populateTransaction(`${data.label}.${data.parent}`, {
+const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) =>
+  fns.createSubname.populateTransaction(`${data.label}.${data.parent}`, {
     signer,
     owner: await signer.getAddress(),
     contract: data.contract,

@@ -26,8 +26,8 @@ const displayItems = (
   },
 ]
 
-const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
-  ens.wrapName.populateTransaction(data.name, {
+const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) =>
+  fns.wrapName.populateTransaction(data.name, {
     wrappedOwner: await signer.getAddress(),
     signer,
   })

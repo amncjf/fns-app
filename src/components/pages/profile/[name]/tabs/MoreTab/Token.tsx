@@ -1,9 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
+import { labelhash } from '@fildomains/fnsjs/utils/labels'
+import { namehash } from '@fildomains/fnsjs/utils/normalise'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
 import { Typography, mq } from '@ensdomains/thorin'
 
 import { NFTWithPlaceholder } from '@app/components/NFTWithPlaceholder'

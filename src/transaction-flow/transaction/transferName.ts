@@ -31,8 +31,8 @@ const displayItems = (
   },
 ]
 
-const transaction = (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  const tx = ens.transferName.populateTransaction(data.name, {
+const transaction = (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+  const tx = fns.transferName.populateTransaction(data.name, {
     newOwner: data.newOwner,
     contract: data.contract,
     reclaim: data.reclaim,

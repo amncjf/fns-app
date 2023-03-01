@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import { TFunction } from 'i18next'
 
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
+import { RecordOptions } from '@fildomains/fnsjs/utils/recordHelpers'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 
@@ -57,8 +57,8 @@ const displayItems = ({ name, records }: Data, t: TFunction): TransactionDisplay
   ]
 }
 
-const transaction = (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  return ens.setRecords.populateTransaction(data.name, {
+const transaction = (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+  return fns.setRecords.populateTransaction(data.name, {
     records: data.records,
     resolverAddress: data.resolver,
     signer,

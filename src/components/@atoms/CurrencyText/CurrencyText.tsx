@@ -5,17 +5,17 @@ import { CurrencyDisplay } from '@app/types'
 import { makeDisplay } from '@app/utils/currency'
 
 type Props = {
-  eth?: BigNumber
+  fil?: BigNumber
   currency: CurrencyDisplay
 }
 
-export const CurrencyText = ({ eth, currency = 'eth' }: Props) => {
+export const CurrencyText = ({ fil, currency = 'fil' }: Props) => {
   const { data: ethPrice, loading } = useEthPrice()
 
-  if (loading || !eth || !ethPrice) return null
+  if (loading || !fil || !ethPrice) return null
 
-  if (currency === 'eth') {
-    return <>{makeDisplay(eth, 5, 'eth')}</>
+  if (currency === 'fil') {
+    return <>{makeDisplay(fil, 5, 'fil')}</>
   }
-  return <>{makeDisplay(eth.mul(ethPrice).div(1e8), 2, currency, 18)}</>
+  return <>{makeDisplay(fil.mul(ethPrice).div(1e8), 2, currency, 18)}</>
 }

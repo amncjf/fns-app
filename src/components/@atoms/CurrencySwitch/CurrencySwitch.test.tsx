@@ -16,7 +16,7 @@ describe('CurrencySwitch', () => {
   })
 
   it('renders correctly', async () => {
-    render(<CurrencySwitch value="eth" onChange={mockChangeHandler} />)
+    render(<CurrencySwitch value="fil" onChange={mockChangeHandler} />)
     expect(screen.getByText('ETH')).toBeVisible()
     expect(screen.getByText('USD')).toBeVisible()
     await waitFor(() => {
@@ -35,7 +35,7 @@ describe('CurrencySwitch', () => {
     render(<CurrencySwitch onChange={mockChangeHandler} value="fiat" />)
     await userEvent.click(screen.getByTestId('currency-eth'))
     await waitFor(() => {
-      expect(mockChangeHandler).toBeCalledWith('eth')
+      expect(mockChangeHandler).toBeCalledWith('fil')
     })
   })
 })

@@ -9,7 +9,7 @@ import { useLocalStorage } from '@app/hooks/useLocalStorage'
 import Profile from './Profile'
 
 const nameDetails: any = {
-  normalisedName: 'test.eth',
+  normalisedName: 'test.fil',
 }
 
 const defaultRegistrationData = {
@@ -137,7 +137,7 @@ describe('Profile', () => {
     )
   })
 
-  it('should disable eth record if registrationData.reverseRecord is true', async () => {
+  it('should disable fil record if registrationData.reverseRecord is true', async () => {
     render(
       <Profile
         nameDetails={nameDetails}
@@ -152,7 +152,7 @@ describe('Profile', () => {
     expect(screen.getByTestId('profile-record-input-ETH-delete-button')).toBeDisabled()
   })
 
-  it('should prompt user before deleting eth record', async () => {
+  it('should prompt user before deleting fil record', async () => {
     render(
       <Profile
         nameDetails={nameDetails}

@@ -1,8 +1,7 @@
+import { labelhash } from '@fildomains/fnsjs/utils/labels'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useQuery } from 'wagmi'
-
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
 
 import { useChainId } from '@app/hooks/useChainId'
 import useRegistrationReducer from '@app/hooks/useRegistrationReducer'

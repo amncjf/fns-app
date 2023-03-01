@@ -25,7 +25,7 @@ const mockFusesResponse = {
 }
 
 const defaultProps = {
-  name: 'nick.eth',
+  name: 'nick.fil',
   fuseObj: mockFusesResponse.fuseObj,
   canEdit: false,
   isCachedData: false,
@@ -39,7 +39,7 @@ describe('Fuses', () => {
   it('should render', () => {
     mockUseRouter.mockReturnValue({
       query: {
-        name: 'nick.eth',
+        name: 'nick.fil',
       },
     })
     render(<Fuses {...defaultProps} />)
@@ -48,7 +48,7 @@ describe('Fuses', () => {
   it('should show warning if PCC has NOT been burned', () => {
     mockUseRouter.mockReturnValue({
       query: {
-        name: 'nick.eth',
+        name: 'nick.fil',
       },
     })
     const props = {

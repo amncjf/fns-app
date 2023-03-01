@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
 
-import { truncateFormat } from '@ensdomains/ensjs/utils/format'
+import { truncateFormat } from '@fildomains/fnsjs/utils/format'
 
 import { ReturnedENS } from '@app/types'
 import { useEns } from '@app/utils/EnsProvider'
@@ -16,7 +16,7 @@ type BaseBatchReturn = [ReturnedENS['getOwner'], ReturnedENS['getWrapperData']]
 type ETH2LDBatchReturn = [...BaseBatchReturn, ReturnedENS['getExpiry'], ReturnedENS['getPrice']]
 
 export const useBasicName = (name?: string | null, normalised?: boolean) => {
-  const ens = useEns()
+  const fns = useEns()
 
   const { name: _normalisedName, valid, labelCount } = useValidate(name!, !name)
 
@@ -39,18 +39,18 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
         if (labels[0].length < 3) {
           return Promise.resolve([])
         }
-        return ens.batch(
-          ens.getOwner.batch(normalisedName),
-          ens.getWrapperData.batch(normalisedName),
-          ens.getExpiry.batch(normalisedName),
-          ens.getPrice.batch(labels[0], yearsToSeconds(1), false),
+        return fns.batch(
+          fns.getOwner.batch(normalisedName),
+          fns.getWrapperData.batch(normalisedName),
+          fns.getExpiry.batch(normalisedName),
+          fns.getPrice.batch(labels[0], yearsToSeconds(1), false),
         )
       }
 
-      return ens.batch(ens.getOwner.batch(normalisedName), ens.getWrapperData.batch(normalisedName))
+      return fns.batch(fns.getOwner.batch(normalisedName), fns.getWrapperData.batch(normalisedName))
     },
     {
-      enabled: !!(ens.ready && name && valid),
+      enabled: !!(fns.ready && name && valid),
     },
   )
 
@@ -88,7 +88,7 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
   const nameWrapperExists = useWrapperExists()
   const isWrapped = ownerData?.ownershipLevel === 'nameWrapper'
 
-  const isLoading = !ens.ready || batchLoading || supportedTLDLoading
+  const isLoading = !fns.ready || batchLoading || supportedTLDLoading
 
   return {
     normalisedName,
@@ -106,7 +106,7 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
     canBeWrapped:
       nameWrapperExists &&
       !isWrapped &&
-      normalisedName?.endsWith('.eth') &&
+      normalisedName?.endsWith('.fil') &&
       !isLabelTooLong(normalisedName),
     isCachedData: status === 'success' && isFetched && !isFetchedAfterMount,
   }

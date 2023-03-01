@@ -76,7 +76,7 @@ describe('useRegistrationForm', () => {
   })
 
   describe('validators', () => {
-    it('should pass validation with a valid eth address', async () => {
+    it('should pass validation with a valid fil address', async () => {
       const { result } = renderHook(() => useRegistrationForm(records))
       expect(
         await result.current.validatorForRecord({
@@ -87,7 +87,7 @@ describe('useRegistrationForm', () => {
       ).toBe(true)
     })
 
-    it('should fail validation with an invalid eth address', async () => {
+    it('should fail validation with an invalid fil address', async () => {
       const { result } = renderHook(() => useRegistrationForm(records))
       expect(
         typeof (await result.current.validatorForRecord({
@@ -98,7 +98,7 @@ describe('useRegistrationForm', () => {
       ).toBe('string')
     })
 
-    it('should fail validation with an invalid eth address not in check sum format', async () => {
+    it('should fail validation with an invalid fil address not in check sum format', async () => {
       const { result } = renderHook(() => useRegistrationForm(records))
       expect(
         typeof (await result.current.validatorForRecord({

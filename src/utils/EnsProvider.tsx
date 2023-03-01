@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useProvider } from 'wagmi'
 
-import { ENS } from '@ensdomains/ensjs'
-import type { ContractName } from '@ensdomains/ensjs/contracts/types'
+import { FNS } from '@fildomains/fnsjs'
+import type { ContractName } from '@fildomains/fnsjs/contracts/types'
 
-const opts: ConstructorParameters<typeof ENS>[0] = {}
+const opts: ConstructorParameters<typeof FNS>[0] = {}
 
 if (process.env.NEXT_PUBLIC_PROVIDER && process.env.NEXT_PUBLIC_DEPLOYMENT_ADDRESSES) {
   const deploymentAddresses = JSON.parse(process.env.NEXT_PUBLIC_DEPLOYMENT_ADDRESSES!) as Record<
@@ -18,7 +18,7 @@ if (process.env.NEXT_PUBLIC_GRAPH_URI) {
   opts.graphURI = process.env.NEXT_PUBLIC_GRAPH_URI
 }
 
-const defaultValue: ENS = new ENS(opts)
+const defaultValue: FNS = new FNS(opts)
 
 const EnsContext = createContext({ ...defaultValue, ready: false })
 

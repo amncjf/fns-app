@@ -21,7 +21,7 @@ describe('NameDetailitem', () => {
   const mockRouterObject = {
     asPath: 'currentpath',
     query: {
-      name: 'nick.eth',
+      name: 'nick.fil',
     },
   }
 

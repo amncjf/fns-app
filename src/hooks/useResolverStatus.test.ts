@@ -80,7 +80,7 @@ describe('useResolverStatus', () => {
       },
     })
 
-    const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.eth'))
+    const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
     await waitForNextUpdate()
     expect(result.current).toEqual({
       status: {
@@ -101,7 +101,7 @@ describe('useResolverStatus', () => {
       },
     })
 
-    const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.eth'))
+    const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
     await waitForNextUpdate()
     expect(result.current).toEqual({
       status: {
@@ -118,7 +118,7 @@ describe('useResolverStatus', () => {
     it('should return hasLatestResolver is false', async () => {
       setup()
       const { result, waitForNextUpdate } = renderHook(() =>
-        useResolverStatus('another_resolver.eth'),
+        useResolverStatus('another_resolver.fil'),
       )
       await waitForNextUpdate()
       expect(result.current).toEqual({
@@ -136,7 +136,7 @@ describe('useResolverStatus', () => {
       setup({
         getProfile: undefined,
       })
-      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.eth'))
+      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
       await waitForNextUpdate()
       expect(result.current).toEqual({
         status: {
@@ -155,7 +155,7 @@ describe('useResolverStatus', () => {
           records: {},
         },
       })
-      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.eth'))
+      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
       await waitForNextUpdate()
       expect(result.current).toEqual({
         status: {
@@ -181,7 +181,7 @@ describe('useResolverStatus', () => {
           },
         },
       })
-      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.eth'))
+      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
       await waitForNextUpdate()
       expect(result.current).toEqual({
         status: {
@@ -198,7 +198,7 @@ describe('useResolverStatus', () => {
       setup({
         getProfile: defaultProfile,
       })
-      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.eth'))
+      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
       await waitForNextUpdate()
       expect(result.current).toEqual({
         status: {
@@ -218,7 +218,7 @@ describe('useResolverStatus', () => {
         getProfile: defaultProfile,
       })
       const { result, waitForNextUpdate } = renderHook(() =>
-        useResolverStatus('test.eth', false, { skipCompare: true }),
+        useResolverStatus('test.fil', false, { skipCompare: true }),
       )
       await waitForNextUpdate()
       expect(result.current).toEqual({
@@ -238,7 +238,7 @@ describe('useResolverStatus', () => {
       getProfile: defaultProfile,
     })
     const { result, waitForNextUpdate } = renderHook(() =>
-      useResolverStatus('test.eth', false, { skipCompare: false }),
+      useResolverStatus('test.fil', false, { skipCompare: false }),
     )
     await waitForNextUpdate()
     expect(result.current).toEqual({

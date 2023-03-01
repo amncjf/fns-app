@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
 
-import { DNS_OVER_HTTP_ENDPOINT } from '@ensdomains/ensjs/functions/importDNSSECName'
+import { DNS_OVER_HTTP_ENDPOINT } from '@fildomains/fnsjs/functions/importDNSSECName'
 
 const useDNSProof = (name: string, skip?: any) => {
   const {

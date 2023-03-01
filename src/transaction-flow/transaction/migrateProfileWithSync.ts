@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
-import type { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
+import type { RecordOptions } from '@fildomains/fnsjs/utils/recordHelpers'
 
 import { Profile, PublicENS, RecordItem, Transaction, TransactionDisplayItem } from '@app/types'
 import { recordItemToKeyValue } from '@app/utils/editor'
@@ -91,20 +91,20 @@ export const syncRecords = (
   )
 }
 
-const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
+const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
   // dynamic import for large dependency
   const contentHashToString = await import('../../utils/contenthash').then(
     (m) => m.contentHashToString,
   )
 
-  const profile = await ens.getProfile(data.name)
+  const profile = await fns.getProfile(data.name)
   if (!profile) throw new Error('No profile found')
   if (!profile.records) throw new Error('No records found')
-  const resolverAddress = (await ens.contracts!.getPublicResolver()!).address
+  const resolverAddress = (await fns.contracts!.getPublicResolver()!).address
 
   let resolverProfile: Profile | undefined
   if (profile.resolverAddress !== resolverAddress) {
-    resolverProfile = await ens.getProfile(data.name, {
+    resolverProfile = await fns.getProfile(data.name, {
       resolverAddress,
     })
   }
@@ -130,7 +130,7 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     coinTypes,
   }
 
-  return ens.setRecords.populateTransaction(data.name, {
+  return fns.setRecords.populateTransaction(data.name, {
     records: migratableProfile,
     resolverAddress,
     signer,

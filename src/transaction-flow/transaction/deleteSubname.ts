@@ -29,8 +29,8 @@ const displayItems = (
   },
 ]
 
-const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  return ens.deleteSubname.populateTransaction(data.name, {
+const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+  return fns.deleteSubname.populateTransaction(data.name, {
     contract: data.contract,
     method: data.method,
     signer,

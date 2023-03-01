@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
 
-import { checkIsDecrypted } from '@ensdomains/ensjs/utils/labels'
+import { checkIsDecrypted } from '@fildomains/fnsjs/utils/labels'
 
 import { useEns } from '@app/utils/EnsProvider'
 

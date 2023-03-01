@@ -31,8 +31,8 @@ const mockUseBasicName = mockFunction(useBasicName)
 
 const ownerAddress = '0x123'
 const account = ownerAddress
-const name = 'nick.eth'
-const subname = 'sub.nick.eth'
+const name = 'nick.fil'
+const subname = 'sub.nick.fil'
 
 /*
   userStates

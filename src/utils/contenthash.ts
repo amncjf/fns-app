@@ -1,7 +1,7 @@
 import { isHexString } from '@ethersproject/bytes/lib/index'
 
 import contentHash from '@ensdomains/content-hash'
-import { DecodedContentHash } from '@ensdomains/ensjs/utils/contentHash'
+import { DecodedContentHash } from '@fildomains/fnsjs/utils/contentHash'
 
 type EncodedContentHash = {
   encoded?: string
@@ -21,7 +21,7 @@ export const getContentHashLink = (
   const hash = decodedContentHash.decoded
 
   const useEthLink =
-    name.endsWith('.eth') && network === 1 && (protocol === 'ipfs' || protocol === 'ipns')
+    name.endsWith('.fil') && network === 1 && (protocol === 'ipfs' || protocol === 'ipns')
   if (useEthLink) {
     return `https://${name}.link`
   }

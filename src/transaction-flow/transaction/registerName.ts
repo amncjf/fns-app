@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
-import { BaseRegistrationParams } from '@ensdomains/ensjs/utils/registerHelpers'
+import { BaseRegistrationParams } from '@fildomains/fnsjs/utils/registerHelpers'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 import { secondsToYears } from '@app/utils/utils'
@@ -29,11 +29,11 @@ const displayItems = (
   },
 ]
 
-const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  const price = await ens.getPrice(data.name.split('.')[0], data.duration)
+const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
+  const price = await fns.getPrice(data.name.split('.')[0], data.duration)
   const value = price!.base.add(price!.premium)
 
-  return ens.registerName.populateTransaction(data.name, {
+  return fns.registerName.populateTransaction(data.name, {
     signer,
     ...data,
     value,

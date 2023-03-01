@@ -8,8 +8,8 @@ import {
   isEncodedLabelhash,
   labelhash,
   saveName,
-} from '@ensdomains/ensjs/utils/labels'
-import { validateName } from '@ensdomains/ensjs/utils/validation'
+} from '@fildomains/fnsjs/utils/labels'
+import { validateName } from '@fildomains/fnsjs/utils/validation'
 import { Button, Dialog, Input, Typography, mq } from '@ensdomains/thorin'
 
 import { isLabelTooLong } from '@app/utils/utils'

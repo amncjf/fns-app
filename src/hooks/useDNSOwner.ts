@@ -12,7 +12,7 @@ const useDNSOwner = (name: string, valid: boolean | undefined) => {
     isLoading,
     internal: { isFetchedAfterMount },
   } = useQuery(['getDNSOwner', name], () => getDNSOwner(name), {
-    enabled: ready && valid && !name?.endsWith('.eth'),
+    enabled: ready && valid && !name?.endsWith('.fil'),
   })
 
   const isCachedData = status === 'success' && isFetched && !isFetchedAfterMount

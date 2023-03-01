@@ -1,7 +1,7 @@
 Last modified: 11/11/2022
 
 1. **Introduction**
-   1. This Privacy Policy (the “**Policy**”) sets out how the ENS Foundation (a foundation company limited by guarantee, incorporated in the Cayman Islands) and any of our subcontractors operating the ENSF websites (“**ENSF**”, “**we**”, “**our**” or “**us**”) and applications which refer to this Policy, may collect, use, disclose or otherwise process your Personal Data (as defined below). In this Policy, ENSF websites’ domain names include but are not limited to https://ens.domains/.
+   1. This Privacy Policy (the “**Policy**”) sets out how the FNS Foundation (a foundation company limited by guarantee, incorporated in the Cayman Islands) and any of our subcontractors operating the ENSF websites (“**ENSF**”, “**we**”, “**our**” or “**us**”) and applications which refer to this Policy, may collect, use, disclose or otherwise process your Personal Data (as defined below). In this Policy, ENSF websites’ domain names include but are not limited to https://ens.domains/.
    2. This Policy applies to Personal Data in our possession or under our control, including Personal Data in the possession of organisations or persons that we have engaged to collect, use, disclose or process personal data for our purposes. By continuing to browse our website and use our services, you consent to our collection, use and disclosure of your Personal Data in accordance with the terms listed in this Policy.
    3. Please read this Policy carefully to understand how we will treat your Personal Data.
    4. In this Policy, “**Personal Data**” means data, whether true or not, about you who can be identified: (a) from that data; or (b) from that data and other information to which we have or are likely to have access.
@@ -41,7 +41,7 @@ Last modified: 11/11/2022
 5. **The Purposes of Collection, Use, and Disclosure of Your Personal Data**
    1. We will only collect, use, and disclose your Personal Data in the following circumstances to:
       1. present website content effectively;
-      2. identify and display the ENS name representing your Ethereum blockchain address which may act as your username and profile;
+      2. identify and display the FNS name representing your Ethereum blockchain address which may act as your username and profile;
       3. send you administrative notifications, such as security, support, and maintenance advisories;
       4. provide customer support and respond to your requests and inquiries;
       5. provide information about services that you request, or which we think may interest you;

@@ -11,7 +11,7 @@ mockUseBreakpoint.mockReturnValue({ sm: true, md: true, lg: true })
 
 describe('RecordsTab', () => {
   const baseMockData = {
-    name: 'nick.eth',
+    name: 'nick.fil',
     network: 1,
   }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useProvider } from 'wagmi'
 
-import { decodeFuses } from '@ensdomains/ensjs/utils/fuses'
+import { decodeFuses } from '@fildomains/fnsjs/utils/fuses'
 
 import {
   CHILD_FUSES,

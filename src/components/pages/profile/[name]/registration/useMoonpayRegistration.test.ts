@@ -1,6 +1,6 @@
 import { mockFunction, renderHook, waitFor } from '@app/test-utils'
 
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
+import { labelhash } from '@fildomains/fnsjs/utils/labels'
 
 import { useChainId } from '@app/hooks/useChainId'
 import { MOONPAY_WORKER_URL } from '@app/utils/constants'
@@ -15,7 +15,7 @@ describe('useMoonpayRegistration', () => {
   it('should check up on transaction status every second if a there is a currentExternalTransactionId', async () => {
     mockUseChaindId.mockReturnValue(1)
     const mockDispatch = jest.fn()
-    const normalisedName = 'test.eth'
+    const normalisedName = 'test.fil'
     const selected = {}
     const item = {
       externalTransactionId: '0x123',
@@ -32,7 +32,7 @@ describe('useMoonpayRegistration', () => {
   it('should stop refetching once transaction is complete', async () => {
     mockUseChaindId.mockReturnValue(1)
     const mockDispatch = jest.fn()
-    const normalisedName = 'test.eth'
+    const normalisedName = 'test.fil'
     const selected = {}
     let item = {
       externalTransactionId: '0x123',
@@ -71,7 +71,7 @@ describe('useMoonpayRegistration', () => {
   it('should stop refetching if name changes and new name does not have a currentExternalTransactionId', async () => {
     mockUseChaindId.mockReturnValue(1)
     const mockDispatch = jest.fn()
-    let normalisedName = 'test.eth'
+    let normalisedName = 'test.fil'
     const selected = {}
     let item = {
       externalTransactionId: '0x123',
@@ -87,7 +87,7 @@ describe('useMoonpayRegistration', () => {
     )
     await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2), { timeout: 2000 })
 
-    normalisedName = 'test2.eth'
+    normalisedName = 'test2.fil'
     item = {
       externalTransactionId: undefined,
     }
@@ -99,7 +99,7 @@ describe('useMoonpayRegistration', () => {
     const chainId = 1
     mockUseChaindId.mockReturnValue(chainId)
     const mockDispatch = jest.fn()
-    const normalisedName = 'test.eth'
+    const normalisedName = 'test.fil'
     const tokenId = labelhash('test')
     const selected = {}
     const item = {
@@ -115,7 +115,6 @@ describe('useMoonpayRegistration', () => {
       useMoonpayRegistration(mockDispatch, normalisedName, selected, item),
     )
 
-    console.log('result: ', result.current)
     result.current.initiateMoonpayRegistrationMutation.mutate(registrationDuration)
     await waitFor(
       () =>

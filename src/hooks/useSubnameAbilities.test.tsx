@@ -68,7 +68,7 @@ const unwrapped2LDEth = {
   }),
   parentWrapperData: makeWrapperData(),
   isParentWrapped: false,
-  name: 'test.eth',
+  name: 'test.fil',
   ownerData: makeOwnerData({
     ownershipLevel: 'registrar',
     owner: '0xName',
@@ -84,7 +84,7 @@ const wrapped2LDEth = {
   }),
   parentWrapperData: makeWrapperData(),
   isParentWrapped: true,
-  name: 'test.eth',
+  name: 'test.fil',
   ownerData: makeOwnerData({
     ownershipLevel: 'nameWrapper',
     owner: '0xName',
@@ -105,7 +105,7 @@ const unwrappedSubname = {
   }),
   parentWrapperData: makeWrapperData(),
   isParentWrapped: false,
-  name: 'sub.test.eth',
+  name: 'sub.test.fil',
   ownerData: makeOwnerData({
     ownershipLevel: 'registry',
     owner: '0xName',
@@ -125,7 +125,7 @@ const wrappedSubname = {
     owner: '0xParent',
   }),
   isParentWrapped: true,
-  name: 'sub.test.eth',
+  name: 'sub.test.fil',
   ownerData: makeOwnerData({
     ownershipLevel: 'nameWrapper',
     owner: '0xName',
@@ -149,7 +149,7 @@ const wrappedSubnameWithPCCBurned = {
     },
   }),
   isParentWrapped: true,
-  name: 'sub.test.eth',
+  name: 'sub.test.fil',
   ownerData: makeOwnerData({
     ownershipLevel: 'nameWrapper',
     owner: '0xName',

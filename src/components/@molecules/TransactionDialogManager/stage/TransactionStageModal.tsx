@@ -238,7 +238,7 @@ export const TransactionStageModal = ({
 
   const addRecentTransaction = useAddRecentTransaction()
   const { data: signer } = useSigner()
-  const ens = useEns()
+  const fns = useEns()
 
   const stage = transaction.stage || 'confirm'
   const recentTransactions = useRecentTransactions()
@@ -256,7 +256,7 @@ export const TransactionStageModal = ({
     async () => {
       const populatedTransaction = await transactions[transaction.name].transaction(
         signer as JsonRpcSigner,
-        ens,
+        fns,
         transaction.data,
       )
       let gasLimit = await signer!.estimateGas(populatedTransaction)
@@ -272,12 +272,12 @@ export const TransactionStageModal = ({
       }
     },
     {
-      enabled: !!transaction && !!signer && !!ens && !(stage === 'sent' || stage === 'complete'),
+      enabled: !!transaction && !!signer && !!fns && !(stage === 'sent' || stage === 'complete'),
     },
   )
   const requestError = _requestError as TxError | null
   useInvalidateOnBlock({
-    enabled: !!transaction && !!signer && !!ens,
+    enabled: !!transaction && !!signer && !!fns,
     queryKey: ['prepareTx', txKey, currentStep],
   })
 

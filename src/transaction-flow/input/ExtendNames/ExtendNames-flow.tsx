@@ -192,9 +192,9 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const [years, setYears] = useState(1)
   const duration = yearsToSeconds(years)
 
-  const [currencyUnit, setCurrencyUnit] = useState<CurrencyUnit>('eth')
+  const [currencyUnit, setCurrencyUnit] = useState<CurrencyUnit>('fil')
   const fiatUnit = 'usd'
-  const currencyDisplay = currencyUnit === 'fiat' ? fiatUnit : 'eth'
+  const currencyDisplay = currencyUnit === 'fiat' ? fiatUnit : 'fil'
 
   const { base: rentFee, loading: priceLoading } = usePrice(names, true)
 
@@ -276,7 +276,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                 <CurrencyToggle
                   size="small"
                   checked={currencyUnit === 'fiat'}
-                  onChange={() => setCurrencyUnit(currencyUnit === 'eth' ? 'fiat' : 'eth')}
+                  onChange={() => setCurrencyUnit(currencyUnit === 'fil' ? 'fiat' : 'fil')}
                   data-testid="extend-names-currency-toggle"
                 />
               </OptionBar>

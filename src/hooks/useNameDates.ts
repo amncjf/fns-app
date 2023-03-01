@@ -1,6 +1,6 @@
 import { useQuery } from 'wagmi'
 
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
+import { labelhash } from '@fildomains/fnsjs/utils/labels'
 
 import useCallbackOnTransaction from '@app/hooks/transactions/useCallbackOnTransaction'
 import { useEns } from '@app/utils/EnsProvider'

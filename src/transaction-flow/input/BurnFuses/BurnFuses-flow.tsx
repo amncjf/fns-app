@@ -1,6 +1,6 @@
 import { Dispatch } from 'react'
 
-import type { ChildFuses } from '@ensdomains/ensjs'
+import type { ChildFuses } from '@fildomains/fnsjs'
 
 import BurnFusesContent from '@app/components/@molecules/BurnFuses/BurnFusesContent'
 import { useGetWrapperData } from '@app/hooks/useGetWrapperData'

@@ -37,7 +37,7 @@ const displayItems = (
     label: 'cost',
     value: t('transaction.extendNames.costValue', {
       ns: 'transactionFlow',
-      value: makeDisplay(rentPrice, 5, 'eth'),
+      value: makeDisplay(rentPrice, 5, 'fil'),
     }),
   },
 ]
@@ -50,20 +50,20 @@ const helper = (data: Data, t: TFunction<'translation', undefined>): HelperProps
   }
 }
 
-const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
+const transaction = async (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
   const { names, duration } = data
   const labels = names.map((name) => {
     const parts = name.split('.')
     if (parts.length > 2) throw new Error('Currently only supports 1st level names')
-    if (parts[1] !== 'eth') throw new Error('Currently only supports .eth names')
+    if (parts[1] !== 'fil') throw new Error('Currently only supports .fil names')
     return parts[0]
   })
 
-  const price = await ens.getPrice(labels, duration, true)
+  const price = await fns.getPrice(labels, duration, true)
   const priceWithBuffer = price?.base.mul(110).div(100)
 
   if (!priceWithBuffer) throw new Error('No price found')
-  return ens.renewNames.populateTransaction(names, {
+  return fns.renewNames.populateTransaction(names, {
     duration,
     value: priceWithBuffer,
     signer,

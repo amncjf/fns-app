@@ -8,6 +8,7 @@ export const addressIconTypes = {
   btc: dynamic(() => import('./AddressBitcoin.svg')),
   bnb: dynamic(() => import('./AddressBNB.svg')),
   eth: dynamic(() => import('./AddressEthereum.svg')),
+  fil: dynamic(() => import('./AddressFilecoin.svg')),
   doge: dynamic(() => import('./AddressDoge.svg')),
   ltc: dynamic(() => import('./AddressLitecoin.svg')),
   dot: dynamic(() => import('./AddressPolkadot.svg')),

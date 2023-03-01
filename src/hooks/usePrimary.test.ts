@@ -17,17 +17,17 @@ describe('usePrimary', () => {
   })
   it('should return a name if name is returned and matches', async () => {
     mockGetName.mockResolvedValue({
-      name: 'test.eth',
+      name: 'test.fil',
       match: true,
     })
 
     const { result, waitForNextUpdate } = renderHook(() => usePrimary('0x123'))
     await waitForNextUpdate()
-    expect(result.current.name).toBe('test.eth')
+    expect(result.current.name).toBe('test.fil')
   })
   it("should return null if name doesn't match", async () => {
     mockGetName.mockResolvedValue({
-      name: 'test.eth',
+      name: 'test.fil',
       match: false,
     })
 

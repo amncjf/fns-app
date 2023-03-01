@@ -1,5 +1,5 @@
 /* eslint max-classes-per-file: "off" */
-import { normalise } from '@ensdomains/ensjs/utils/normalise'
+import { normalise } from '@fildomains/fnsjs/utils/normalise'
 
 class ContentModifier {
   private newContent: string

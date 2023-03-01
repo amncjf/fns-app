@@ -23,14 +23,14 @@ const items = [
 ]
 
 describe('Invoice', () => {
-  it('should render correctly in eth mode', async () => {
-    render(<Invoice items={items} totalLabel="total" unit="eth" />)
+  it('should render correctly in fil mode', async () => {
+    render(<Invoice items={items} totalLabel="total" unit="fil" />)
     expect(screen.getByText('line 1')).toBeVisible()
     expect(
       screen.getByText(
         new Intl.NumberFormat(undefined, {
           style: 'currency',
-          currency: 'eth',
+          currency: 'fil',
           minimumFractionDigits: 4,
           maximumFractionDigits: 4,
           currencyDisplay: 'name',
@@ -42,7 +42,7 @@ describe('Invoice', () => {
       screen.getByText(
         new Intl.NumberFormat(undefined, {
           style: 'currency',
-          currency: 'eth',
+          currency: 'fil',
           minimumFractionDigits: 4,
           maximumFractionDigits: 4,
           currencyDisplay: 'name',
@@ -54,7 +54,7 @@ describe('Invoice', () => {
       screen.getByText(
         new Intl.NumberFormat(undefined, {
           style: 'currency',
-          currency: 'eth',
+          currency: 'fil',
           minimumFractionDigits: 4,
           maximumFractionDigits: 4,
           currencyDisplay: 'name',

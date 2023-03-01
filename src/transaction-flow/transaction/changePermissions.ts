@@ -4,7 +4,7 @@ import type { TFunction } from 'react-i18next'
 import {
   ChildFuses as ENSJSChildFuses,
   ParentFuses as ENSJSParentFuses,
-} from '@ensdomains/ensjs/utils/fuses'
+} from '@fildomains/fnsjs/utils/fuses'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 
@@ -99,10 +99,10 @@ const displayItems = (
   ]
 }
 
-const transaction = (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
+const transaction = (signer: JsonRpcSigner, fns: PublicENS, data: Data) => {
   const { contract } = data
   if (contract === 'setChildFuses') {
-    return ens.setChildFuses.populateTransaction(data.name, {
+    return fns.setChildFuses.populateTransaction(data.name, {
       fuses: {
         parent: {
           named: data.fuses.parent,
@@ -115,7 +115,7 @@ const transaction = (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
       signer,
     })
   }
-  const tx = ens.setFuses.populateTransaction(data.name, {
+  const tx = fns.setFuses.populateTransaction(data.name, {
     named: data.fuses,
     signer,
   })

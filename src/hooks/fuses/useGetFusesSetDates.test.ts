@@ -134,7 +134,7 @@ describe('useGetFusesSetDates', () => {
   it('should return an object with fuses mapped to strings', async () => {
     mockUseGetHistory.mockReturnValue({ history: mockHistory })
 
-    const { result, waitForNextUpdate } = renderHook(() => useGetFusesSetDates('test.eth'))
+    const { result, waitForNextUpdate } = renderHook(() => useGetFusesSetDates('test.fil'))
     await waitForNextUpdate()
     expect(result.current).toEqual({
       fusesSetDates: {

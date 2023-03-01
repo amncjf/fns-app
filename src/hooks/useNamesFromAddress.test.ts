@@ -17,9 +17,9 @@ const makeNameItem = (isSubname: boolean) => (_: any, index: number) => {
     truncatedName: String(index),
     labelhash: '0x123',
     isMigrated: true,
-    name: `${index}.eth`,
+    name: `${index}.fil`,
     parent: {
-      name: 'eth',
+      name: 'fil',
     },
     type: 'domain',
   }

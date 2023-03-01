@@ -22,15 +22,15 @@ const mockRequestWithNames = () =>
   mockRequest.mockResolvedValue({
     domains: [
       {
-        name: 'test.eth',
+        name: 'test.fil',
         id: '0x0',
       },
       {
-        name: 'test2.eth',
+        name: 'test2.fil',
         id: '0x1',
       },
       {
-        name: 'test3.eth',
+        name: 'test3.fil',
         id: '0x2',
       },
     ],
@@ -96,44 +96,44 @@ describe('SelectPrimaryName', () => {
     mockRequestWithNames()
     renderHelper({})
     await waitFor(() => {
-      expect(screen.getByText('test.eth')).toBeInTheDocument()
-      expect(screen.getByText('test2.eth')).toBeInTheDocument()
-      expect(screen.getByText('test3.eth')).toBeInTheDocument()
+      expect(screen.getByText('test.fil')).toBeInTheDocument()
+      expect(screen.getByText('test2.fil')).toBeInTheDocument()
+      expect(screen.getByText('test3.fil')).toBeInTheDocument()
     })
   })
   it('should only enable next button if name selected', async () => {
     mockRequestWithNames()
     renderHelper({})
     await waitFor(() => {
-      expect(screen.getByText('test.eth')).toBeInTheDocument()
-      expect(screen.getByText('test2.eth')).toBeInTheDocument()
-      expect(screen.getByText('test3.eth')).toBeInTheDocument()
+      expect(screen.getByText('test.fil')).toBeInTheDocument()
+      expect(screen.getByText('test2.fil')).toBeInTheDocument()
+      expect(screen.getByText('test3.fil')).toBeInTheDocument()
     })
     expect(screen.getByTestId('primary-next')).toBeDisabled()
-    fireEvent.click(screen.getByText('test.eth'))
+    fireEvent.click(screen.getByText('test.fil'))
     expect(screen.getByTestId('primary-next')).not.toBeDisabled()
   })
   it('should filter out existing primary name for selection', async () => {
     mockRequestWithNames()
-    renderHelper({ existingPrimary: 'test.eth' })
+    renderHelper({ existingPrimary: 'test.fil' })
     await waitFor(() => {
-      expect(screen.queryByText('test.eth')).not.toBeInTheDocument()
-      expect(screen.getByText('test2.eth')).toBeInTheDocument()
-      expect(screen.getByText('test3.eth')).toBeInTheDocument()
+      expect(screen.queryByText('test.fil')).not.toBeInTheDocument()
+      expect(screen.getByText('test2.fil')).toBeInTheDocument()
+      expect(screen.getByText('test3.fil')).toBeInTheDocument()
     })
   })
   it('should truncate encoded names', async () => {
     mockRequest.mockResolvedValue({
       domains: [
         {
-          name: '[2fcba40a1a605acf57a88f10820dd7f474036e9c73660ce1bafdbb9004b92ded].eth',
+          name: '[2fcba40a1a605acf57a88f10820dd7f474036e9c73660ce1bafdbb9004b92ded].fil',
           id: '0x0',
         },
       ],
     })
     renderHelper({})
     await waitFor(() => {
-      expect(screen.getByText('[2fc...ded].eth')).toBeInTheDocument()
+      expect(screen.getByText('[2fc...ded].fil')).toBeInTheDocument()
     })
   })
 })

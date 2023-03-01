@@ -25,9 +25,9 @@ const displayItems = (
 ]
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const transaction = async (signer: JsonRpcSigner, ens: PublicENS, _: Data) => {
-  const registry = (await ens.contracts!.getRegistry()).connect(signer)
-  const nameWrapperAddress = (await ens.contracts!.getNameWrapper()).address
+const transaction = async (signer: JsonRpcSigner, fns: PublicENS, _: Data) => {
+  const registry = (await fns.contracts!.getRegistry()).connect(signer)
+  const nameWrapperAddress = (await fns.contracts!.getNameWrapper()).address
   return registry.populateTransaction.setApprovalForAll(nameWrapperAddress, true)
 }
 

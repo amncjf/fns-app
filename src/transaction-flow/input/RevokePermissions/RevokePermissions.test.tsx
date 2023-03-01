@@ -11,7 +11,7 @@ const mockOnDismiss = jest.fn()
 type Data = Props['data']
 const makeData = (overrides: DeepPartial<Data> = {}) => {
   const defaultData = {
-    name: 'test.eth',
+    name: 'test.fil',
     flowType: 'revoke-pcc',
     owner: '0x1234',
     parentFuses: {
@@ -54,7 +54,7 @@ describe('RevokePermissions', () => {
       render(
         <RevokePermissions
           data={makeData({
-            name: 'sub.test.eth',
+            name: 'sub.test.fil',
             flowType: 'revoke-pcc',
             minExpiry: 1672531200,
             maxExpiry: 1675238574,
@@ -130,7 +130,7 @@ describe('RevokePermissions', () => {
           name: 'setTransactions',
           payload: [
             makeTransactionItem('changePermissions', {
-              name: 'sub.test.eth',
+              name: 'sub.test.fil',
               contract: 'setChildFuses',
               fuses: {
                 parent: ['PARENT_CANNOT_CONTROL', 'CAN_EXTEND_EXPIRY'],
@@ -154,7 +154,7 @@ describe('RevokePermissions', () => {
       render(
         <RevokePermissions
           data={makeData({
-            name: 'sub.test.eth',
+            name: 'sub.test.fil',
             flowType: 'revoke-pcc',
             minExpiry: 1675238574,
             maxExpiry: 1675238574,
@@ -192,7 +192,7 @@ describe('RevokePermissions', () => {
       render(
         <RevokePermissions
           data={makeData({
-            name: 'sub.test.eth',
+            name: 'sub.test.fil',
             flowType: 'revoke-pcc',
             minExpiry: 1672531200,
             maxExpiry: 1675238574,
@@ -238,7 +238,7 @@ describe('RevokePermissions', () => {
           name: 'setTransactions',
           payload: [
             makeTransactionItem('changePermissions', {
-              name: 'sub.test.eth',
+              name: 'sub.test.fil',
               contract: 'setChildFuses',
               fuses: {
                 parent: ['PARENT_CANNOT_CONTROL', 'CAN_EXTEND_EXPIRY'],
@@ -257,7 +257,7 @@ describe('RevokePermissions', () => {
       render(
         <RevokePermissions
           data={makeData({
-            name: 'sub.test.eth',
+            name: 'sub.test.fil',
             flowType: 'grant-extend-expiry',
             minExpiry: 1672531200,
             maxExpiry: 1675238574,
@@ -315,7 +315,7 @@ describe('RevokePermissions', () => {
           name: 'setTransactions',
           payload: [
             makeTransactionItem('changePermissions', {
-              name: 'sub.test.eth',
+              name: 'sub.test.fil',
               contract: 'setChildFuses',
               fuses: {
                 parent: ['CAN_EXTEND_EXPIRY'],
@@ -332,7 +332,7 @@ describe('RevokePermissions', () => {
       render(
         <RevokePermissions
           data={makeData({
-            name: 'sub.test.eth',
+            name: 'sub.test.fil',
             flowType: 'grant-extend-expiry',
             minExpiry: 1675238574,
             maxExpiry: 1675238574,
@@ -371,7 +371,7 @@ describe('RevokePermissions', () => {
           name: 'setTransactions',
           payload: [
             makeTransactionItem('changePermissions', {
-              name: 'sub.test.eth',
+              name: 'sub.test.fil',
               contract: 'setChildFuses',
               fuses: {
                 parent: ['CAN_EXTEND_EXPIRY'],
@@ -390,7 +390,7 @@ describe('RevokePermissions', () => {
       render(
         <RevokePermissions
           data={makeData({
-            name: 'sub.test.eth',
+            name: 'sub.test.fil',
             flowType: 'revoke-permissions',
             parentFuses: {
               PARENT_CANNOT_CONTROL: true,
@@ -447,7 +447,7 @@ describe('RevokePermissions', () => {
           name: 'setTransactions',
           payload: [
             makeTransactionItem('changePermissions', {
-              name: 'sub.test.eth',
+              name: 'sub.test.fil',
               contract: 'setFuses',
               fuses: [
                 'CANNOT_UNWRAP',
@@ -466,7 +466,7 @@ describe('RevokePermissions', () => {
       render(
         <RevokePermissions
           data={makeData({
-            name: 'sub.test.eth',
+            name: 'sub.test.fil',
             flowType: 'revoke-permissions',
             parentFuses: {
               PARENT_CANNOT_CONTROL: true,
@@ -512,7 +512,7 @@ describe('RevokePermissions', () => {
           name: 'setTransactions',
           payload: [
             makeTransactionItem('changePermissions', {
-              name: 'sub.test.eth',
+              name: 'sub.test.fil',
               contract: 'setFuses',
               fuses: [
                 'CANNOT_CREATE_SUBDOMAIN',
@@ -530,7 +530,7 @@ describe('RevokePermissions', () => {
       render(
         <RevokePermissions
           data={makeData({
-            name: 'sub.test.eth',
+            name: 'sub.test.fil',
             flowType: 'revoke-permissions',
             parentFuses: {
               PARENT_CANNOT_CONTROL: true,
@@ -580,7 +580,7 @@ describe('RevokePermissions', () => {
           name: 'setTransactions',
           payload: [
             makeTransactionItem('changePermissions', {
-              name: 'sub.test.eth',
+              name: 'sub.test.fil',
               contract: 'setFuses',
               fuses: ['CANNOT_SET_RESOLVER', 'CANNOT_SET_TTL'],
             }),
@@ -595,7 +595,7 @@ describe('RevokePermissions', () => {
       render(
         <RevokePermissions
           data={makeData({
-            name: 'sub.test.eth',
+            name: 'sub.test.fil',
             flowType: 'revoke-change-fuses',
             parentFuses: {
               PARENT_CANNOT_CONTROL: true,
@@ -647,7 +647,7 @@ describe('RevokePermissions', () => {
           name: 'setTransactions',
           payload: [
             makeTransactionItem('changePermissions', {
-              name: 'sub.test.eth',
+              name: 'sub.test.fil',
               contract: 'setFuses',
               fuses: ['CANNOT_BURN_FUSES'],
             }),

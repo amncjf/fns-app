@@ -49,15 +49,15 @@ describe('MoreTab', () => {
       expect(screen.getByText('Token')).toBeVisible()
     })
     it('should show token section for eth2ld name', () => {
-      renderHelper({ name: 'test.eth', isWrapped: false })
+      renderHelper({ name: 'test.fil', isWrapped: false })
       expect(screen.getByText('Token')).toBeVisible()
     })
-    it('should not show token section for unwrapped non .eth subname', () => {
+    it('should not show token section for unwrapped non .fil subname', () => {
       renderHelper({ name: 'something.test.xyz', isWrapped: false })
       expect(screen.queryByText('Token')).not.toBeInTheDocument()
     })
-    it('should not show token section for unwrapped .eth subname', () => {
-      renderHelper({ name: 'something.test.eth', isWrapped: false })
+    it('should not show token section for unwrapped .fil subname', () => {
+      renderHelper({ name: 'something.test.fil', isWrapped: false })
       expect(screen.queryByText('Token')).not.toBeInTheDocument()
     })
   })

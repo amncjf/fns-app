@@ -1,6 +1,6 @@
 import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
 
-import { AllCurrentFuses } from '@ensdomains/ensjs/utils/fuses'
+import { AllCurrentFuses } from '@fildomains/fnsjs/utils/fuses'
 
 import { OwnerArray, ReturnedENS } from '@app/types'
 
@@ -76,10 +76,10 @@ export const isBrowser = !!(
 export const checkDNSName = (name: string): boolean => {
   const labels = name?.split('.')
 
-  return !!labels && labels[labels.length - 1] !== 'eth'
+  return !!labels && labels[labels.length - 1] !== 'fil'
 }
 
-export const checkETHName = (labels: string[]) => labels[labels.length - 1] === 'eth'
+export const checkETHName = (labels: string[]) => labels[labels.length - 1] === 'fil'
 
 export const checkETH2LDName = (isDotETH: boolean, labels: string[], canBeShort?: boolean) =>
   isDotETH && labels.length === 2 && (canBeShort || labels[0].length >= 3)

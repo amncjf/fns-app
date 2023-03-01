@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { AllCurrentFuses } from '@ensdomains/ensjs/utils/fuses'
+import { AllCurrentFuses } from '@fildomains/fnsjs/utils/fuses'
 import { Button, Dialog, mq } from '@ensdomains/thorin'
 
 import { makeTransactionItem } from '@app/transaction-flow/transaction'

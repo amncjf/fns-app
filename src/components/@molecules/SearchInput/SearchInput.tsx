@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 /* eslint-disable jsx-a11y/interactive-supports-focus */
+import { parseInputType, validateName } from '@fildomains/fnsjs/utils/validation'
 import { useQueryClient } from '@tanstack/react-query'
 import debounce from 'lodash/debounce'
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -10,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 import useTransition, { TransitionState } from 'react-transition-state'
 import styled, { css } from 'styled-components'
 
-import { parseInputType, validateName } from '@ensdomains/ensjs/utils/validation'
 import { BackdropSurface, Portal, Typography, mq } from '@ensdomains/thorin'
 
 import { useLocalStorage } from '@app/hooks/useLocalStorage'
@@ -284,7 +284,7 @@ export const SearchInput = ({
         (item) =>
           item.value !== normalisedName &&
           item.value.includes(normalisedName) &&
-          (searchItem.type === 'nameWithDotEth' ? item.value !== `${normalisedName}.eth` : true),
+          (searchItem.type === 'nameWithDotEth' ? item.value !== `${normalisedName}.fil` : true),
       )
     }
     return []
@@ -322,7 +322,7 @@ export const SearchInput = ({
     if (selectedItem.type === 'nameWithDotEth') {
       selectedItem = {
         type: 'name',
-        value: `${normalisedName}.eth`,
+        value: `${normalisedName}.fil`,
       }
     }
     if (!selectedItem.value) {
@@ -330,7 +330,7 @@ export const SearchInput = ({
     }
     if (selectedItem.type === 'name') {
       const labels = selectedItem.value.split('.')
-      const isDotETH = labels.length === 2 && labels[1] === 'eth'
+      const isDotETH = labels.length === 2 && labels[1] === 'fil'
       if (isDotETH && labels[0].length < 3) {
         return
       }

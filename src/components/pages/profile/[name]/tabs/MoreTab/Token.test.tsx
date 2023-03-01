@@ -1,9 +1,8 @@
 import { mockFunction, render, screen } from '@app/test-utils'
 
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
-
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
+import { labelhash } from '@fildomains/fnsjs/utils/labels'
+import { namehash } from '@fildomains/fnsjs/utils/normalise'
 
 import { useChainId } from '@app/hooks/useChainId'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
@@ -23,7 +22,7 @@ describe('Token', () => {
   describe('TokenId', () => {
     it('should display the correct tokenID (decimal and hex) for an unwrapped names', () => {
       mockUseChainId.mockReturnValue(1)
-      const name = 'nick.eth'
+      const name = 'nick.fil'
       const label = 'nick'
       const labelHash = labelhash(label)
       const tokenId = BigNumber.from(labelHash).toString()
@@ -35,7 +34,7 @@ describe('Token', () => {
 
     it('should display the correct tokenID (decimal and hex) for an wrapped names', () => {
       mockUseChainId.mockReturnValue(1)
-      const name = 'nick.eth'
+      const name = 'nick.fil'
       const nameHash = namehash(name)
       const tokenId = BigNumber.from(nameHash).toString()
 

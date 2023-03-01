@@ -46,7 +46,7 @@ type Props = {
   unit?: CurrencyDisplay
 }
 
-export const Invoice = ({ totalLabel = 'Estimated total', unit = 'eth', items }: Props) => {
+export const Invoice = ({ totalLabel = 'Estimated total', unit = 'fil', items }: Props) => {
   const total = items
     .map(({ value }) => value)
     .filter((x) => !!x)
@@ -58,14 +58,14 @@ export const Invoice = ({ totalLabel = 'Estimated total', unit = 'eth', items }:
         <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
           <div>{label}</div>
           <div data-testid={`invoice-item-${inx}-amount`}>
-            <CurrencyText eth={value} currency={unit} />
+            <CurrencyText fil={value} currency={unit} />
           </div>
         </LineItem>
       ))}
       <Total>
         <div>{totalLabel}</div>
         <div data-testid="invoice-total">
-          <CurrencyText eth={total} currency={unit} />
+          <CurrencyText fil={total} currency={unit} />
         </div>
       </Total>
     </Container>

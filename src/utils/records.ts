@@ -1,4 +1,4 @@
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
+import { RecordOptions } from '@fildomains/fnsjs/utils/recordHelpers'
 
 import { shortenAddress } from './utils'
 

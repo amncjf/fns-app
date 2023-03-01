@@ -28,14 +28,14 @@ const wrapperData: ReturnedENS['getWrapperData'] = {
 } as ReturnedENS['getWrapperData']
 
 describe('getRegistrationStatus', () => {
-  describe('2LD .eth', () => {
+  describe('2LD .fil', () => {
     it('should return short if a name is less than 3 characters', async () => {
-      const result = getRegistrationStatus({ name: 'a.eth' })
+      const result = getRegistrationStatus({ name: 'a.fil' })
       expect(result).toBe('short')
     })
 
     it('should return invalid if no values are provided', async () => {
-      const result = getRegistrationStatus({ name: 'test.eth' })
+      const result = getRegistrationStatus({ name: 'test.fil' })
       expect(result).toBe('invalid')
     })
 
@@ -45,7 +45,7 @@ describe('getRegistrationStatus', () => {
         gracePeriod: 60 * 60 * 24 * 1000,
       }
       const result = getRegistrationStatus({
-        name: 'test.eth',
+        name: 'test.fil',
         ownerData,
         wrapperData,
         expiryData,
@@ -59,7 +59,7 @@ describe('getRegistrationStatus', () => {
         gracePeriod: 60 * 60 * 24 * 1000,
       }
       const result = getRegistrationStatus({
-        name: 'test.eth',
+        name: 'test.fil',
         ownerData,
         wrapperData,
         expiryData,
@@ -79,7 +79,7 @@ describe('getRegistrationStatus', () => {
       }
 
       const result = getRegistrationStatus({
-        name: 'test.eth',
+        name: 'test.fil',
         ownerData,
         wrapperData,
         expiryData,
@@ -99,7 +99,7 @@ describe('getRegistrationStatus', () => {
       }
 
       const result = getRegistrationStatus({
-        name: 'test.eth',
+        name: 'test.fil',
         ownerData,
         wrapperData,
         expiryData,
@@ -112,7 +112,7 @@ describe('getRegistrationStatus', () => {
 
   it('should return not owned if name has no owner, and has more than 2 labels', async () => {
     const result = getRegistrationStatus({
-      name: 'test.test.eth',
+      name: 'test.test.fil',
       wrapperData,
     })
     expect(result).toBe('notOwned')
@@ -120,7 +120,7 @@ describe('getRegistrationStatus', () => {
 
   it('should not return short if subdomain is short', () => {
     const result = getRegistrationStatus({
-      name: 'a.test.eth',
+      name: 'a.test.fil',
       wrapperData,
     })
     expect(result).toBe('notOwned')
@@ -146,7 +146,7 @@ describe('getRegistrationStatus', () => {
   })
   it('should return owned if name has an owner', async () => {
     const result = getRegistrationStatus({
-      name: 'test.example.eth',
+      name: 'test.example.fil',
       ownerData,
       wrapperData,
       supportedTLD: true,
@@ -162,7 +162,7 @@ describe('getRegistrationStatus', () => {
     expect(result).toBe('unsupportedTLD')
   })
 
-  it('should not return short if name is short but is not .eth', () => {
+  it('should not return short if name is short but is not .fil', () => {
     const result = getRegistrationStatus({
       name: 'a.com',
       wrapperData,

@@ -5,8 +5,8 @@ import { ethers } from 'hardhat'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
+import { labelhash } from '@fildomains/fnsjs/utils/labels'
+import { namehash } from '@fildomains/fnsjs/utils/normalise'
 
 type Name = {
   label: string

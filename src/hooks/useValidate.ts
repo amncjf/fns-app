@@ -6,8 +6,8 @@ import {
   checkLabel,
   isEncodedLabelhash,
   saveName,
-} from '@ensdomains/ensjs/utils/labels'
-import { parseInputType, validateName } from '@ensdomains/ensjs/utils/validation'
+} from '@fildomains/fnsjs/utils/labels'
+import { parseInputType, validateName } from '@fildomains/fnsjs/utils/validation'
 
 export const useValidate = (input: string, skip?: any) => {
   const { normalisedName, valid, type } = useMemo(() => {

@@ -3,16 +3,16 @@ import type { JsonRpcSigner } from '@ethersproject/providers'
 import { ComponentProps } from 'react'
 import type { TFunction } from 'react-i18next'
 
-import type { ChildFuses, ENS } from '@ensdomains/ensjs'
+import type { ChildFuses, FNS } from '@fildomains/fnsjs'
 import { Helper, Space } from '@ensdomains/thorin'
 
-export type Profile = NonNullable<Awaited<ReturnType<ENS['getProfile']>>>
+export type Profile = NonNullable<Awaited<ReturnType<FNS['getProfile']>>>
 
 export type ProfileRecords = NonNullable<Profile['records']>
 
 export type RecordItem = NonNullable<ProfileRecords['texts']>[number]
 
-export type Name = NonNullable<Awaited<ReturnType<ENS['getNames']>>>[0]
+export type Name = NonNullable<Awaited<ReturnType<FNS['getNames']>>>[0]
 
 interface TransactionDisplayItemBase {
   label: string
@@ -68,14 +68,14 @@ export type ProfileEditorType = {
   }
 } & AvatarEditorType
 
-export type PublicENS = PublicInterface<ENS>
+export type PublicENS = PublicInterface<FNS>
 
 export type HelperProps = ComponentProps<typeof Helper>
 export type ReturnedENS = { [key in keyof PublicENS]: Awaited<ReturnType<PublicENS[key]>> }
 
 export interface Transaction<Data> {
   displayItems: (data: any, t: TFunction<'translation', undefined>) => TransactionDisplayItem[]
-  transaction: (signer: JsonRpcSigner, ens: PublicENS, data: Data) => Promise<PopulatedTransaction>
+  transaction: (signer: JsonRpcSigner, fns: PublicENS, data: Data) => Promise<PopulatedTransaction>
   helper?: (data: any, t: TFunction<'translation', undefined>) => undefined | HelperProps
   backToInput?: boolean
 }
@@ -84,9 +84,9 @@ export type AllChildFuses = Required<ChildFuses['options']>
 
 export type EthAddress = string
 
-export type CurrencyUnit = 'eth' | 'fiat'
+export type CurrencyUnit = 'fil' | 'fiat'
 export type FiatUnit = 'usd'
-export type CurrencyDisplay = 'eth' | FiatUnit
+export type CurrencyDisplay = 'fil' | FiatUnit
 
 export type QuerySpace =
   | Space

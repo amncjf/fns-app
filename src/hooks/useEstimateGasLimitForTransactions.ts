@@ -10,16 +10,16 @@ import {
 } from '@app/transaction-flow/transaction'
 import { useEns } from '@app/utils/EnsProvider'
 
-type ENS = ReturnType<typeof useEns>
+type FNS = ReturnType<typeof useEns>
 type TransactionItem = ReturnType<typeof makeTransactionItem>
 
 export const fetchEstimateWithConfig =
-  (transactionsObj: Transaction, signer: JsonRpcSigner, ens: ENS) =>
+  (transactionsObj: Transaction, signer: JsonRpcSigner, fns: FNS) =>
   async (transaction: TransactionItem) => {
     const transactionName = transaction.name as TransactionName
     const populatedTransaction = await transactionsObj[transactionName].transaction(
       signer as JsonRpcSigner,
-      ens,
+      fns,
       transaction.data,
     )
     const gasLimit = await signer!.estimateGas(populatedTransaction)
@@ -36,19 +36,19 @@ export const useEstimateGasLimitForTransactions = (
 ) => {
   const keys = transactions.map((t) => t.name)
 
-  const ens = useEns()
-  const { ready: ensReady } = ens
+  const fns = useEns()
+  const { ready: ensReady } = fns
   const { data: signer, isLoading: isSignerLoading } = useSigner()
 
   const { data, ...results } = useQuery(
     ['use-estimate-gas-limit-for-transactions', ...keys, ...extraKeys],
     async () => {
       if (!signer) throw new Error('No signer available')
-      if (!ens) throw new Error('ensjs did not load')
+      if (!fns) throw new Error('ensjs did not load')
       const fetchEstimate = fetchEstimateWithConfig(
         _transactions,
         signer as JsonRpcSigner,
-        ens as ENS,
+        fns as FNS,
       )
       const estimates = await Promise.all(transactions.map(fetchEstimate))
       const total = estimates.map((r) => r.gasLimit).reduce((a, b) => a.add(b))

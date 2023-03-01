@@ -93,7 +93,7 @@ const breakpoints = {
 }
 
 const { provider, chains } = configureChains(
-  [chain.goerli, chain.localhost],
+  [chain.goerli, chain.localhost, chain.hardhat],
   [
     ...(process.env.NEXT_PUBLIC_PROVIDER
       ? [

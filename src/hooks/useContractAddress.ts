@@ -1,4 +1,4 @@
-import { ContractName } from '@ensdomains/ensjs/contracts/types'
+import { ContractName } from '@fildomains/fnsjs/contracts/types'
 
 import { useEns } from '@app/utils/EnsProvider'
 

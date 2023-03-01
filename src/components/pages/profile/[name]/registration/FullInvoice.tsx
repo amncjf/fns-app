@@ -43,8 +43,8 @@ const FullInvoice = ({
   const { t } = useTranslation('register')
   const fiatUnit = 'usd'
 
-  const [currencyUnit, setCurrencyUnit] = useState<CurrencyUnit>('eth')
-  const currencyDisplay = currencyUnit === 'fiat' ? fiatUnit : 'eth'
+  const [currencyUnit, setCurrencyUnit] = useState<CurrencyUnit>('fil')
+  const currencyDisplay = currencyUnit === 'fiat' ? fiatUnit : 'fil'
 
   const invoiceItems = useMemo(
     () => [
@@ -78,7 +78,7 @@ const FullInvoice = ({
         <CurrencyToggle
           size="small"
           checked={currencyUnit === 'fiat'}
-          onChange={(e) => setCurrencyUnit(e.target.checked ? 'fiat' : 'eth')}
+          onChange={(e) => setCurrencyUnit(e.target.checked ? 'fiat' : 'fil')}
         />
       </OptionBar>
       <Invoice items={invoiceItems} unit={currencyDisplay} totalLabel={t('invoice.total')} />

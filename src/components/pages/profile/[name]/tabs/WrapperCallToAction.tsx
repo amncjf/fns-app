@@ -1,9 +1,9 @@
+import { checkIsDecrypted } from '@fildomains/fnsjs/utils/labels'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { checkIsDecrypted } from '@ensdomains/ensjs/utils/labels'
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import { NightSky } from '@app/assets/NightSky'

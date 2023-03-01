@@ -1,10 +1,9 @@
 import { mockFunction, render, screen } from '@app/test-utils'
 
+import { labelhash } from '@fildomains/fnsjs/utils/labels'
+import { namehash } from '@fildomains/fnsjs/utils/normalise'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
-
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
 
 import { useAvatar } from '@app/hooks/useAvatar'
 import { useSubnameInfiniteQuery } from '@app/hooks/useSubnameInfiniteQuery'
@@ -28,7 +27,7 @@ const mockIntersectionObserver = jest.fn()
 
 const makeSubname = (_: any, i: number) => {
   const label = `test-${i}`
-  const name = `${label}.eth`
+  const name = `${label}.fil`
   const nameHash = namehash(name)
   const labelHash = labelhash(label)
   const owner = '0xb6E040C9ECAaE172a89bD561c5F73e1C48d28cd9'
@@ -48,7 +47,7 @@ describe('SubnamesTab', () => {
   beforeAll(() => {
     mockUseRouter.mockReturnValue({
       query: {
-        name: 'nick.eth',
+        name: 'nick.fil',
       },
       replace: () => {},
     })
@@ -71,7 +70,7 @@ describe('SubnamesTab', () => {
   })
 
   const baseMockData = {
-    name: 'nick.eth',
+    name: 'nick.fil',
     network: 1,
     canEdit: false,
     isWrapped: false,
@@ -104,7 +103,7 @@ describe('SubnamesTab', () => {
     mockUseSubnamePagination.mockReturnValue(subnamesMockData)
     render(<SubnamesTab {...baseMockData} />)
     subnamesMockData.subnames.forEach((subname) =>
-      expect(screen.getByText(subname.truncatedName.replace('.eth', ''))).toBeVisible(),
+      expect(screen.getByText(subname.truncatedName.replace('.fil', ''))).toBeVisible(),
     )
   })
   it('should show create subname button if canEdit is true', () => {

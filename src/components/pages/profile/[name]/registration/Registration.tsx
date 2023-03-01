@@ -165,7 +165,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
       }
     }
 
-    // If profile is in queue and reverse record is selected, make sure that eth record is included and is set to address
+    // If profile is in queue and reverse record is selected, make sure that fil record is included and is set to address
     if (item.queue.includes('profile') && reverseRecord) {
       const recordsWithoutEth = item.records.filter((record) => record.key !== 'ETH')
       const newRecords: ProfileRecord[] = [
