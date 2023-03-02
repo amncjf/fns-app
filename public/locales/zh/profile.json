@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "{{name}} - ENS",
-    "description": "{{name}} 在 ENS 中的个人资料"
+    "title": "{{name}} - FNS",
+    "description": "{{name}} 在 FNS 中的个人资料"
   },
   "title": "个人资料",
   "yourWallet": "您的钱包",
@@ -25,7 +25,7 @@
         "setAsPrimaryName": {
           "label": "设置为主名",
           "title": "设置您的主名",
-          "description": "如果将该名称设置为主名，ETH 地址记录必须与此地址相匹配。"
+          "description": "如果将该名称设置为主名，FIL 地址记录必须与此地址相匹配。"
         },
         "deleteSubname": {
           "label": "删除子名称"
@@ -213,7 +213,7 @@
           "CANNOT_UNWRAP": "可以解除包装",
           "PARENT_CANNOT_CONTROL": "父名称可以控制",
           "CAN_EXTEND_EXPIRY": "不能延长有效期",
-          "IS_DOT_ETH": "不是 .eth"
+          "IS_DOT_ETH": "不是 .fil"
         }
       },
       "ownership": {
@@ -247,7 +247,7 @@
       "makeOwnerDescription": "所有者可以发送所有权以及更改管理员",
       "makeManager": "任命管理员",
       "makeManagerDescription": "管理员可以更改和设置记录",
-      "inputPlaceholder": "输入以太坊地址或 ENS 名称",
+      "inputPlaceholder": "输入以太坊地址或 FNS 名称",
       "transferSubname": "转移名称",
       "transferController": "转移管理员"
     },
@@ -259,7 +259,7 @@
       "startLabel": "升级",
       "resumeLabel": "继续升级",
       "boxTitle": "解锁新功能",
-      "boxDescription": "升级您的名称可以解锁 ENS 的最新功能"
+      "boxDescription": "升级您的名称可以解锁 FNS 的最新功能"
     },
     "descriptions": {
       "owner": "持有并掌控名称",

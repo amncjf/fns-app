@@ -9,7 +9,7 @@ declare global {
 
 function isProduction() {
   if (typeof window !== 'undefined') {
-    return !!window.location.host.match('ens.domains')
+    return !!window.location.host.match('fildomains.com')
   }
 }
 

@@ -112,21 +112,19 @@ export const Basic = ({ children }: { children: React.ReactNode }) => {
   const { chain: currentChain } = useNetwork()
   const { switchNetwork } = useSwitchNetwork()
   const router = useRouter()
-  const [isShown, setIsShown] = useState(false)
   const [hasFeedbackForm, setHasFeedbackForm] = useState(false)
 
   useEffect(() => {
     if (
       currentChain &&
       !(
-        currentChain?.id === 5 ||
         currentChain?.id === 314 ||
         currentChain?.id === 3141 ||
         currentChain?.id === 1337 ||
         currentChain?.id === 31337
       )
     ) {
-      switchNetwork?.(5)
+      switchNetwork?.(314)
       router.push('/unsupportedNetwork')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -134,15 +132,6 @@ export const Basic = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Container className="min-safe">
-      <FeedbackButton
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
-        $isShown={isShown}
-        onClick={() => setHasFeedbackForm(true)}
-      >
-        <StyledFeedbackSVG />
-        <Typography style={{ color: 'white' }}>Feedback</Typography>
-      </FeedbackButton>
       <Navigation />
       <ContentWrapper>{children}</ContentWrapper>
       <BottomPlaceholder />

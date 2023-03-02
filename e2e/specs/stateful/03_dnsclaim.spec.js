@@ -28,7 +28,7 @@ describe('Import DNSSEC name', () => {
     cy.wait(2000)
     cy.findByTestId('dnssec-check-button').click({ force: true })
     cy.findByText(
-      "You don't appear to be the DNS Owner of this domain, but you can still add this name to ENS Registry.",
+      "You don't appear to be the DNS Owner of this domain, but you can still add this name to FNS Registry.",
     ).should('be.visible')
     cy.findByText('Continue').click()
     cy.findByText('You are importing a DNS name that you appear to not own.').should('be.visible')

@@ -46,7 +46,7 @@ const UploadComponent = ({
 
   const { signTypedDataAsync } = useSignTypedData({
     domain: {
-      name: 'Ethereum Name Service',
+      name: 'Filecoin Name Service',
       version: '1',
     },
     types: {

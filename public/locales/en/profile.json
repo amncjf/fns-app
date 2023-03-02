@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "{{name}} on ENS",
-    "description": "{{name}}'s profile on the Ethereum Name Service"
+    "title": "{{name}} on FNS",
+    "description": "{{name}}'s profile on the Filecoin Name Service"
   },
   "title": "Profile",
   "yourWallet": "Your wallet",
@@ -25,7 +25,7 @@
         "setAsPrimaryName": {
           "label": "Set as primary name",
           "title": "Set your primary name",
-          "description": "To set your primary name to this name, the ETH address must match this address."
+          "description": "To set your primary name to this name, the FIL address must match this address."
         },
         "deleteSubname": {
           "label": "Delete subname"
@@ -213,7 +213,7 @@
           "CANNOT_UNWRAP": "Can unwrap",
           "PARENT_CANNOT_CONTROL": "Parent can control",
           "CAN_EXTEND_EXPIRY": "Cannot extend expiry",
-          "IS_DOT_ETH": "Is not .eth"
+          "IS_DOT_ETH": "Is not .fil"
         }
       },
       "ownership": {
@@ -247,7 +247,7 @@
       "makeOwnerDescription": "The owner can send to a new owner and change the manager",
       "makeManager": "Make manager",
       "makeManagerDescription": "The manager can change and set records.",
-      "inputPlaceholder": "Enter an Ethereum address or ENS name",
+      "inputPlaceholder": "Enter an Filecoin address or FNS name",
       "transferSubname": "Transfer Name",
       "transferController": "Transfer Controller"
     },
@@ -259,7 +259,7 @@
       "startLabel": "Upgrade",
       "resumeLabel": "Resume Upgrade",
       "boxTitle": "Unlock new features",
-      "boxDescription": "Upgrading your name unlocks the latest functionality of ENS"
+      "boxDescription": "Upgrading your name unlocks the latest functionality of FNS"
     },
     "descriptions": {
       "owner": "Owns and controls the name",

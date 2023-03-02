@@ -17,7 +17,7 @@ const profiles = [
       {
         type: 'snippet',
         key: 'url',
-        value: 'ens.domains',
+        value: 'fildomains.com',
       },
       {
         type: 'snippet',
@@ -57,7 +57,7 @@ const profiles = [
         type: 'other',
         key: 'email',
         value: 'email@ens.domai...',
-        fullValue: 'email@ens.domains',
+        fullValue: 'email@fildomains.com',
       },
     ],
     owners: [

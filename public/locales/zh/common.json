@@ -64,7 +64,7 @@
     "terms": "使用条款",
     "privacy": "隐私策略",
     "back": "返回",
-    "oldApp": "旧版 ENS App"
+    "oldApp": "旧版 FNS App"
   },
   "wallet": {
     "myProfile": "个人资料",
@@ -141,7 +141,7 @@
       "updateResolver": "更新解析器",
       "updateProfile": "更新个人资料",
       "setPrimaryName": "设置主名",
-      "updateEthAddress": "更新 ETH 地址",
+      "updateEthAddress": "更新 FIL 地址",
       "testSendName": "发送名称",
       "burnFuses": "烧毁权限",
       "createSubname": "创建子名称",
@@ -165,7 +165,7 @@
       "updateResolver": "将解析器更改为",
       "updateProfile": "更新现有解析器上的记录",
       "setPrimaryName": "为您的地址设置主名",
-      "updateEthAddress": "将该地址更新到 ETH 地址记录",
+      "updateEthAddress": "将该地址更新到 FIL 地址记录",
       "testSendName": "设置该名称的管理员和注册人",
       "createSubname": "在该名称上创建子名称",
       "burnFuses": "烧毁选中的权限，直到名称过期",

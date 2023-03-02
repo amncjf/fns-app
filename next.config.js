@@ -29,7 +29,7 @@ let nextConfig = {
   swcMinify: false,
   // @ts-ignore
   images: {
-    domains: ['metadata.ens.domains'],
+    domains: ['metadata.fildomains.com'],
   },
   async rewrites() {
     return [

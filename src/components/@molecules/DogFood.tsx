@@ -79,9 +79,9 @@ export const DogFood = (
               if(value?.includes('.')) {
                 try {
                   const result = await getRecordsMem.current(value)
-                  return result?.address ? undefined : 'ENS Name has no address record'
+                  return result?.address ? undefined : 'FNS Name has no address record'
                 } catch (e) {
-                  return 'ENS Name has no address record'
+                  return 'FNS Name has no address record'
                 }
                 }
               },

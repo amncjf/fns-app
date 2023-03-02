@@ -105,7 +105,7 @@ const { provider, chains } = configureChains(
           infuraProvider({ apiKey: 'cfa6ae2501cc4354a74e20432507317c' }),
           jsonRpcProvider({
             rpc: (c) => ({
-              http: `https://web3.ens.domains/v1/${
+              http: `https://web3.fildomains.com/v1/${
                 c.network === 'homestead' ? 'mainnet' : c.network
               }`,
             }),
@@ -117,7 +117,7 @@ const { provider, chains } = configureChains(
 setupAnalytics()
 
 const { connectors } = getDefaultWallets({
-  appName: 'ENS',
+  appName: 'FNS',
   chains,
 })
 

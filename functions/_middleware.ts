@@ -66,12 +66,12 @@ export const onRequest: PagesFunction = async ({ request, next }) => {
 
     if (url.pathname === '/profile') {
       const decodedName = decodeURIComponent(isTLD ? paths[2] : paths[1])
-      let newTitle = 'Invalid Name - ENS'
+      let newTitle = 'Invalid Name - FNS'
       let newDescription = 'An error occurred'
       try {
         const normalisedName = normalise(decodedName)
-        newTitle = `${normalisedName} on ENS`
-        newDescription = `${normalisedName}'s profile on the Ethereum Name Service`
+        newTitle = `${normalisedName} on FNS`
+        newDescription = `${normalisedName}'s profile on the Filecoin Name Service`
         // eslint-disable-next-line no-empty
       } catch {
         console.error('Name could not be normalised')

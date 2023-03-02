@@ -298,7 +298,7 @@ export const Content = ({
     <>
       {!noTitle && (
         <Head>
-          <title>{title} - ENS</title>
+          <title>{title} - FNS</title>
         </Head>
       )}
 

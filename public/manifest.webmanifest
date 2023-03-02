@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "name": "ENS App",
-  "short_name": "ENS",
+  "name": "FNS App",
+  "short_name": "FNS",
   "icons": [
     {
       "src": "icon/AppIcon@0.5x.png",

@@ -44,7 +44,7 @@ export const useNameDetails = (name: string) => {
       return (
         <>
           {t('errors.migrationNotAvailable')}
-          <a href={`https://app.ens.domains/name/${normalisedName}`}>
+          <a href={`https://app.fildomains.com/name/${normalisedName}`}>
             {t('errors.migrationNotAvailableLink')}
           </a>
         </>

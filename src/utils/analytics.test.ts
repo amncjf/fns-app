@@ -41,7 +41,7 @@ describe('analytics', () => {
 
       Object.defineProperty(window, 'location', {
         value: {
-          host: `alpha.ens.domains`,
+          host: `app.fildomains.com`,
         },
         writable: true,
       })

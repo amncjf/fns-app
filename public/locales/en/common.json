@@ -64,7 +64,7 @@
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
     "back": "Back",
-    "oldApp": "Old ENS App"
+    "oldApp": "Old FNS App"
   },
   "wallet": {
     "myProfile": "Profile",
@@ -141,7 +141,7 @@
       "updateResolver": "Update resolver",
       "updateProfile": "Update profile",
       "setPrimaryName": "Set primary name",
-      "updateEthAddress": "Update ETH address",
+      "updateEthAddress": "Update FIL address",
       "testSendName": "Send name",
       "burnFuses": "Burn permissions",
       "createSubname": "Create subname",
@@ -165,7 +165,7 @@
       "updateResolver": "Change resolver to",
       "updateProfile": "Update records on existing resolver",
       "setPrimaryName": "Set the primary name for your address",
-      "updateEthAddress": "Update ETH address to this address",
+      "updateEthAddress": "Update FIL address to this address",
       "testSendName": "Set the controller and registrant of the name",
       "createSubname": "Create a new subname on the name",
       "burnFuses": "Burn the chosen permissions until name expiry",

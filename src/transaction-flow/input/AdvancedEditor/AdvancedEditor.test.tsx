@@ -26,12 +26,12 @@ const mockProfileData = {
         {
           key: 'email',
           type: 'text',
-          value: 'test@ens.domains',
+          value: 'test@fildomains.com',
         },
         {
           key: 'url',
           type: 'text',
-          value: 'https://fns.domains',
+          value: 'https://fildomains.com',
         },
         {
           key: 'avatar',
@@ -294,7 +294,7 @@ describe('AdvancedEditor', () => {
                   },
                   {
                     key: 'email',
-                    value: 'test@ens.domains',
+                    value: 'test@fildomains.com',
                   },
                 ],
                 coinTypes: [
@@ -335,7 +335,7 @@ describe('AdvancedEditor', () => {
           },
           {
             label: 'email',
-            value: 'test@ens.domains',
+            value: 'test@fildomains.com',
           },
         ],
       },
