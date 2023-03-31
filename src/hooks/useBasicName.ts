@@ -5,12 +5,13 @@ import { truncateFormat } from '@fildomains/fnsjs/utils/format'
 
 import { ReturnedENS } from '@app/types'
 import { useFns } from '@app/utils/FnsProvider'
+import { emptyAddress } from '@app/utils/constants'
 import { getRegistrationStatus } from '@app/utils/registrationStatus'
 import { checkETH2LDName, checkETHName, isLabelTooLong, yearsToSeconds } from '@app/utils/utils'
 
+import { useContractAddress } from './useContractAddress'
 import { useSupportsTLD } from './useSupportsTLD'
 import { useValidate } from './useValidate'
-import { useWrapperExists } from './useWrapperExists'
 
 type BaseBatchReturn = [ReturnedENS['getOwner'], ReturnedENS['getWrapperData']]
 type ETH2LDBatchReturn = [...BaseBatchReturn, ReturnedENS['getExpiry'], ReturnedENS['getPrice']]
@@ -18,7 +19,7 @@ type ETH2LDBatchReturn = [...BaseBatchReturn, ReturnedENS['getExpiry'], Returned
 export const useBasicName = (name?: string | null, normalised?: boolean) => {
   const fns = useFns()
 
-  const { name: _normalisedName, valid, labelCount } = useValidate(name!, !name)
+  const { name: _normalisedName, valid, labelCount, isNonASCII } = useValidate(name!, !name)
 
   const normalisedName = normalised ? name! : _normalisedName
 
@@ -28,7 +29,10 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
     data: batchData,
     isLoading: batchLoading,
     isFetched,
-    internal: { isFetchedAfterMount },
+    /** DO NOT REMOVE */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    isFetching,
+    isFetchedAfterMount,
     status,
   } = useQuery(
     ['batch', 'getOwner', 'getExpiry', normalisedName],
@@ -39,6 +43,7 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
         if (labels[0].length < 3) {
           return Promise.resolve([])
         }
+
         return fns.batch(
           fns.getOwner.batch(normalisedName),
           fns.getWrapperData.batch(normalisedName),
@@ -85,14 +90,37 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
 
   const truncatedName = normalisedName ? truncateFormat(normalisedName) : undefined
 
-  const nameWrapperExists = useWrapperExists()
+  const nameWrapperAddress = useContractAddress('NameWrapper')
   const isWrapped = ownerData?.ownershipLevel === 'nameWrapper'
+  const canBeWrapped = useMemo(
+    () =>
+      !!(
+        fns.ready &&
+        nameWrapperAddress &&
+        nameWrapperAddress !== emptyAddress &&
+        !isWrapped &&
+        normalisedName?.endsWith('.fil') &&
+        !isLabelTooLong(normalisedName)
+      ),
+    [fns.ready, nameWrapperAddress, isWrapped, normalisedName],
+  )
+  const pccExpired = useMemo(
+    () =>
+      !!(
+        ownerData?.ownershipLevel === 'registry' &&
+        ownerData.owner === nameWrapperAddress &&
+        wrapperData?.expiryDate &&
+        wrapperData.expiryDate < new Date()
+      ),
+    [ownerData, wrapperData, nameWrapperAddress],
+  )
 
   const isLoading = !fns.ready || batchLoading || supportedTLDLoading
 
   return {
     normalisedName,
     valid,
+    isNonASCII,
     labelCount,
     ownerData,
     wrapperData,
@@ -103,11 +131,8 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
     truncatedName,
     registrationStatus,
     isWrapped: ownerData?.ownershipLevel === 'nameWrapper',
-    canBeWrapped:
-      nameWrapperExists &&
-      !isWrapped &&
-      normalisedName?.endsWith('.fil') &&
-      !isLabelTooLong(normalisedName),
+    pccExpired,
+    canBeWrapped,
     isCachedData: status === 'success' && isFetched && !isFetchedAfterMount,
   }
 }

@@ -30,7 +30,7 @@ export const RESOLVER_ADDRESSES: ResolverAddresses = {
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '5': [
-    '0xE264d5bb84bA3b8061ADC38D3D76e6674aB91852',
+    '0xCfcaFd81269768b02aedd5bE1D5CcAd528274D2D',
     '0x2800Ec5BAB9CE9226d19E0ad5BC607e3cfC4347E',
     '0x121304143ea8101e69335f309e2062d299a234b5',
     '0xff77b96d6bafcec0d684bb528b22e0ab09c70663',
@@ -38,6 +38,19 @@ export const RESOLVER_ADDRESSES: ResolverAddresses = {
     '0xc1ea41786094d1fbe5aded033b5370d51f7a3f96',
     '0xbbe3fd189d18c8b73ba54e9dd01f89e6b3ee71f0',
     '0x4B1488B7a6B320d2D721406204aBc3eeAa9AD329',
+  ],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '1337': ['0x0B306BF915C4d645ff596e518fAf3F9669b97016'],
+}
+
+export const NAMEWRAPPER_AWARE_RESOLVERS: ResolverAddresses = {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '1': [],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '5': [
+    '0xd7a4F6473f32aC2Af804B3686AE8F1932bC35750',
+    '0x342cf18D3e41DE491aa1a3067574C849AdA6a2Ad',
+    '0x19c2d5D0f035563344dBB7bE5fD09c8dad62b001',
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '1337': ['0x0B306BF915C4d645ff596e518fAf3F9669b97016'],
@@ -53,9 +66,9 @@ export const GRACE_PERIOD = 90 * 24 * 60 * 60 * 1000
 
 export const MOONPAY_WORKER_URL: { [key: number]: string } = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  1: 'https://moonpay.ens-cf.workers.dev',
+  1: 'https://moonpay-worker.ens-cf.workers.dev',
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  5: 'https://moonpay-goerli.ens-cf.workers.dev',
+  5: 'https://moopnay-worker-goerli.ens-cf.workers.dev',
   // eslint-disable-next-line @typescript-eslint/naming-convention
   1337: 'https://moonpay-goerli.ens-cf.workers.dev',
 }

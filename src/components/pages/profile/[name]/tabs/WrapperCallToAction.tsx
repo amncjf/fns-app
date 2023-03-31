@@ -14,7 +14,7 @@ import useWrapperApprovedForAll from '@app/hooks/useWrapperApprovedForAll'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { makeIntroItem } from '@app/transaction-flow/intro'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
-import { GenericTransaction } from '@app/transaction-flow/types'
+import { GenericTransaction, TransactionFlowItem } from '@app/transaction-flow/types'
 
 const Container = styled(Card)(
   ({ theme }) => css`
@@ -23,7 +23,7 @@ const Container = styled(Card)(
     gap: ${theme.space['3']};
     padding: ${theme.space['3']};
 
-    ${mq.md.min(css`
+    ${mq.sm.min(css`
       flex-direction: row;
       padding-right: ${theme.space['5']};
     `)}
@@ -41,7 +41,7 @@ const InnerContainer = styled.div(
     padding: 0 ${theme.space['2']};
     padding-top: ${theme.space['1']};
 
-    ${mq.md.min(css`
+    ${mq.sm.min(css`
       flex-grow: 1;
       flex-direction: row-reverse;
       justify-content: flex-end;
@@ -85,8 +85,8 @@ const UpgradeButton = styled(Button)(
     &:hover {
       background: rgba(255, 255, 255, 0.45);
     }
-    ${mq.md.min(css`
-      max-width: ${theme.space['64']};
+    ${mq.sm.min(css`
+      max-width: 40%;
     `)}
   `,
 )
@@ -151,16 +151,22 @@ export const WrapperCallToAction = ({ name }: { name: string }) => {
           }),
         )
       }
-      if (!checkIsDecrypted(name))
-        return showDataInput(`wrapName-${name}`, 'UnknownLabels', { name, transactions })
-      return createTransactionFlow(`wrapName-${name}`, {
+      const transactionFlowItem: TransactionFlowItem = {
         transactions,
         resumable: true,
         intro: {
-          title: t('details.wrap.startTitle'),
+          title: ['details.wrap.startTitle', { ns: 'profile' }],
           content: makeIntroItem('WrapName', { name }),
         },
-      })
+      }
+      const key = `wrapName-${name}`
+      if (!checkIsDecrypted(name))
+        return showDataInput(key, 'UnknownLabels', {
+          name,
+          key,
+          transactionFlowItem,
+        })
+      return createTransactionFlow(key, transactionFlowItem)
     }
   }
 

@@ -41,6 +41,10 @@ const HelperLinks = [
     href: 'https://cp.cn.bluehost.com/kb/answer/1909',
   },
   {
+    label: 'registrars.cloudflare',
+    href: 'https://developers.cloudflare.com/dns/additional-options/dnssec/#enable-dnssec',
+  },
+  {
     label: 'HostGator',
     href: 'https://www.hostgator.com/help/article/resellerclub-dnssec-domain-name-system-security-extensions',
   },
@@ -89,11 +93,18 @@ export const EnableDNSSEC = ({
       <Typography>{t('enableDNSSEC.registrarHelp')}</Typography>
       <Spacer $height="5" />
       <Dropdown
+        // needed for no line breaks in buttons
         items={HelperLinks.map((link) => ({
           label: link.label,
-          onClick: () => null,
           wrapper: (children, key) => (
-            <a href={link.href} target="_blank" key={key} rel="noreferrer">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={link.href}
+              key={key}
+              // needed for buttons to maintain the width of the dropdown
+              style={{ width: '100%' }}
+            >
               {children}
             </a>
           ),

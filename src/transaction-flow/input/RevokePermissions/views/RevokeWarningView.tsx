@@ -31,7 +31,7 @@ export const RevokeWarningView = () => {
           components={{
             infoLink: (
               <StyledAnchor
-                href="https://support.fildomains.com/docs/dev-basics/namewrapper/fuses"
+                href="https://support.ens.domains/docs/dev-basics/namewrapper/fuses"
                 target="_blank"
                 rel="noreferrer"
               />

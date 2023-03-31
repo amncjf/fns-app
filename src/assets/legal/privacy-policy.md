@@ -6,7 +6,7 @@ Last modified: 11/11/2022
    3. Please read this Policy carefully to understand how we will treat your Personal Data.
    4. In this Policy, “**Personal Data**” means data, whether true or not, about you who can be identified: (a) from that data; or (b) from that data and other information to which we have or are likely to have access.
    5. This Policy applies in conjunction with any other notices, contractual clauses and consent clauses that apply in relation to the collection, use and disclosure of your Personal Data by us.
-   6. If you have any comments on, or questions about this Policy, please email them to our data protection officer at privacy@fildomains.com.
+   6. If you have any comments on, or questions about this Policy, please email them to our data protection officer at amncjf@gmail.com.
 2. **What Personal Data We May Collect About You**
    1. Depending on the nature of your interaction with us, different kinds of Personal Data (that we have grouped together below) which we may collect from you include:
       1. **Contact Data** e.g. email addresses, telephone numbers, first and last name, user name and other information you voluntarily provide to us in order to be contacted on our forum, communication channels or when update your user account data;

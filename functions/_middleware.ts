@@ -1,5 +1,4 @@
 /* eslint max-classes-per-file: "off" */
-import { normalise } from '@fildomains/fnsjs/utils/normalise'
 
 class ContentModifier {
   private newContent: string
@@ -37,7 +36,7 @@ export const onRequest: PagesFunction = async ({ request, next }) => {
   let callback: ((res: Response) => Response) | null = null
 
   // exception for static files
-  if (paths.length === 2 && paths[1].match(/^.*\.(png|xml|ico|json|webmanifest|txt|svg)$/i)) {
+  if (paths.length === 2 && paths[1].match(/^.*\.(png|xml|ico|json|webmanifest|txt|svg|map)$/i)) {
     return next()
   }
 
@@ -69,9 +68,10 @@ export const onRequest: PagesFunction = async ({ request, next }) => {
       let newTitle = 'Invalid Name - FNS'
       let newDescription = 'An error occurred'
       try {
+        const { normalise } = await import('@fildomains/fnsjs/utils/normalise')
         const normalisedName = normalise(decodedName)
         newTitle = `${normalisedName} on FNS`
-        newDescription = `${normalisedName}'s profile on the Filecoin Name Service`
+        newDescription = `${normalisedName}'s profile on the Ethereum Name Service`
         // eslint-disable-next-line no-empty
       } catch {
         console.error('Name could not be normalised')

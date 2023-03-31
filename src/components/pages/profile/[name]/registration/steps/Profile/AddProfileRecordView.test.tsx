@@ -5,12 +5,12 @@ import { renderHook } from '@testing-library/react-hooks'
 import { useForm } from 'react-hook-form'
 
 import allOptionsArray, { grouped as options } from '@app/constants/profileRecordOptions'
-import { RegistrationForm } from '@app/hooks/useRegistrationForm'
+import { ProfileEditorForm } from '@app/hooks/useProfileEditorForm'
 
 import { AddProfileRecordView } from './AddProfileRecordView'
 
 const { result } = renderHook(() =>
-  useForm<RegistrationForm>({
+  useForm<ProfileEditorForm>({
     defaultValues: {
       records: [],
     },
@@ -189,5 +189,18 @@ describe('AddProfileRecordView', () => {
         expect(screen.queryByTestId(`profile-record-option-${filteredKey}`)).not.toBeInTheDocument()
       }
     }
+  })
+
+  it('should not show dismiss button by default', async () => {
+    result.current.reset({ records: [] })
+    render(<AddProfileRecordView control={result.current.control} onClose={() => {}} />)
+    expect(screen.queryByTestId('dismiss-dialog-btn')).not.toBeInTheDocument()
+    expect(screen.getByTestId('add-profile-records-close')).toBeInTheDocument()
+  })
+
+  it('should show dismiss button if specified', async () => {
+    result.current.reset({ records: [] })
+    render(<AddProfileRecordView control={result.current.control} showDismiss onClose={() => {}} />)
+    expect(screen.getByTestId('dismiss-dialog-btn')).toBeInTheDocument()
   })
 })

@@ -35,7 +35,7 @@ const displayItems = (
 const transaction = async (signer: JsonRpcSigner, fns: PublicFNS, data: Data) =>
   fns.setRecord.populateTransaction(data.name, {
     signer,
-    record: { key: 'ETH', value: data.address },
+    record: { key: 'FIL', value: data.address },
     type: 'addr',
   })
 

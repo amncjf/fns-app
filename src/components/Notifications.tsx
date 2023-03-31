@@ -5,12 +5,10 @@ import styled, { css } from 'styled-components'
 
 import { Button, Toast } from '@ensdomains/thorin'
 
-import useCallbackOnTransaction, {
-  UpdateCallback,
-} from '@app/hooks/transactions/useCallbackOnTransaction'
 import { useChainName } from '@app/hooks/useChainName'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
+import { UpdateCallback, useCallbackOnTransaction } from '@app/utils/SyncProvider'
 import { makeEtherscanLink } from '@app/utils/utils'
 
 import { trackEvent } from '../utils/analytics'
@@ -47,7 +45,7 @@ export const Notifications = () => {
 
   const updateCallback = useCallback<UpdateCallback>(
     ({ action, key, status, hash }) => {
-      if (status === 'pending') return
+      if (status === 'pending' || status === 'repriced') return
       if (status === 'confirmed') {
         switch (action) {
           case 'registerName':
@@ -123,7 +121,7 @@ export const Notifications = () => {
         )
       }}
       open={open}
-      variant={breakpoints.md ? 'desktop' : 'touch'}
+      variant={breakpoints.sm ? 'desktop' : 'touch'}
       {...currentNotification}
     />
   )

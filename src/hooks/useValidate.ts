@@ -1,5 +1,6 @@
 import { isAddress } from '@ethersproject/address'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useQuery } from 'wagmi'
 
 import {
   checkIsDecrypted,
@@ -9,34 +10,51 @@ import {
 } from '@fildomains/fnsjs/utils/labels'
 import { parseInputType, validateName } from '@fildomains/fnsjs/utils/validation'
 
-export const useValidate = (input: string, skip?: any) => {
-  const { normalisedName, valid, type } = useMemo(() => {
-    let _normalisedName = ''
-    let _inputType: ReturnType<typeof parseInputType> | undefined
-    let _valid: boolean | undefined
-    if (!skip) {
-      try {
-        let decodedInput = decodeURIComponent(input)
-        if (!checkIsDecrypted(decodedInput))
-          decodedInput = decodedInput
-            .split('.')
-            .map((label) => (isEncodedLabelhash(label) ? checkLabel(label) || label : label))
-            .join('.')
-        _normalisedName = validateName(decodedInput)
-        _inputType = parseInputType(_normalisedName)
-        _valid = _inputType.type !== 'unknown' && _inputType.info !== 'unsupported'
-        if (_valid) {
-          saveName(_normalisedName)
-        }
-        // eslint-disable-next-line no-empty
-      } catch {
-        _valid = false
-      }
-    }
-    return { normalisedName: _normalisedName, valid: _valid, type: _inputType }
-  }, [input, skip])
+// eslint-disable-next-line no-control-regex
+const nonAsciiRegex = /[^\x00-\x7F]+/g
 
-  return { valid, type, name: normalisedName, labelCount: normalisedName.split('.').length }
+const validate = (input: string) => {
+  let normalisedName = ''
+  let inputType: ReturnType<typeof parseInputType> | undefined
+  let valid: boolean | undefined
+  let isNonASCII: boolean | undefined
+  try {
+    let decodedInput = decodeURIComponent(input)
+    if (!checkIsDecrypted(decodedInput))
+      decodedInput = decodedInput
+        .split('.')
+        .map((label) => (isEncodedLabelhash(label) ? checkLabel(label) || label : label))
+        .join('.')
+    normalisedName = validateName(decodedInput)
+    inputType = parseInputType(normalisedName)
+    isNonASCII = nonAsciiRegex.test(normalisedName)
+    valid = inputType.type !== 'unknown' && inputType.info !== 'unsupported'
+    if (valid) {
+      saveName(normalisedName)
+    }
+    // eslint-disable-next-line no-empty
+  } catch {
+    valid = false
+  }
+  return {
+    name: normalisedName,
+    valid,
+    isNonASCII,
+    type: inputType,
+    labelCount: normalisedName.split('.').length,
+  }
+}
+
+export const useValidate = (input: string, skip?: any) => {
+  const { data } = useQuery(['validate', input], () => validate(input), {
+    enabled: !skip,
+    initialData: () =>
+      skip
+        ? { valid: undefined, type: undefined, name: '', isNonASCII: undefined, labelCount: 0 }
+        : validate(input),
+  })
+
+  return data
 }
 
 export const useValidateOrAddress = (input: string, skip?: any) => {

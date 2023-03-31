@@ -8,7 +8,7 @@
 - "subname": "子名称". 不同于 "subdomain"，这里的 "subname" 译为 "子名称" 更合适。
 - "parent", "parent name": "父名称"
 - "primary name": "主名"
-- "primary ENS name": "ENS 主名"
+- "primary FNS name": "FNS 主名"
 - "profile": "个人资料"
 - "you": "您"
 - "your": "您的"
@@ -17,8 +17,8 @@
 - "owner": "所有者"
 - "manager": "管理员"
 - "extend": "续期"
-- "expiry": "有效期", "到期". 与权限期限有关的情况下，译为 "有效期"，其他情况下，译为 "到期"。
-- "expires": "到期"
+- "expiry": "有效期", "到期", "到期时间". 与权限期限有关的情况下，译为 "有效期"，其他情况下，译为 "到期" 或 "到期时间"。
+- "expires": "到期", "到期时间"
 - "expired": "已过期"
 - "clamin": "认领"
 - "change": "更改"

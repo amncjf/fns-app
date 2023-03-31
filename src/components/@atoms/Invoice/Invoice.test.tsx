@@ -26,41 +26,11 @@ describe('Invoice', () => {
   it('should render correctly in fil mode', async () => {
     render(<Invoice items={items} totalLabel="total" unit="fil" />)
     expect(screen.getByText('line 1')).toBeVisible()
-    expect(
-      screen.getByText(
-        new Intl.NumberFormat(undefined, {
-          style: 'currency',
-          currency: 'fil',
-          minimumFractionDigits: 4,
-          maximumFractionDigits: 4,
-          currencyDisplay: 'name',
-        }).format(1),
-      ),
-    ).toBeVisible()
+    expect(screen.getByText('1.0000FIL')).toBeVisible()
     expect(screen.getByText('line 2')).toBeVisible()
-    expect(
-      screen.getByText(
-        new Intl.NumberFormat(undefined, {
-          style: 'currency',
-          currency: 'fil',
-          minimumFractionDigits: 4,
-          maximumFractionDigits: 4,
-          currencyDisplay: 'name',
-        }).format(2),
-      ),
-    ).toBeVisible()
+    expect(screen.getByText('2.0000FIL')).toBeVisible()
     expect(screen.getByText('total')).toBeVisible()
-    expect(
-      screen.getByText(
-        new Intl.NumberFormat(undefined, {
-          style: 'currency',
-          currency: 'fil',
-          minimumFractionDigits: 4,
-          maximumFractionDigits: 4,
-          currencyDisplay: 'name',
-        }).format(3),
-      ),
-    ).toBeVisible()
+    expect(screen.getByText('3.0000FIL')).toBeVisible()
   })
 
   it('should render correctly in usd mode', async () => {

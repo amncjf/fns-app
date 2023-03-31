@@ -6,7 +6,7 @@ import { useAccount, useQueryClient } from 'wagmi'
 import { Button, Helper, Tag, Typography, mq } from '@ensdomains/thorin'
 
 import AeroplaneSVG from '@app/assets/Aeroplane.svg'
-import BaseLink from '@app/components/@atoms/BaseLink'
+import { BaseLinkWithHistory } from '@app/components/@atoms/BaseLink'
 import { cacheableComponentStyles } from '@app/components/@atoms/CacheableComponent'
 import { DisabledButtonWithTooltip } from '@app/components/@molecules/DisabledButtonWithTooltip'
 import { AvatarWithZorb } from '@app/components/AvatarWithZorb'
@@ -54,7 +54,7 @@ const HeadingContainer = styled.div(
     font-weight: ${theme.fontWeights.bold};
     font-size: ${theme.fontSizes.headingThree};
 
-    ${mq.md.min(css`
+    ${mq.sm.min(css`
       padding: ${theme.space['6']};
     `)}
   `,
@@ -84,7 +84,7 @@ const OwnerContainer = styled.div(
       background-color: ${theme.colors.backgroundSecondary};
     }
 
-    ${mq.md.min(css`
+    ${mq.sm.min(css`
       padding: ${theme.space['4']} ${theme.space['6']};
     `)}
   `,
@@ -129,7 +129,7 @@ const Owner = ({ address, label }: ReturnType<typeof useOwners>[0]) => {
   const network = useChainId()
 
   return (
-    <BaseLink passHref href={`/address/${address}`}>
+    <BaseLinkWithHistory passHref href={`/address/${address}`}>
       <OwnerContainer as="a">
         <OwnerDetailContainer>
           <AvatarWithZorb
@@ -152,7 +152,7 @@ const Owner = ({ address, label }: ReturnType<typeof useOwners>[0]) => {
         </OwnerDetailContainer>
         <Tag colorStyle="accentSecondary">{t(label)}</Tag>
       </OwnerContainer>
-    </BaseLink>
+    </BaseLinkWithHistory>
   )
 }
 
@@ -165,7 +165,7 @@ const DNSOwnerSectionContainer = styled.div(
     gap: ${theme.space['4']};
     padding: ${theme.space['4']};
 
-    ${mq.md.min(css`
+    ${mq.sm.min(css`
       padding: ${theme.space['6']};
     `)}
   `,
@@ -302,7 +302,6 @@ const Ownership = ({
                 buttonId: 'send-name-disabled-button',
                 buttonText: t('action.send', { ns: 'common' }),
                 mobileWidth: 150,
-                buttonWidth: 'initial',
                 mobileButtonWidth: 'initial',
                 prefix: <AeroplaneIcon as={AeroplaneSVG} />,
               }}

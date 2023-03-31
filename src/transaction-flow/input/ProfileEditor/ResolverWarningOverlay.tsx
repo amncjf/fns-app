@@ -10,7 +10,6 @@ import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
 
 const Container = styled.div(
   ({ theme }) => css`
-    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -60,10 +59,11 @@ const Subtitle = styled(Typography)(
 )
 
 const DismissButtonWrapper = styled.div(
-  () => css`
+  ({ theme }) => css`
     position: absolute;
-    top: 0;
-    right: 0;
+    top: ${theme.space['2']};
+    right: ${theme.space['2']};
+    z-index: 10000;
   `,
 )
 type SettingsDict = {
@@ -77,6 +77,7 @@ type SettingsDict = {
 
 type Props = {
   name: string
+  isWrapped: boolean
   resumable?: boolean
   hasOldRegistry?: boolean
   hasMigratedProfile?: boolean
@@ -88,6 +89,7 @@ type Props = {
 
 const ResolverWarningOverlay = ({
   name,
+  isWrapped,
   hasOldRegistry = false,
   resumable = false,
   hasMigratedProfile = false,
@@ -110,7 +112,7 @@ const ResolverWarningOverlay = ({
       payload: [
         makeTransactionItem('updateResolver', {
           name,
-          contract: 'registry',
+          contract: isWrapped ? 'nameWrapper' : 'registry',
           resolver: latestResolver,
           oldResolver,
         }),
@@ -125,9 +127,8 @@ const ResolverWarningOverlay = ({
       payload: {
         input: {
           name: 'TransferProfile',
-          data: { name },
+          data: { name, isWrapped },
         },
-        disableBackgroundClick: true,
       },
       key: `edit-profile-${name}`,
     })
@@ -182,20 +183,28 @@ const ResolverWarningOverlay = ({
   }, [dismissable, onDismiss, onDismissOverlay])
 
   return (
-    <Container data-testid="warning-overlay">
+    <>
+      <Container data-testid="warning-overlay">
+        <Content>
+          <Message>
+            <Title fontVariant="headingFour">{title}</Title>
+            <Subtitle color="grey">{subtitle}</Subtitle>
+          </Message>
+          <Button
+            as={as}
+            href={href}
+            target="_blank"
+            onClick={handleUpgrade}
+            data-testid="profile-editor-overlay-button"
+          >
+            {action}
+          </Button>
+        </Content>
+      </Container>
       <DismissButtonWrapper data-testid="warning-overlay-dismiss">
-        <DismissDialogButton onClick={handleDismiss} />
+        <DismissDialogButton onClick={handleDismiss} data-testid="dismiss-dialog-button" />
       </DismissButtonWrapper>
-      <Content>
-        <Message>
-          <Title fontVariant="headingFour">{title}</Title>
-          <Subtitle color="grey">{subtitle}</Subtitle>
-        </Message>
-        <Button as={as} href={href} target="_blank" onClick={handleUpgrade}>
-          {action}
-        </Button>
-      </Content>
-    </Container>
+    </>
   )
 }
 

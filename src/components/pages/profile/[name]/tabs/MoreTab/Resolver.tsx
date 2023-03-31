@@ -25,7 +25,7 @@ const Container = styled(TabWrapper)(
 
     padding: ${theme.space['4']};
 
-    ${mq.md.min(css`
+    ${mq.sm.min(css`
       padding: ${theme.space['6']};
     `)}
   `,
@@ -123,8 +123,9 @@ const Resolver = ({
                   content: t(`errors.permissionRevoked`),
                   buttonText: 'Edit',
                   mobileWidth: 150,
-                  buttonWidth: 'initial',
+                  buttonWidth: '15',
                   mobileButtonWidth: 'initial',
+                  colorStyle: 'transparent',
                 }}
               />
             )}

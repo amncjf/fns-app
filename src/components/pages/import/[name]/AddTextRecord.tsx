@@ -48,6 +48,10 @@ const HelperLinks = [
     href: 'https://www.bluehost.com/help/article/dns-management-add-edit-or-delete-dns-entries',
   },
   {
+    label: 'registrars.cloudflare',
+    href: 'https://developers.cloudflare.com/dns/additional-options/dnssec/#enable-dnssec',
+  },
+  {
     label: 'registrars.hostgator',
     href: 'https://www.hostgator.com/help/article/changing-dns-records',
   },
@@ -182,12 +186,20 @@ export const AddTextRecord = ({
       <Typography>{t('addTextRecord.explanation')}</Typography>
       <Spacer $height="3" />
       <Dropdown
+        // needed for no line breaks in buttons
         align="left"
         items={HelperLinks.map((link) => ({
           label: t(link.label),
           onClick: () => null,
           wrapper: (children, key) => (
-            <a href={link.href} target="_blank" key={key} rel="noreferrer">
+            <a
+              href={link.href}
+              target="_blank"
+              key={key}
+              rel="noreferrer"
+              // needed for buttons to maintain the width of the dropdown
+              style={{ width: '100%' }}
+            >
               {children}
             </a>
           ),

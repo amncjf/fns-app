@@ -5,7 +5,7 @@ import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import { CacheableComponent } from '@app/components/@atoms/CacheableComponent'
 import { DisabledButtonWithTooltip } from '@app/components/@molecules/DisabledButtonWithTooltip'
-import supportedAddresses from '@app/constants/supportedAddresses.json'
+import coinsWithIcons from '@app/constants/coinsWithIcons.json'
 import supportedProfileItems from '@app/constants/supportedGeneralRecordKeys.json'
 import supportedTexts from '@app/constants/supportedSocialRecordKeys.json'
 import useOwners from '@app/hooks/useOwners'
@@ -95,7 +95,7 @@ const RecordsStack = styled.div(
     gap: ${theme.space['4']};
     padding: ${theme.space['4']};
 
-    ${mq.md.min(css`
+    ${mq.sm.min(css`
       padding: ${theme.space['6']};
     `)}
   `,
@@ -112,7 +112,7 @@ const Actions = styled.div(
     border-top: 1px solid ${theme.colors.border};
     padding: ${theme.space['4']};
 
-    ${mq.md.min(css`
+    ${mq.sm.min(css`
       & > .leading {
         flex-grow: 1;
         order: -1;
@@ -140,7 +140,6 @@ const getAction = (action: Action, is2LDEth: boolean) => {
         buttonText={action.label}
         mobileWidth={150}
         mobileButtonWidth="initial"
-        buttonWidth="initial"
         mobilePlacement="top"
         placement="right"
       />
@@ -158,6 +157,94 @@ const getAction = (action: Action, is2LDEth: boolean) => {
   )
 }
 
+export const ownershipInfoCalc = (
+  name: string,
+  pccExpired: boolean,
+  owners: ReturnType<typeof useOwners>,
+  gracePeriodEndDate?: Date,
+  expiryDate?: Date,
+  locales?: Intl.LocalesArgument,
+) => {
+  const parentName = name.split('.').slice(1).join('.')
+  if (pccExpired) {
+    return [
+      {
+        key: 'name.owner',
+        type: 'text',
+        value: '',
+      },
+      {
+        key: 'name.parent',
+        type: 'text',
+        value: parentName,
+      },
+    ]
+  }
+
+  if (gracePeriodEndDate && gracePeriodEndDate < new Date() && !pccExpired) {
+    const managerDetails = owners.find((x) => x.transferType === 'manager')
+
+    return [
+      {
+        key: 'name.owner',
+        type: 'text',
+        value: '',
+      },
+      {
+        key: 'name.manager',
+        type: 'text',
+        value: managerDetails?.address || '',
+      },
+      {
+        key: 'name.expiry',
+        type: 'text',
+        value: expiryDate ? formatExpiry(expiryDate, locales) : '',
+        timestamp: expiryDate ? expiryDate.getTime() : 0,
+      },
+      {
+        key: 'name.parent',
+        type: 'text',
+        value: parentName,
+      },
+    ]
+  }
+
+  if (!owners)
+    return [
+      {
+        key: 'name.owner',
+        type: 'text',
+        value: '',
+      },
+      {
+        key: 'name.expiry',
+        type: 'text',
+        value: expiryDate ? formatExpiry(expiryDate, locales) : '',
+        timestamp: expiryDate ? expiryDate.getTime() : 0,
+      },
+      {
+        key: 'name.parent',
+        type: 'text',
+        value: parentName,
+      },
+    ]
+
+  return [
+    ...owners.map((x) => ({ key: x.label, value: x.address })),
+    {
+      key: 'name.expiry',
+      type: 'text',
+      value: expiryDate ? formatExpiry(expiryDate, locales) : '',
+      timestamp: expiryDate ? expiryDate.getTime() : 0,
+    },
+    {
+      key: 'name.parent',
+      type: 'text',
+      value: parentName,
+    },
+  ]
+}
+
 export const ProfileDetails = ({
   textRecords = [],
   addresses = [],
@@ -167,6 +254,7 @@ export const ProfileDetails = ({
   actions,
   isCached,
   name,
+  gracePeriodEndDate,
 }: {
   textRecords: Array<Record<'key' | 'value', string>>
   addresses: Array<Record<'key' | 'value', string>>
@@ -176,6 +264,7 @@ export const ProfileDetails = ({
   actions: ReturnType<typeof useProfileActions>['profileActions']
   isCached?: boolean
   name: string
+  gracePeriodEndDate?: Date
 }) => {
   const otherRecords = [
     ...textRecords
@@ -187,23 +276,7 @@ export const ProfileDetails = ({
       .map((x) => ({ ...x, type: 'text' })),
   ]
 
-  const mappedOwners = [
-    ...((pccExpired
-      ? [
-          {
-            key: 'owner',
-            type: 'text',
-            value: '',
-          },
-        ]
-      : owners?.map((x) => ({ key: x.label, value: x.address }))) || []),
-    {
-      key: 'expiry',
-      type: 'text',
-      value: expiryDate ? formatExpiry(expiryDate) : 'no expiry',
-      timestamp: expiryDate ? expiryDate.getTime() : 0,
-    },
-  ]
+  const mappedOwners = ownershipInfoCalc(name, pccExpired, owners, gracePeriodEndDate, expiryDate)
 
   const is2LDEth = checkETH2LDFromName(name)
 
@@ -223,7 +296,7 @@ export const ProfileDetails = ({
           label="addresses"
           type="address"
           condition={addresses && addresses.length > 0}
-          supported={supportedAddresses}
+          supported={coinsWithIcons}
           array={addresses}
           button={AddressProfileButton}
         />

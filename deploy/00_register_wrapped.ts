@@ -5,15 +5,15 @@ import { ethers } from 'hardhat'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
-import { PublicResolver__factory } from '@fildomains/fnsjs/generated/factories/PublicResolver__factory'
-import { CombinedFuseInput, encodeFuses } from '@fildomains/fnsjs/utils/fuses'
-import { namehash } from '@fildomains/fnsjs/utils/normalise'
-import { RecordOptions } from '@fildomains/fnsjs/utils/recordHelpers'
+import { PublicResolver__factory } from '@ensdomains/ensjs/generated/factories/PublicResolver__factory'
+import { CombinedFuseInput, encodeFuses } from '@ensdomains/ensjs/utils/fuses'
+import { namehash } from '@ensdomains/ensjs/utils/normalise'
+import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
 import {
   RegistrationParams,
   makeCommitment as generateCommitment,
   makeRegistrationData,
-} from '@fildomains/fnsjs/utils/registerHelpers'
+} from '@ensdomains/ensjs/utils/registerHelpers'
 
 import { nonceManager } from './.utils/nonceManager'
 

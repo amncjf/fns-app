@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@app/test-utils'
 
 import { cleanup } from '@testing-library/react'
 
-import AddressEthereumSVG from '@app/assets/address/AddressEthereum.svg'
+import AddressFilecoinSVG from '@app/assets/address/AddressEth.svg'
 
 import { RecordInput } from './RecordInput'
 
@@ -25,7 +25,7 @@ describe('RecordInput', () => {
         option={{
           label: 'test-label',
           value: 'test-value',
-          prefix: <AddressEthereumSVG />,
+          prefix: <AddressFilecoinSVG />,
         }}
       />,
     )

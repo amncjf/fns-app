@@ -18,8 +18,9 @@ export const useHasSubnames = (name: string) => {
     data: hasSubnames,
     isLoading,
     isFetched,
-    internal: { isFetchedAfterMount },
+    isFetchedAfterMount,
     status,
+    // don't remove this line, it updates the isCachedData state (for some reason) but isn't needed to verify it
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isFetching: _isFetching,
   } = useQuery(

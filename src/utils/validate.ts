@@ -1,6 +1,6 @@
 import { getAddress } from '@ethersproject/address'
 
-import { formatsByName } from '@ensdomains/address-encoder'
+import { formatsByName } from '@fildomains/fnsjs/utils/recordHelpers'
 import { validate } from '@ensdomains/ens-validation'
 
 export const hasNonAscii = () => {
@@ -18,7 +18,11 @@ export const validateCryptoAddress =
   (address?: string): string | boolean => {
     try {
       if (!address) return 'addressRequired'
-      const _coin = coin.toUpperCase()
+      let _coin = coin.toUpperCase()
+
+      if (_coin === 'FIL' && address.substring(0, 2).toUpperCase() === '0X') {
+        _coin = 'ETH'
+      }
 
       let _address
       if (_coin === 'ETH') _address = getAddress(address)

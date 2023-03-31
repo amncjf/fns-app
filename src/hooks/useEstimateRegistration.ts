@@ -1,9 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
+import { formatsByCoinType, formatsByName } from '@fildomains/fnsjs/utils/recordHelpers'
 import { useMemo } from 'react'
 import { useFeeData, useQuery } from 'wagmi'
-
-import { formatsByCoinType, formatsByName } from '@ensdomains/address-encoder'
 
 import { RegistrationData } from '@app/components/pages/profile/[name]/registration/types'
 import { emptyAddress } from '@app/utils/constants'
@@ -65,8 +64,9 @@ const useEstimateRegistration = (data: RegistrationProps | undefined) => {
       if (!Number.isNaN(parseInt(key))) {
         coinTypeInstance = formatsByCoinType[parseInt(key)]
       } else {
-        coinTypeInstance = formatsByName[key.toUpperCase()]
+        coinTypeInstance = formatsByName[key === 'FIL' ? 'ETH' : key.toUpperCase()]
       }
+      console.log('value:', value, ',key:', key, ',coinTypeInstance:', coinTypeInstance)
       const encodedAddress = coinTypeInstance.decoder(value)
       const bytesAsDataInx = byteLengthToDataInx(encodedAddress.byteLength)
       limit += addr.find(([dataInx]) => bytesAsDataInx >= dataInx)![1]

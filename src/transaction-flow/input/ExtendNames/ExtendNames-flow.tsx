@@ -17,7 +17,7 @@ import { useZorb } from '@app/hooks/useZorb'
 import TransactionLoader from '@app/transaction-flow/TransactionLoader'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
-import { CurrencyUnit } from '@app/types'
+import useUserConfig from '@app/utils/useUserConfig'
 import { yearsToSeconds } from '@app/utils/utils'
 
 import { ShortExpiry } from '../../../components/@atoms/ExpiryComponents/ExpiryComponents'
@@ -30,14 +30,15 @@ const Container = styled.form(
   ({ theme }) => css`
     display: flex;
     width: 100%;
-    max-height: 90vh;
+    max-height: 60vh;
     flex-direction: column;
     align-items: center;
     gap: ${theme.space['4']};
 
     ${mq.sm.min(
       css`
-        min-width: 600px;
+        width: calc(80vw - 2 * ${theme.space['6']});
+        max-width: ${theme.space['128']};
       `,
     )}
   `,
@@ -60,14 +61,15 @@ const InnerContainer = styled.div(
   `,
 )
 
-const PlusMinusWrapper = styled.div(
-  () => css`
+const PlusMinusWrapper = styled.div(({ theme }) => [
+  css`
     width: 100%;
-    max-width: 60%;
+    max-width: ${theme.space['80']};
     overflow: hidden;
     display: flex;
   `,
-)
+  mq.sm.min(css``),
+])
 
 const OptionBar = styled.div(
   () => css`
@@ -192,9 +194,8 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const [years, setYears] = useState(1)
   const duration = yearsToSeconds(years)
 
-  const [currencyUnit, setCurrencyUnit] = useState<CurrencyUnit>('fil')
-  const fiatUnit = 'usd'
-  const currencyDisplay = currencyUnit === 'fiat' ? fiatUnit : 'fil'
+  const { userConfig, setCurrency } = useUserConfig()
+  const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'fil'
 
   const { base: rentFee, loading: priceLoading } = usePrice(names, true)
 
@@ -275,8 +276,8 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                 <GasDisplay gasPrice={gasPrice} />
                 <CurrencyToggle
                   size="small"
-                  checked={currencyUnit === 'fiat'}
-                  onChange={() => setCurrencyUnit(currencyUnit === 'fil' ? 'fiat' : 'fil')}
+                  checked={userConfig.currency === 'fiat'}
+                  onChange={(e) => setCurrency(e.target.checked ? 'fiat' : 'fil')}
                   data-testid="extend-names-currency-toggle"
                 />
               </OptionBar>
@@ -297,7 +298,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       </ScrollBoxWrapper>
       <Dialog.Footer
         leading={
-          <Button colorStyle="greySecondary" onClick={onDismiss}>
+          <Button colorStyle="accentSecondary" onClick={onDismiss}>
             {t('action.back', { ns: 'common' })}
           </Button>
         }

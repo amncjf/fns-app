@@ -1,13 +1,20 @@
 import { UrlObject } from 'url'
 
-import CogSVG from './assets/Cog.svg'
-import GridSVG from './assets/Grid.svg'
-import HeartSVG from './assets/Heart.svg'
-import MagnifyingGlassSVG from './assets/MagnifyingGlass.svg'
+import {
+  CogActiveSVG,
+  CogSVG,
+  DotGridActiveSVG,
+  DotGridSVG,
+  HeartActiveSVG,
+  HeartSVG,
+  MagnifyingGlassActiveSVG,
+  MagnifyingGlassSVG,
+  PersonActiveSVG,
+  PersonSVG,
+} from '@ensdomains/thorin'
 
 export type PublicRoute =
   | 'search'
-  | 'faq'
   | 'governance'
   | 'community'
   | 'developers'
@@ -25,7 +32,10 @@ export type RouteItemObj = {
   label: string
   disabled: boolean
   connected: boolean
-  icon?: any
+  icon?: {
+    inactive: any
+    active: any
+  }
   onlyDropdown?: boolean
 }
 
@@ -36,7 +46,10 @@ export const routes: RouteItemObj[] = [
     label: 'navigation.home',
     disabled: false,
     connected: false,
-    icon: MagnifyingGlassSVG,
+    icon: {
+      inactive: MagnifyingGlassSVG,
+      active: MagnifyingGlassActiveSVG,
+    },
   },
   {
     name: 'names',
@@ -44,7 +57,10 @@ export const routes: RouteItemObj[] = [
     label: 'navigation.names',
     disabled: false,
     connected: true,
-    icon: GridSVG,
+    icon: {
+      inactive: DotGridSVG,
+      active: DotGridActiveSVG,
+    },
   },
   {
     name: 'favourites',
@@ -52,7 +68,10 @@ export const routes: RouteItemObj[] = [
     label: 'navigation.favourites',
     disabled: true,
     connected: true,
-    icon: HeartSVG,
+    icon: {
+      inactive: HeartSVG,
+      active: HeartActiveSVG,
+    },
   },
   {
     name: 'settings',
@@ -60,7 +79,11 @@ export const routes: RouteItemObj[] = [
     label: 'navigation.settings',
     disabled: false,
     connected: true,
-    icon: CogSVG,
+    icon: {
+      inactive: CogSVG,
+      active: CogActiveSVG,
+    },
+    onlyDropdown: true,
   },
   {
     name: 'profile',
@@ -68,11 +91,38 @@ export const routes: RouteItemObj[] = [
     label: 'navigation.profile',
     disabled: false,
     connected: true,
+    icon: {
+      inactive: PersonSVG,
+      active: PersonActiveSVG,
+    },
+    onlyDropdown: true,
   },
   {
-    name: 'faq',
-    href: '/faq',
-    label: 'navigation.faq',
+    name: 'support',
+    href: 'https://support.ens.domains',
+    label: 'navigation.support',
+    disabled: false,
+    connected: false,
+  },
+  {
+    name: 'oldApp',
+    href: 'https://app.ens.domains',
+    label: 'navigation.oldApp',
+    disabled: false,
+    connected: false,
+    onlyDropdown: true,
+  },
+  {
+    name: 'governance',
+    href: 'https://fildomains.com/governance',
+    label: 'navigation.governance',
+    disabled: false,
+    connected: false,
+  },
+  {
+    name: 'community',
+    href: 'https://chat.ens.domains/',
+    label: 'navigation.community',
     disabled: false,
     connected: false,
   },
@@ -84,9 +134,9 @@ export const routes: RouteItemObj[] = [
     connected: false,
   },
   {
-    name: 'support',
-    href: 'https://fildomains.com/#get-support',
-    label: 'navigation.support',
+    name: 'bounty',
+    href: 'https://docs.ens.domains/bug-bounty-program',
+    label: 'navigation.bounty',
     disabled: false,
     connected: false,
   },

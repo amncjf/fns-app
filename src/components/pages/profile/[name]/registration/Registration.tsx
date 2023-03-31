@@ -46,7 +46,7 @@ const ViewProfileContainer = styled.div(
       }
     }
 
-    ${mq.md.min(css`
+    ${mq.sm.min(css`
       margin-bottom: 0;
       padding: 0;
     `)}
@@ -149,7 +149,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
       dispatch({
         name: 'setProfileData',
         payload: {
-          records: [{ key: 'ETH', group: 'address', type: 'addr', value: address! }],
+          records: [{ key: 'FIL', group: 'address', type: 'addr', value: address! }],
           clearRecords: resolverExists,
           resolver: defaultResolverAddress,
         },
@@ -167,9 +167,9 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
 
     // If profile is in queue and reverse record is selected, make sure that fil record is included and is set to address
     if (item.queue.includes('profile') && reverseRecord) {
-      const recordsWithoutEth = item.records.filter((record) => record.key !== 'ETH')
+      const recordsWithoutEth = item.records.filter((record) => record.key !== 'FIL')
       const newRecords: ProfileRecord[] = [
-        { key: 'ETH', group: 'address', type: 'addr', value: address! },
+        { key: 'FIL', group: 'address', type: 'addr', value: address! },
         ...recordsWithoutEth,
       ]
       dispatch({ name: 'setProfileData', payload: { records: newRecords }, selected })
@@ -238,7 +238,6 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
         noTitle
         title={normalisedName}
         hideHeading={step === 'complete'}
-        subtitle={t('subtitle')}
         loading={labelTooLong ? false : isLoading || primaryLoading || resolverExistsLoading}
         singleColumnContent
         inlineHeading

@@ -31,7 +31,6 @@ const transaction = async (signer: JsonRpcSigner, fns: PublicFNS, data: Data) =>
     signer,
     ...data,
   })
-
   return tx
 }
 
