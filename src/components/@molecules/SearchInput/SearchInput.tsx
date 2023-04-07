@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import { parseInputType, validateName } from '@fildomains/fnsjs/utils/validation'
+import { parseInput, validateName } from '@fildomains/fnsjs/utils/validation'
 import { useQueryClient } from '@tanstack/react-query'
 import debounce from 'lodash/debounce'
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -214,7 +214,7 @@ export const SearchInput = ({
       let _isValid = true
       try {
         _normalisedName = validateName(inputVal.replace(/ /g, ''))
-        _inputType = parseInputType(_normalisedName)
+        _inputType = parseInput(_normalisedName)
       } catch (e) {
         _normalisedName = ''
         _isValid = false
@@ -224,6 +224,7 @@ export const SearchInput = ({
         }
       }
 
+      console.log('_normalisedName:', _normalisedName, ',inputVal:', inputVal)
       return [
         _normalisedName,
         _isValid &&

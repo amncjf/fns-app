@@ -1,6 +1,6 @@
 import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
-
 import { AllCurrentFuses } from '@fildomains/fnsjs/utils/fuses'
+import { filecoin, filecoinCalibration, filecoinHyperspace } from 'wagmi/chains'
 
 import { NAMEWRAPPER_AWARE_RESOLVERS, networkName } from './constants'
 
@@ -61,8 +61,22 @@ export const formatDateTime = (date: Date) => {
 export const formatFullExpiry = (expiryDate?: Date) =>
   expiryDate ? `${formatExpiry(expiryDate)}, ${formatDateTime(expiryDate)}` : ''
 
-export const makeEtherscanLink = (data: string, network?: string, route: string = 'tx') =>
-  `https://${!network || network === 'mainnet' ? '' : `${network}.`}etherscan.io/${route}/${data}`
+export const makeEtherscanLink = (data: string, network?: string, route: string = 'tx') => {
+  console.log('makeEtherscanLink network:', network)
+  if (network === filecoin.network) {
+    return `https://filfox.info/${route}/${data}`
+  }
+  if (network === filecoinHyperspace.network) {
+    return `https://hyperspace.filfox.info/${route}/${data}`
+  }
+  if (network === filecoinCalibration.network) {
+    return `https://hyperspace.filfox.info/${route}/${data}`
+  }
+
+  return `https://${
+    !network || network === 'mainnet' ? '' : `${network}.`
+  }etherscan.io/${route}/${data}`
+}
 
 export const isBrowser = !!(
   typeof window !== 'undefined' &&

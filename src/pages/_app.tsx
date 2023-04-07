@@ -7,7 +7,7 @@ import { ReactElement, ReactNode } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import { ChainProviderFn, WagmiConfig, configureChains, createClient } from 'wagmi'
-import { goerli, localhost } from 'wagmi/chains'
+import { filecoin, filecoinCalibration, filecoinHyperspace, goerli, localhost } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
@@ -94,7 +94,13 @@ const breakpoints = {
   xl: '(min-width: 1280px)',
 }
 
-const providerArray: ChainProviderFn<typeof goerli | typeof localhost>[] = []
+const providerArray: ChainProviderFn<
+  | typeof goerli
+  | typeof localhost
+  | typeof filecoin
+  | typeof filecoinHyperspace
+  | typeof filecoinCalibration
+>[] = []
 
 if (process.env.NEXT_PUBLIC_PROVIDER) {
   // for local testing
@@ -112,14 +118,40 @@ if (process.env.NEXT_PUBLIC_PROVIDER) {
   // fallback cloudflare gateway if infura is down or for IPFS
   providerArray.push(
     jsonRpcProvider({
-      rpc: (c) => ({
-        http: `https://web3.ens.domains/v1/${c.network === 'homestead' ? 'mainnet' : c.network}`,
-      }),
+      rpc: (c) => {
+        if (c.network === 'hardhat' || c.network === 'localhost') {
+          return {
+            http: `http://localhost:8545`,
+          }
+        }
+        if (c.network === 'filecoin-hyperspace') {
+          return {
+            http: `https://api.hyperspace.node.glif.io/rpc/v1`,
+          }
+        }
+        if (c.network === 'filecoin-calibration') {
+          return {
+            http: `https://api.calibration.node.glif.io/rpc/v1`,
+          }
+        }
+        if (c.network === 'filecoin-mainnet') {
+          return {
+            http: `https://api.node.glif.io`,
+          }
+        }
+
+        return {
+          http: `https://web3.ens.domains/v1/${c.network === 'homestead' ? 'mainnet' : c.network}`,
+        }
+      },
     }),
   )
 }
 
-const { provider, chains } = configureChains([goerli, localhost], providerArray)
+const { provider, chains } = configureChains(
+  [goerli, localhost, filecoin, filecoinHyperspace, filecoinCalibration],
+  providerArray,
+)
 
 setupAnalytics()
 

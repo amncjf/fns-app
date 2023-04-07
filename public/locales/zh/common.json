@@ -253,7 +253,7 @@
         "gasLimit": "这笔交易的网络费限额不够高，请再试一次。"
       }
     },
-    "viewEtherscan": "在 Etherscan 上查看",
+    "viewEtherscan": "在区块浏览器上查看",
     "viewMore": "查看详情"
   },
   "search": {

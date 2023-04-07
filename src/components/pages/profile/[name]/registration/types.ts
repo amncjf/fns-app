@@ -10,6 +10,7 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
 
 export enum PaymentMethod {
   ethereum = 'ethereum',
+  fns = 'fns',
   moonpay = 'moonpay',
 }
 

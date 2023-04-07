@@ -1,6 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import { labelhash } from '@fildomains/fnsjs/utils/labels'
 import { namehash } from '@fildomains/fnsjs/utils/normalise'
+import { useTranslation } from 'react-i18next'
+import styled, { css } from 'styled-components'
 
 import { Typography, mq } from '@ensdomains/thorin'
 
@@ -14,7 +16,6 @@ import { makeEtherscanLink } from '@app/utils/utils'
 
 import { TabWrapper } from '../../../TabWrapper'
 
-// @ts-ignore
 const Container = styled(TabWrapper)(
   ({ theme }) => css`
     width: 100%;

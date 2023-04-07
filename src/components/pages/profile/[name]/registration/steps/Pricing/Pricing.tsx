@@ -17,7 +17,6 @@ import {
   mq,
 } from '@ensdomains/thorin'
 
-import MoonpayLogo from '@app/assets/MoonpayLogo.svg'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/PlusMinusControl'
 import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
@@ -89,8 +88,6 @@ const gridAreaStyle = ({ $name }: { $name: string }) => css`
   grid-area: ${$name};
 `
 
-const moonpayInfoItems = Array.from({ length: 2 }, (_, i) => `steps.info.moonpayItems.${i}`)
-
 const PaymentChoiceContainer = styled.div`
   width: 100%;
 `
@@ -114,6 +111,15 @@ const RadioButtonContainer = styled.div(
   `,
 )
 
+const ButtonContainer = styled.div(
+  ({ theme }) => css`
+    padding: ${theme.space['2']};
+    &:last-child {
+      border-top: 1px solid ${theme.colors.border};
+    }
+  `,
+)
+
 const StyledTitle = styled(Typography)`
   margin-left: 15px;
 `
@@ -124,70 +130,6 @@ const RadioLabel = styled(Typography)(
     color: ${theme.colors.text};
   `,
 )
-
-const MoonpayContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-`
-
-const InfoItems = styled.div(
-  ({ theme }) => css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: ${theme.space['4']};
-
-    ${mq.sm.min(css`
-      flex-direction: row;
-      align-items: stretch;
-    `)}
-  `,
-)
-
-const InfoItem = styled.div(
-  ({ theme }) => css`
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: ${theme.space['4']};
-
-    padding: ${theme.space['4']};
-    border: 1px solid ${theme.colors.border};
-    border-radius: ${theme.radii.large};
-    text-align: center;
-
-    & > div:first-of-type {
-      width: ${theme.space['10']};
-      height: ${theme.space['10']};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: ${theme.fontSizes.extraLarge};
-      font-weight: ${theme.fontWeights.bold};
-      color: ${theme.colors.backgroundPrimary};
-      background: ${theme.colors.accentPrimary};
-      border-radius: ${theme.radii.full};
-    }
-
-    & > div:last-of-type {
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  `,
-)
-
-const LabelContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`
 
 const CheckboxWrapper = styled.div(
   () => css`
@@ -211,8 +153,8 @@ const PaymentChoice = ({
   paymentMethodChoice,
   setPaymentMethodChoice,
   hasEnoughEth,
+  hasEnoughFns,
   hasPendingMoonpayTransaction,
-  hasFailedMoonpayTransaction,
   address,
   breakpoints,
   reverseRecord,
@@ -221,14 +163,15 @@ const PaymentChoice = ({
   paymentMethodChoice: PaymentMethod | ''
   setPaymentMethodChoice: Dispatch<SetStateAction<PaymentMethod | ''>>
   hasEnoughEth: boolean
+  hasEnoughFns: boolean
   hasPendingMoonpayTransaction: boolean
-  hasFailedMoonpayTransaction: boolean
   address?: string
   breakpoints: ReturnType<typeof useBreakpoint>
   reverseRecord: boolean
   setReverseRecord: (reverseRecord: boolean) => void
 }) => {
   const { t } = useTranslation('register')
+  const hasEnough = paymentMethodChoice === PaymentMethod.ethereum ? hasEnoughEth : hasEnoughFns
 
   return (
     <PaymentChoiceContainer>
@@ -241,24 +184,36 @@ const PaymentChoice = ({
         onChange={(e) => setPaymentMethodChoice(e.target.value as PaymentMethod)}
       >
         <RadioButtonContainer>
-          <StyledRadioButton
-            data-testid="payment-choice-ethereum"
-            label={<RadioLabel>{t('steps.info.ethereum')}</RadioLabel>}
-            name="RadioButtonGroup"
-            value={PaymentMethod.ethereum}
-            disabled={hasPendingMoonpayTransaction}
-            checked={paymentMethodChoice === PaymentMethod.ethereum || undefined}
-          />
-          {paymentMethodChoice === PaymentMethod.ethereum && !hasEnoughEth && (
+          <ButtonContainer>
+            <StyledRadioButton
+              data-testid="payment-choice-ethereum"
+              label={<RadioLabel>{t('steps.info.ethereum')}</RadioLabel>}
+              name="RadioButtonGroup"
+              value={PaymentMethod.ethereum}
+              disabled={hasPendingMoonpayTransaction}
+              checked={paymentMethodChoice === PaymentMethod.ethereum || undefined}
+            />
+          </ButtonContainer>
+          <ButtonContainer>
+            <StyledRadioButton
+              label={<RadioLabel>{t('steps.info.fns')}</RadioLabel>}
+              name="RadioButtonGroup"
+              value={PaymentMethod.fns}
+              checked={paymentMethodChoice === PaymentMethod.fns || undefined}
+            />
+          </ButtonContainer>
+          {!hasEnough && (
             <>
               <Spacer $height="4" />
               <Helper type="warning" alignment="horizontal">
-                {t('steps.info.notEnoughEth')}
+                {paymentMethodChoice === PaymentMethod.ethereum
+                  ? t('steps.info.notEnoughEth')
+                  : t('steps.info.notEnoughFns')}
               </Helper>
               <Spacer $height="2" />
             </>
           )}
-          {paymentMethodChoice === PaymentMethod.ethereum && hasEnoughEth && (
+          {hasEnough && (
             <>
               <Spacer $height="4" />
               <OutlinedContainer>
@@ -293,43 +248,6 @@ const PaymentChoice = ({
                 </OutlinedContainerDescription>
               </OutlinedContainer>
               <Spacer $height="2" />
-            </>
-          )}
-        </RadioButtonContainer>
-        <RadioButtonContainer>
-          <StyledRadioButton
-            label={
-              <LabelContainer>
-                <RadioLabel>{t('steps.info.creditOrDebit')}</RadioLabel>
-                <Typography color="textTertiary" weight="light">
-                  ({t('steps.info.additionalFee')})
-                </Typography>
-              </LabelContainer>
-            }
-            name="RadioButtonGroup"
-            value={PaymentMethod.moonpay}
-            checked={paymentMethodChoice === PaymentMethod.moonpay || undefined}
-          />
-          {paymentMethodChoice === PaymentMethod.moonpay && (
-            <>
-              <Spacer $height="4" />
-              <InfoItems>
-                {moonpayInfoItems.map((item, idx) => (
-                  <InfoItem key={item}>
-                    <Typography>{idx + 1}</Typography>
-                    <Typography>{t(item)}</Typography>
-                  </InfoItem>
-                ))}
-              </InfoItems>
-              <Spacer $height="4" />
-              {hasFailedMoonpayTransaction && (
-                <Helper type="error">{t('steps.info.failedMoonpayTransaction')}</Helper>
-              )}
-              <Spacer $height="4" />
-              <MoonpayContainer>
-                {t('steps.info.poweredBy')}
-                <MoonpayLogo />
-              </MoonpayContainer>
             </>
           )}
         </RadioButtonContainer>
@@ -534,6 +452,7 @@ const Pricing = ({
           reverseRecord,
           setReverseRecord,
           hasEnoughEth: true,
+          hasEnoughFns: true,
           hasPendingMoonpayTransaction,
           hasFailedMoonpayTransaction,
         }}

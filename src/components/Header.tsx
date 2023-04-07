@@ -1,7 +1,8 @@
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useEffect, useRef } from 'react'
 import useTransition, { TransitionState } from 'react-transition-state'
-import styled, { css, useTheme } from 'styled-components'
+import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
 import { mq } from '@ensdomains/thorin'
@@ -11,8 +12,6 @@ import { useInitial } from '@app/hooks/useInitial'
 import { routes } from '@app/routes'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 
-import ENSFull from '../assets/ENSFull.svg'
-import ENSWithGradient from '../assets/ENSWithGradient.svg'
 import BaseLink from './@atoms/BaseLink'
 import { RouteItem } from './@atoms/RouteItem/RouteItem'
 import Hamburger from './@molecules/Hamburger/Hamburger'
@@ -59,6 +58,37 @@ const NavContainer = styled.div(
     ${mq.lg.min(css`
       flex-gap: ${theme.space['6']};
       gap: ${theme.space['6']};
+    `)}
+  `,
+)
+
+const LogoContainer = styled.div(
+  ({ theme }) => css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-gap: ${theme.space['3']};
+    gap: ${theme.space['3']};
+    height: ${theme.space['12']};
+  `,
+)
+
+const TextContainer = styled.h1(
+  ({ theme }) => css`
+    font-size: ${theme.fontSizes.headingTwo};
+    text-align: center;
+    font-weight: 800;
+    background-image: ${theme.colors.gradients.accent};
+    background-repeat: no-repeat;
+    background-size: 110%;
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0;
+
+    ${mq.sm.min(css`
+      font-size: ${theme.fontSizes.headingOne};
     `)}
   `,
 )
@@ -127,7 +157,6 @@ const routesNoSearch = routes.filter(
 )
 
 export const Header = () => {
-  const { space } = useTheme()
   const router = useRouter()
   const isInitial = useInitial()
   const { isConnected } = useAccount()
@@ -183,6 +212,7 @@ export const Header = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchWrapperRef.current])
 
+  // @ts-ignore
   return (
     <HeaderWrapper id="header">
       <NavContainer>
@@ -195,9 +225,12 @@ export const Header = () => {
           )}
         >
           {router.asPath === '/' ? (
-            <ENSFull height={space['12']} />
+            <LogoContainer>
+              <Image src="/fnsLogo.png" alt="FNS" width={48} height={48} />
+              <TextContainer>FNS</TextContainer>
+            </LogoContainer>
           ) : (
-            <ENSWithGradient height={space['12']} />
+            <Image src="/fnsLogo.png" alt="FNS" width={48} height={48} />
           )}
         </ConditionalWrapper>
         {router.asPath !== '/' && breakpoints.sm && (

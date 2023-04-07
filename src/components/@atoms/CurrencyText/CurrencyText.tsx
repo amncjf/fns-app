@@ -17,5 +17,5 @@ export const CurrencyText = ({ fil, currency = 'fil' }: Props) => {
   if (currency === 'fil') {
     return <>{makeDisplay(fil, 5, 'fil')}</>
   }
-  return <>{makeDisplay(fil.mul(ethPrice).div(1e8), 2, currency, 18)}</>
+  return <>{makeDisplay(fil, 5, 'fns')}</>
 }

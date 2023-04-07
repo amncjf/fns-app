@@ -2,10 +2,11 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { Colors, CurrencyToggle } from '@ensdomains/thorin'
+import { Colors } from '@ensdomains/thorin'
 
 import GasDisplay from '@app/components/@atoms/GasDisplay'
 import { Invoice } from '@app/components/@atoms/Invoice/Invoice'
+import { CurrencyToggle } from '@app/components/@molecules/CurrencyToggle'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import useUserConfig from '@app/utils/useUserConfig'
 
@@ -70,7 +71,6 @@ const FullInvoice = ({
 
   if (estimatedGasLoading) return <InvoiceContainer />
 
-  console.log('invoiceItems:', invoiceItems, ',currencyDisplay:', currencyDisplay)
   return (
     <InvoiceContainer>
       <OptionBar>

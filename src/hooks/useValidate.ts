@@ -8,14 +8,14 @@ import {
   isEncodedLabelhash,
   saveName,
 } from '@fildomains/fnsjs/utils/labels'
-import { parseInputType, validateName } from '@fildomains/fnsjs/utils/validation'
+import { parseInput, validateName } from '@fildomains/fnsjs/utils/validation'
 
 // eslint-disable-next-line no-control-regex
 const nonAsciiRegex = /[^\x00-\x7F]+/g
 
 const validate = (input: string) => {
   let normalisedName = ''
-  let inputType: ReturnType<typeof parseInputType> | undefined
+  let inputType: ReturnType<typeof parseInput> | undefined
   let valid: boolean | undefined
   let isNonASCII: boolean | undefined
   try {
@@ -26,7 +26,7 @@ const validate = (input: string) => {
         .map((label) => (isEncodedLabelhash(label) ? checkLabel(label) || label : label))
         .join('.')
     normalisedName = validateName(decodedInput)
-    inputType = parseInputType(normalisedName)
+    inputType = parseInput(normalisedName)
     isNonASCII = nonAsciiRegex.test(normalisedName)
     valid = inputType.type !== 'unknown' && inputType.info !== 'unsupported'
     if (valid) {

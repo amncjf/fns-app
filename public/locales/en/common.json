@@ -257,7 +257,7 @@
         "gasLimit": "The gas limit on your transaction wasn't high enough, please try again."
       }
     },
-    "viewEtherscan": "View on Etherscan",
+    "viewEtherscan": "View on Blockchain Browser",
     "viewMore": "View More"
   },
   "search": {
