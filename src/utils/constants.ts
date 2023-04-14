@@ -13,6 +13,12 @@ export const networkName = {
   '3': 'ropsten',
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '1337': 'local',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '314': 'filecoin',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '3141': 'hyperspace',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '314159': 'calibration',
 }
 
 interface ResolverAddresses {
@@ -41,6 +47,12 @@ export const RESOLVER_ADDRESSES: ResolverAddresses = {
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '1337': ['0x0B306BF915C4d645ff596e518fAf3F9669b97016'],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '314': ['0x86bdC76cee571e8A5E5060971499e4Fd620Ff6D4'],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '3141': ['0x86bdC76cee571e8A5E5060971499e4Fd620Ff6D4'],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '314159': ['0x86bdC76cee571e8A5E5060971499e4Fd620Ff6D4'],
 }
 
 export const NAMEWRAPPER_AWARE_RESOLVERS: ResolverAddresses = {
@@ -54,6 +66,12 @@ export const NAMEWRAPPER_AWARE_RESOLVERS: ResolverAddresses = {
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '1337': ['0x0B306BF915C4d645ff596e518fAf3F9669b97016'],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '314': ['0x86bdC76cee571e8A5E5060971499e4Fd620Ff6D4'],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '3141': ['0x86bdC76cee571e8A5E5060971499e4Fd620Ff6D4'],
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '314159': ['0x86bdC76cee571e8A5E5060971499e4Fd620Ff6D4'],
 }
 
 export const RESOLVER_INTERFACE_IDS = {

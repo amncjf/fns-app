@@ -7,9 +7,8 @@ import { Typography, mq } from '@ensdomains/thorin'
 import FaucetBanner from '@app/components/@molecules/FaucetBanner'
 import Hamburger from '@app/components/@molecules/Hamburger/Hamburger'
 import { SearchInput } from '@app/components/@molecules/SearchInput/SearchInput'
+import { HeaderFns } from '@app/components/Header'
 import { LeadingHeading } from '@app/components/LeadingHeading'
-
-import ENSFull from '../assets/ENSFull.svg'
 
 const GradientTitle = styled.h1(
   ({ theme }) => css`
@@ -61,12 +60,6 @@ const Stack = styled.div(
   `,
 )
 
-const StyledENS = styled.div(
-  ({ theme }) => css`
-    height: ${theme.space['8.5']};
-  `,
-)
-
 const LogoAndLanguage = styled.div(
   ({ theme }) => css`
     display: flex;
@@ -98,7 +91,7 @@ export default function Page() {
       </Head>
       <StyledLeadingHeading>
         <LogoAndLanguage>
-          <StyledENS as={ENSFull} />
+          <HeaderFns />
         </LogoAndLanguage>
         <Hamburger />
       </StyledLeadingHeading>

@@ -11,6 +11,7 @@ import {
   MagnifyingGlassSVG,
   PersonActiveSVG,
   PersonSVG,
+  WalletSVG,
 } from '@ensdomains/thorin'
 
 export type PublicRoute =
@@ -23,7 +24,7 @@ export type PublicRoute =
   | 'terms'
   | 'privacy'
   | 'oldApp'
-export type ConnectedRoute = 'names' | 'profile' | 'favourites' | 'settings'
+export type ConnectedRoute = 'names' | 'token' | 'profile' | 'favourites' | 'settings'
 export type AnyRoute = PublicRoute | ConnectedRoute | 'unknown'
 
 export type RouteItemObj = {
@@ -63,6 +64,17 @@ export const routes: RouteItemObj[] = [
     },
   },
   {
+    name: 'token',
+    href: '/fns',
+    label: 'navigation.token',
+    disabled: false,
+    connected: true,
+    icon: {
+      inactive: WalletSVG,
+      active: WalletSVG,
+    },
+  },
+  {
     name: 'favourites',
     href: '/my/favourites',
     label: 'navigation.favourites',
@@ -99,44 +111,15 @@ export const routes: RouteItemObj[] = [
   },
   {
     name: 'support',
-    href: 'https://support.ens.domains',
+    href: '/faq',
     label: 'navigation.support',
     disabled: false,
     connected: false,
   },
   {
-    name: 'oldApp',
-    href: 'https://app.ens.domains',
-    label: 'navigation.oldApp',
-    disabled: false,
-    connected: false,
-    onlyDropdown: true,
-  },
-  {
-    name: 'governance',
-    href: 'https://fildomains.com/governance',
-    label: 'navigation.governance',
-    disabled: false,
-    connected: false,
-  },
-  {
     name: 'community',
-    href: 'https://chat.ens.domains/',
+    href: 'https://discord.com/invite/j8v7MxZKV3',
     label: 'navigation.community',
-    disabled: false,
-    connected: false,
-  },
-  {
-    name: 'developers',
-    href: 'https://docs.ens.domains/',
-    label: 'navigation.developers',
-    disabled: false,
-    connected: false,
-  },
-  {
-    name: 'bounty',
-    href: 'https://docs.ens.domains/bug-bounty-program',
-    label: 'navigation.bounty',
     disabled: false,
     connected: false,
   },

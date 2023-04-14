@@ -75,7 +75,7 @@ export const useResolverStatus = (name: string, skip?: boolean, options?: Option
           hasMigratedProfile: false,
           isMigratedProfileEqual: false,
         }
-      if (profileResolverAddress === latestResolverAddress)
+      if (profileResolverAddress.toLowerCase() === latestResolverAddress.toLowerCase())
         return {
           hasResolver: true,
           hasLatestResolver: true,

@@ -1,0 +1,45 @@
+{
+  "title": "opgericht",
+  "section": {
+    "wallet": {
+      "title": "portemonnee adres"
+    },
+    "release": {
+      "title": "Huidige totale uitgifte"
+    },
+    "pledge": {
+      "title": "Totaalbedrag van de onderpandpool"
+    },
+    "share": {
+      "title": "totaal verwacht rendement",
+      "already": "Totaal huidig ​​inkomen",
+      "button": "initialisatie"
+    },
+    "earnings": {
+      "title": "Verwachte terugkomst",
+      "already": "huidig ​​inkomen",
+      "button": "uitkering ontvangen",
+      "buttonAlready": "Er is een uitkering aangevraagd"
+    },
+    "fnsBalance": {
+      "title": "mijn balans",
+      "button": "belofte"
+    },
+    "sundayBalance": {
+      "title": "mijn inzet",
+      "button": "extract"
+    },
+    "error": {
+      "amount": "Vul a.u.b. het aantal in",
+      "notZero": "kan geen 0 zijn",
+      "tooBig": "kan het maximum niet overschrijden"
+    },
+    "form": {
+      "max": "maximale waarde",
+      "placeholder": "Vul a.u.b. het aantal in",
+      "all": "alle"
+    },
+    "paused": "alleen beschikbaar op zondag",
+    "notPaused": "niet op zondag"
+  }
+}

@@ -51,6 +51,7 @@
   },
   "navigation": {
     "home": "Home",
+    "token": "FNS",
     "about": "Over",
     "developers": "Developers",
     "community": "Community",
@@ -151,6 +152,7 @@
       "approveNameWrapper": "Sta de NameWrapper toe om je namen te managen"
     },
     "itemLabel": {
+      "amount": "hoeveelheid",
       "name": "Naam",
       "address": "Adres",
       "action": "Actie",

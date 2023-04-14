@@ -53,12 +53,13 @@
   "navigation": {
     "home": "首页",
     "names": "我的名称",
+    "token": "FNS",
     "favourites": "收藏",
     "settings": "设置",
     "governance": "治理",
     "community": "社区",
     "developers": "开发者",
-    "support": "支持",
+    "support": "常见问题",
     "bounty": "漏洞赏金",
     "terms": "使用条款",
     "privacy": "隐私策略",
@@ -187,6 +188,7 @@
       }
     },
     "itemLabel": {
+      "amount": "数量",
       "name": "名称",
       "address": "地址",
       "action": "操作",

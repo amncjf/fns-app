@@ -1,0 +1,45 @@
+{
+  "title": "Set",
+  "section": {
+    "wallet": {
+      "title": "Wallet address"
+    },
+    "release": {
+      "title": "Current issue total"
+    },
+    "pledge": {
+      "title": "Total amount of pledge pool"
+    },
+    "share": {
+      "title": "Total expected earnings for the period",
+      "already": "Total earnings for the current period",
+      "button": "initialize"
+    },
+    "earnings": {
+      "title": "Prospective earnings",
+      "already": "Current yield",
+      "button": "Receipt in advance",
+      "buttonAlready": "Proceeds received"
+    },
+    "fnsBalance": {
+      "title": "My balance",
+      "button": "Pledge"
+    },
+    "sundayBalance": {
+      "title": "My pledge",
+      "button": "Withdrawal"
+    },
+    "error": {
+      "amount": "Please input quantity",
+      "notZero": "It can't be 0",
+      "tooBig": "Cannot exceed the maximum value"
+    },
+    "form": {
+      "max": "Maximum",
+      "placeholder": "Please input quantity",
+      "all": "All"
+    },
+    "paused": "Only on Sunday",
+    "notPaused": "Not on Sundays"
+  }
+}

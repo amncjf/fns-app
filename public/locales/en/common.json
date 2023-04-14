@@ -53,12 +53,13 @@
   "navigation": {
     "home": "Home",
     "names": "My Names",
+    "token": "FNS",
     "favourites": "Favourites",
     "settings": "Settings",
     "governance": "Governance",
     "community": "Community",
     "developers": "Developers",
-    "support": "Support",
+    "support": "Faq",
     "bounty": "Bug Bounty",
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
@@ -191,6 +192,7 @@
       }
     },
     "itemLabel": {
+      "amount": "amount",
       "name": "Name",
       "address": "Address",
       "action": "Action",

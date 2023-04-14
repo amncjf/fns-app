@@ -1,13 +1,16 @@
 import approveNameWrapper from './approveNameWrapper'
 import burnFuses from './burnFuses'
 import changePermissions from './changePermissions'
+import claimEarnings from './claimEarnings'
 import commitName from './commitName'
 import createSubname from './createSubname'
 import deleteSubname from './deleteSubname'
 import extendNames from './extendNames'
 import importDNSSECName from './importDNSSECName'
+import initShare from './initShare'
 import migrateProfile from './migrateProfile'
 import migrateProfileWithSync from './migrateProfileWithSync'
+import pledge from './pledge'
 import registerName from './registerName'
 import setPrimaryName from './setPrimaryName'
 import syncManager from './syncManager'
@@ -19,6 +22,7 @@ import updateEthAddress from './updateEthAddress'
 import updateProfile from './updateProfile'
 import updateProfileRecords from './updateProfileRecords'
 import updateResolver from './updateResolver'
+import withdrawal from './withdrawal'
 import wrapName from './wrapName'
 
 export const transactions = {
@@ -44,6 +48,10 @@ export const transactions = {
   changePermissions,
   syncManager,
   updateProfileRecords,
+  pledge,
+  withdrawal,
+  claimEarnings,
+  initShare,
 }
 
 export type Transaction = typeof transactions

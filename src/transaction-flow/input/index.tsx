@@ -7,6 +7,7 @@ import type { Props as CreateSubnameProps } from './CreateSubname-flow'
 import type { Props as DeleteEmancipatedSubnameWarningProps } from './DeleteEmancipatedSubnameWarning/DeleteEmancipatedSubnameWarning-flow'
 import type { Props as EditResolverProps } from './EditResolver/EditResolver-flow'
 import type { Props as ExtendNamesProps } from './ExtendNames/ExtendNames-flow'
+import type { Props as FnsTokenProps } from './FnsToken/FnsToken-flow'
 import type { Props as ProfileEditorProps } from './ProfileEditor/ProfileEditor-flow'
 import type { Props as RevokePermissionsProps } from './RevokePermissions/RevokePermissions-flow'
 import type { Props as SelectPrimaryNameProps } from './SelectPrimaryName-flow'
@@ -26,6 +27,7 @@ const dynamicHelper = <P,>(name: string) =>
     { loading: () => <TransactionLoader /> },
   )
 
+const EditFnsToken = dynamicHelper<FnsTokenProps>('FnsToken/FnsToken')
 const EditResolver = dynamicHelper<EditResolverProps>('EditResolver/EditResolver')
 const SelectPrimaryName = dynamicHelper<SelectPrimaryNameProps>('SelectPrimaryName')
 const AdvancedEditor = dynamicHelper<AdvancedEditorProps>('AdvancedEditor/AdvancedEditor')
@@ -44,6 +46,7 @@ const DeleteEmancipatedSubnameWarning = dynamicHelper<DeleteEmancipatedSubnameWa
 )
 
 export const DataInputComponents = {
+  EditFnsToken,
   EditResolver,
   ProfileEditor,
   AdvancedEditor,

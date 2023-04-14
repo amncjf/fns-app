@@ -156,6 +156,15 @@ const routesNoSearch = routes.filter(
   (route) => route.name !== 'search' && route.icon && !route.onlyDropdown && !route.disabled,
 )
 
+export const HeaderFns = () => {
+  return (
+    <LogoContainer>
+      <Image src="/fnsLogo.png" alt="FNS" width={48} height={48} />
+      <TextContainer>FNS</TextContainer>
+    </LogoContainer>
+  )
+}
+
 export const Header = () => {
   const router = useRouter()
   const isInitial = useInitial()
@@ -225,10 +234,7 @@ export const Header = () => {
           )}
         >
           {router.asPath === '/' ? (
-            <LogoContainer>
-              <Image src="/fnsLogo.png" alt="FNS" width={48} height={48} />
-              <TextContainer>FNS</TextContainer>
-            </LogoContainer>
+            <HeaderFns />
           ) : (
             <Image src="/fnsLogo.png" alt="FNS" width={48} height={48} />
           )}

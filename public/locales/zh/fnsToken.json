@@ -1,0 +1,45 @@
+{
+  "title": "设置",
+  "section": {
+    "wallet": {
+      "title": "钱包地址"
+    },
+    "release": {
+      "title": "当前发行总量"
+    },
+    "pledge": {
+      "title": "质押池总量"
+    },
+    "share": {
+      "title": "当期预期收益总量",
+      "already": "当期收益总量",
+      "button": "初始化"
+    },
+    "earnings": {
+      "title": "预期收益",
+      "already": "当期收益",
+      "button": "领取收益",
+      "buttonAlready": "收益已领取"
+    },
+    "fnsBalance": {
+      "title": "我的余额",
+      "button": "质押"
+    },
+    "sundayBalance": {
+      "title": "我的质押量",
+      "button": "提取"
+    },
+    "error": {
+      "amount": "请输入数量",
+      "notZero": "不能为0",
+      "tooBig": "不能超过最大值"
+    },
+    "form": {
+      "max": "最大值",
+      "placeholder": "请输入数量",
+      "all": "全部"
+    },
+    "paused": "星期天才可以",
+    "notPaused": "星期天不可以"
+  }
+}

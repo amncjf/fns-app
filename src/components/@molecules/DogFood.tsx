@@ -34,8 +34,8 @@ export const DogFood = (
     & { label?: string, validations?: any, disabled?: boolean, hideLabel?: boolean },
 ) => {
   const { t } = useTranslation('profile')
-  const { getRecords } = useFns()
-  const getRecordsMem = useRef(pMemoize(getRecords))
+  const { getProfile } = useFns()
+  const getRecordsMem = useRef(pMemoize(getProfile))
 
   const inputWatch = watch('dogfoodRaw')
 

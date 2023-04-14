@@ -73,7 +73,7 @@
     "@ethersproject/transactions": "^5.7.0",
     "@ethersproject/units": "^5.7.0",
     "@ethersproject/web": "^5.7.1",
-    "@fildomains/fnsjs": "0.52.4",
+    "@fildomains/fnsjs": "0.52.10",
     "@rainbow-me/rainbowkit": "0.12.1",
     "@sentry/nextjs": "^7.43.0",
     "@svgr/webpack": "^6.3.1",

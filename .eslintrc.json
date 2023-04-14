@@ -38,6 +38,7 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
+    "jsx-a11y/label-has-associated-control": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
