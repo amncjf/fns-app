@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useEffect, useRef } from 'react'
 import useTransition, { TransitionState } from 'react-transition-state'
@@ -159,7 +158,7 @@ const routesNoSearch = routes.filter(
 export const HeaderFns = () => {
   return (
     <LogoContainer>
-      <Image src="/fnsLogo.png" alt="FNS" width={48} height={48} />
+      <img src="/fnsLogo.png" alt="FNS" width={48} height={48} />
       <TextContainer>FNS</TextContainer>
     </LogoContainer>
   )
@@ -236,7 +235,7 @@ export const Header = () => {
           {router.asPath === '/' ? (
             <HeaderFns />
           ) : (
-            <Image src="/fnsLogo.png" alt="FNS" width={48} height={48} />
+            <img src="/fnsLogo.png" alt="FNS" width={48} height={48} />
           )}
         </ConditionalWrapper>
         {router.asPath !== '/' && breakpoints.sm && (

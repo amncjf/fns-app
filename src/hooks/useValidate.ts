@@ -1,7 +1,4 @@
 import { isAddress } from '@ethersproject/address'
-import { useEffect, useState } from 'react'
-import { useQuery } from 'wagmi'
-
 import {
   checkIsDecrypted,
   checkLabel,
@@ -9,6 +6,8 @@ import {
   saveName,
 } from '@fildomains/fnsjs/utils/labels'
 import { parseInput, validateName } from '@fildomains/fnsjs/utils/validation'
+import { useEffect, useState } from 'react'
+import { useQuery } from 'wagmi'
 
 // eslint-disable-next-line no-control-regex
 const nonAsciiRegex = /[^\x00-\x7F]+/g
@@ -28,6 +27,7 @@ const validate = (input: string) => {
     normalisedName = validateName(decodedInput)
     inputType = parseInput(normalisedName)
     isNonASCII = nonAsciiRegex.test(normalisedName)
+    // @ts-ignore
     valid = inputType.type !== 'unknown' && inputType.info !== 'unsupported'
     if (valid) {
       saveName(normalisedName)
