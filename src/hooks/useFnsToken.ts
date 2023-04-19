@@ -14,6 +14,7 @@ type BaseBatchReturn = [
   ReturnedENS['getSundayPaused'],
   ReturnedENS['getBalance'],
   ReturnedENS['getFnsBalance'],
+  ReturnedENS['getCurrentBlockTimestamp'],
 ]
 
 export const useFnsToken = (address: string | undefined) => {
@@ -31,6 +32,7 @@ export const useFnsToken = (address: string | undefined) => {
       'getEarnings',
       'getSundayPaused',
       'getBalance',
+      'getCurrentBlockTimestamp',
       address,
     ],
     (): Promise<[] | BaseBatchReturn | undefined> => {
@@ -49,6 +51,7 @@ export const useFnsToken = (address: string | undefined) => {
         fns.getSundayPaused.batch(),
         fns.getBalance.batch(sundayAddress),
         fns.getFnsBalance.batch(sundayAddress),
+        fns.getCurrentBlockTimestamp.batch(),
       )
     },
     {
@@ -66,6 +69,7 @@ export const useFnsToken = (address: string | undefined) => {
     paused,
     filBalance,
     sundayFnsBalance,
+    timestamp,
   ] = batchData || []
 
   if (share && !share.inited) {
@@ -87,5 +91,6 @@ export const useFnsToken = (address: string | undefined) => {
     earnings,
     paused,
     filBalance,
+    timestamp,
   }
 }

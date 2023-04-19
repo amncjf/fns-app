@@ -167,8 +167,8 @@
       "fns": "FNS 支付",
       "additionalFee": "附加手续费",
       "pendingMoonpayTransaction": "您的 Moonpay 交易正在处理中，这可能需要两分钟。您可以从收到的确认邮件中查看当前进度。",
-      "failedMoonpayTransaction": "您的 Moonpay 交易失败。请重试或选择 “以太坊” 支付方式。",
-      "ethereum": "以太坊",
+      "failedMoonpayTransaction": "您的 Moonpay 交易失败。请重试或选择 “文件币” 支付方式。",
+      "ethereum": "文件币",
       "processing": "处理中",
       "poweredBy": "技术支持来自"
     },

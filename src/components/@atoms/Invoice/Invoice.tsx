@@ -47,10 +47,13 @@ type Props = {
 }
 
 export const Invoice = ({ totalLabel = 'Estimated total', unit = 'fil', items }: Props) => {
-  const total = items
-    .map(({ value }) => value)
-    .filter((x) => !!x)
-    .reduce((a, b) => a!.add(b!), BigNumber.from(0))
+  const isfile = unit === 'fil'
+  const total = !isfile
+    ? items[0].value
+    : items
+        .map(({ value }) => value)
+        .filter((x) => !!x)
+        .reduce((a, b) => a!.add(b!), BigNumber.from(0))
 
   return (
     <Container>
@@ -58,14 +61,22 @@ export const Invoice = ({ totalLabel = 'Estimated total', unit = 'fil', items }:
         <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
           <div>{label}</div>
           <div data-testid={`invoice-item-${inx}-amount`}>
-            <CurrencyText fil={value} currency={unit} />
+            <CurrencyText fil={value} currency={!isfile && inx > 0 ? 'fil' : unit} />
           </div>
         </LineItem>
       ))}
       <Total>
         <div>{totalLabel}</div>
         <div data-testid="invoice-total">
-          <CurrencyText fil={total} currency={unit} />
+          {isfile ? (
+            <CurrencyText fil={total} currency={unit} />
+          ) : (
+            <>
+              <CurrencyText fil={total} currency={unit} />
+              {'; '}
+              <CurrencyText fil={items[1].value} currency="fil" />
+            </>
+          )}
         </div>
       </Total>
     </Container>

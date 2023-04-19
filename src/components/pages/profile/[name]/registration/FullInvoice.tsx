@@ -6,9 +6,8 @@ import { Colors } from '@ensdomains/thorin'
 
 import GasDisplay from '@app/components/@atoms/GasDisplay'
 import { Invoice } from '@app/components/@atoms/Invoice/Invoice'
-import { CurrencyToggle } from '@app/components/@molecules/CurrencyToggle'
+import { PaymentMethod } from '@app/components/pages/profile/[name]/registration/types'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
-import useUserConfig from '@app/utils/useUserConfig'
 
 const OptionBar = styled.div(
   () => css`
@@ -33,24 +32,27 @@ const InvoiceContainer = styled.div(
 type Props = ReturnType<typeof useEstimateFullRegistration>
 
 const FullInvoice = ({
+  paymentMethodChoice,
   years,
   totalYearlyFee,
+  totalYearlyFeeFns,
   estimatedGasFee,
   hasPremium,
   premiumFee,
+  premiumFeeFns,
   estimatedGasLoading,
   gasPrice,
 }: Props) => {
   const { t } = useTranslation('register')
 
-  const { userConfig, setCurrency } = useUserConfig()
-  const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'fil'
+  const useFil = paymentMethodChoice === PaymentMethod.ethereum
+  const currencyDisplay = useFil ? 'fil' : 'fns'
 
   const invoiceItems = useMemo(
     () => [
       {
         label: t('invoice.yearRegistration', { years }),
-        value: totalYearlyFee,
+        value: useFil ? totalYearlyFee : totalYearlyFeeFns,
       },
       {
         label: t('invoice.estimatedNetworkFee'),
@@ -60,13 +62,23 @@ const FullInvoice = ({
         ? [
             {
               label: t('invoice.temporaryPremium'),
-              value: premiumFee,
+              value: useFil ? premiumFee : premiumFeeFns,
               color: 'blue' as Colors,
             },
           ]
         : []),
     ],
-    [t, years, totalYearlyFee, estimatedGasFee, hasPremium, premiumFee],
+    [
+      t,
+      years,
+      totalYearlyFee,
+      totalYearlyFeeFns,
+      estimatedGasFee,
+      hasPremium,
+      premiumFee,
+      premiumFeeFns,
+      paymentMethodChoice,
+    ],
   )
 
   if (estimatedGasLoading) return <InvoiceContainer />
@@ -75,14 +87,6 @@ const FullInvoice = ({
     <InvoiceContainer>
       <OptionBar>
         <GasDisplay gasPrice={gasPrice} />
-        <CurrencyToggle
-          size="small"
-          checked={userConfig.currency === 'fiat'}
-          onChange={(e) => {
-            const config = setCurrency(e.target.checked ? 'fiat' : 'fil')
-            return config
-          }}
-        />
       </OptionBar>
       <Invoice items={invoiceItems} unit={currencyDisplay} totalLabel={t('invoice.total')} />
     </InvoiceContainer>

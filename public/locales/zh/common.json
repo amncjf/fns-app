@@ -157,7 +157,11 @@
       "transferName": "转移名称",
       "changePermissions": "更改权限",
       "syncManager": "同步管理员",
-      "updateProfileRecords": "更新个人资料"
+      "updateProfileRecords": "更新个人资料",
+      "claimEarnings": "领取收益",
+      "initShare": "初始化分红",
+      "pledge": "质押",
+      "withdrawal": "提取"
     },
     "info": {
       "sendName": "设置名称的管理员和注册人",

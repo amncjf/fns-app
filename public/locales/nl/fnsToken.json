@@ -7,6 +7,9 @@
     "release": {
       "title": "Huidige totale uitgifte"
     },
+    "time": {
+      "title": "huidige bloktijd"
+    },
     "pledge": {
       "title": "Totaalbedrag van de onderpandpool"
     },

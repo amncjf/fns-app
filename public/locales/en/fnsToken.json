@@ -7,6 +7,9 @@
     "release": {
       "title": "Current issue total"
     },
+    "time": {
+      "title": "Current block time"
+    },
     "pledge": {
       "title": "Total amount of pledge pool"
     },

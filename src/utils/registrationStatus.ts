@@ -64,6 +64,8 @@ export const getRegistrationStatus = ({
       const { premium } = priceData as {
         base: BigNumber
         premium: BigNumber
+        baseFns: BigNumber
+        premiumFns: BigNumber
       }
       if (premium.gt(0)) {
         return 'premium'

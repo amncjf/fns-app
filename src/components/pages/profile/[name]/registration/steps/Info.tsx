@@ -9,7 +9,7 @@ import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 
 import FullInvoice from '../FullInvoice'
-import { RegistrationReducerDataItem } from '../types'
+import { PaymentMethod, RegistrationReducerDataItem } from '../types'
 
 const StyledCard = styled(Card)(
   ({ theme }) => css`
@@ -98,6 +98,7 @@ const ProfileButton = styled.button(
 const infoItemArr = Array.from({ length: 3 }, (_, i) => `steps.info.ethItems.${i}`)
 
 type Props = {
+  paymentMethodChoice: PaymentMethod
   registrationData: RegistrationReducerDataItem
   nameDetails: ReturnType<typeof useNameDetails>
   callback: (data: { back: boolean }) => void
@@ -105,6 +106,7 @@ type Props = {
 }
 
 const Info = ({
+  paymentMethodChoice,
   registrationData,
   nameDetails: { priceData },
   callback,
@@ -114,6 +116,7 @@ const Info = ({
 
   const estimate = useEstimateFullRegistration({ registration: registrationData, price: priceData })
 
+  console.log('estimate:', estimate)
   return (
     <StyledCard>
       <Heading>{t('steps.info.heading')}</Heading>
@@ -126,7 +129,7 @@ const Info = ({
           </InfoItem>
         ))}
       </InfoItems>
-      <FullInvoice {...estimate} />
+      <FullInvoice {...estimate} paymentMethodChoice={paymentMethodChoice} />
       {!registrationData.queue.includes('profile') && (
         <ProfileButton data-testid="setup-profile-button" onClick={onProfileClick}>
           <Typography weight="bold" color="accent">

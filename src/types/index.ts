@@ -88,7 +88,7 @@ export type UserTheme = 'light' | 'dark'
 // fiat is placeholder for now, not actually implemented
 export type UserFiat = 'usd' | 'eur' | 'gbp' | 'aud'
 export type UserCurrency = 'fil' | 'fiat'
-export type CurrencyDisplay = UserFiat | 'fil'
+export type CurrencyDisplay = UserFiat | 'fil' | 'fns'
 
 export type UserConfig = {
   theme: UserTheme

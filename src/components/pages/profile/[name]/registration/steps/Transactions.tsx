@@ -24,7 +24,7 @@ import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvide
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { yearsToSeconds } from '@app/utils/utils'
 
-import { RegistrationReducerDataItem } from '../types'
+import { PaymentMethod, RegistrationReducerDataItem } from '../types'
 import { profileRecordsToRecordOptions } from './Profile/profileRecordUtils'
 
 const StyledCard = styled(Card)(
@@ -131,13 +131,20 @@ const ProgressButton = ({ onClick, label }: { onClick: () => void; label: string
 )
 
 type Props = {
+  paymentMethodChoice: PaymentMethod
   registrationData: RegistrationReducerDataItem
   nameDetails: ReturnType<typeof useNameDetails>
   callback: (data: { back: boolean; resetSecret?: boolean }) => void
   onStart: () => void
 }
 
-const Transactions = ({ registrationData, nameDetails, callback, onStart }: Props) => {
+const Transactions = ({
+  paymentMethodChoice,
+  registrationData,
+  nameDetails,
+  callback,
+  onStart,
+}: Props) => {
   const { t } = useTranslation('register')
 
   const { address } = useAccount()
@@ -157,6 +164,7 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
 
   const registrationParams: BaseRegistrationParams & { name: string } = useMemo(
     () => ({
+      useFns: paymentMethodChoice === PaymentMethod.fns,
       name: nameDetails.normalisedName,
       owner: address!,
       duration: yearsToSeconds(registrationData.years),
@@ -176,7 +184,7 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
       },
       reverseRecord: registrationData.reverseRecord,
     }),
-    [address, nameDetails, registrationData],
+    [address, nameDetails, registrationData, paymentMethodChoice],
   )
 
   const makeCommitNameFlow = useCallback(() => {
@@ -190,6 +198,7 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
   }, [commitKey, createTransactionFlow, nameDetails.normalisedName, onStart, registrationParams])
 
   const makeRegisterNameFlow = () => {
+    console.log('registrationParams:', registrationParams)
     createTransactionFlow(registerKey, {
       transactions: [makeTransactionItem('registerName', registrationParams)],
       requiresManualCleanup: true,

@@ -224,7 +224,6 @@ export const SearchInput = ({
         }
       }
 
-      console.log('_normalisedName:', _normalisedName, ',inputVal:', inputVal)
       return [
         _normalisedName,
         _isValid &&

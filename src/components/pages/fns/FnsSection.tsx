@@ -36,8 +36,31 @@ const SectionHeader = styled.div<{ $hideBorder?: boolean }>(
   `,
 )
 
+const formatFnsExpiry = (timestamp: number, language: string) => {
+  let locales
+  if (language === 'zh') {
+    locales = 'zh-CN'
+  } else if (language === 'en') {
+    locales = 'en-GB'
+  } else if (language === 'nl') {
+    locales = 'nl-NL'
+  } else if (language === 'de') {
+    locales = 'de-DE'
+  } else {
+    locales = 'default'
+  }
+
+  const expiry = new Date(timestamp * 1000 + new Date(0).getTimezoneOffset() * 60000)
+  return `${expiry.toLocaleDateString(locales, {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  })} ${expiry.toLocaleTimeString(locales)}`
+}
+
 export const FnsSection = ({ data }: { data: any }) => {
-  const { t } = useTranslation('fnsToken')
+  const { t, i18n } = useTranslation('fnsToken')
   const { address } = useAccountSafely()
   const {
     fnsSupply,
@@ -48,6 +71,7 @@ export const FnsSection = ({ data }: { data: any }) => {
     earnings,
     filBalance,
     paused,
+    timestamp,
   } = data
   const { showDataInput } = useTransactionFlow()
   const handleClick = (
@@ -68,6 +92,15 @@ export const FnsSection = ({ data }: { data: any }) => {
       action={<RecordItem type="text" data-testid="wallet-address" value={address!} />}
       fill={!!address}
     >
+      {!!timestamp && (
+        <ItemWrapper data-testid="primary-wrapper">
+          <SectionHeader $hideBorder={false}>
+            <Typography fontVariant="small" color="text">{`${t(
+              'section.time.title',
+            )}：${formatFnsExpiry(timestamp.toNumber(), i18n.language)}`}</Typography>
+          </SectionHeader>
+        </ItemWrapper>
+      )}
       <ItemWrapper data-testid="primary-wrapper">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">{`${t(
@@ -115,12 +148,12 @@ export const FnsSection = ({ data }: { data: any }) => {
             <Button
               data-testid="primary-section-button"
               size="small"
-              disabled={!paused && !!earnings.inited}
+              disabled={!paused || earnings.inited}
               onClick={() => handleClick('claimEarnings', t('section.earnings.button'))}
             >
               {/* eslint-disable-next-line no-nested-ternary */}
               {!paused
-                ? t('section.notPaused')
+                ? `${t('section.notPaused')}:${t('section.earnings.button')}`
                 : earnings.inited
                 ? t('section.earnings.buttonAlready')
                 : t('section.earnings.button')}
@@ -140,7 +173,9 @@ export const FnsSection = ({ data }: { data: any }) => {
               disabled={paused}
               onClick={() => handleClick('pledge', t('section.fnsBalance.button'), fnsBalance)}
             >
-              {paused ? t('section.paused') : t('section.fnsBalance.button')}
+              {paused
+                ? `${t('section.paused')}:${t('section.fnsBalance.button')}`
+                : t('section.fnsBalance.button')}
             </Button>
           </div>
         </SectionHeader>
@@ -159,7 +194,9 @@ export const FnsSection = ({ data }: { data: any }) => {
                 handleClick('withdrawal', t('section.sundayBalance.button'), sundayBalance)
               }
             >
-              {paused ? t('section.paused') : t('section.sundayBalance.button')}
+              {paused
+                ? `${t('section.paused')}:${t('section.sundayBalance.button')}`
+                : t('section.sundayBalance.button')}
             </Button>
           </div>
         </SectionHeader>

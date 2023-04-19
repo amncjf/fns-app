@@ -4,7 +4,10 @@ import { formatsByCoinType, formatsByName } from '@fildomains/fnsjs/utils/record
 import { useMemo } from 'react'
 import { useFeeData, useQuery } from 'wagmi'
 
-import { RegistrationData } from '@app/components/pages/profile/[name]/registration/types'
+import {
+  PaymentMethod,
+  RegistrationData,
+} from '@app/components/pages/profile/[name]/registration/types'
 import { emptyAddress } from '@app/utils/constants'
 
 import { profileRecordsToRecordOptions } from '../components/pages/profile/[name]/registration/steps/Profile/profileRecordUtils'
@@ -106,18 +109,25 @@ export const useEstimateFullRegistration = ({
 
   const yearlyFee = price?.base
   const premiumFee = price?.premium
+  const yearlyFeeFns = price?.baseFns
+  const premiumFeeFns = price?.premiumFns
   const hasPremium = premiumFee?.gt(0)
   const totalYearlyFee = yearlyFee?.mul(years)
+  const totalYearlyFeeFns = yearlyFeeFns?.mul(years)
 
   return {
     estimatedGasFee,
     estimatedGasLoading,
     yearlyFee,
+    yearlyFeeFns,
     totalYearlyFee,
+    totalYearlyFeeFns,
     hasPremium,
     premiumFee,
+    premiumFeeFns,
     gasPrice,
     years,
+    paymentMethodChoice: PaymentMethod.ethereum,
   }
 }
 

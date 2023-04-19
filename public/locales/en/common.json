@@ -160,7 +160,11 @@
       "transferName": "Transfer name",
       "changePermissions": "Change permissions",
       "syncManager": "Sync manager",
-      "updateProfileRecords": "Update profile"
+      "updateProfileRecords": "Update profile",
+      "claimEarnings": "Claim earnings",
+      "initShare": "Init share",
+      "pledge": "pledge",
+      "withdrawal": "withdrawal"
     },
     "info": {
       "sendName": "Set the controller and registrant of the name",

@@ -134,7 +134,11 @@
       "registerName": "Registeer Naam",
       "approveNameWrapper": "Sta NameWrapper toe",
       "clearRecords": "Clear records",
-      "updateRecords": "Update records"
+      "updateRecords": "Update records",
+      "claimEarnings": "uitkering ontvangen",
+      "initShare": "Initialiseer dividenden",
+      "pledge": "belofte",
+      "withdrawal": "extract"
     },
     "info": {
       "sendName": "Zet the controller and registrant of the name",

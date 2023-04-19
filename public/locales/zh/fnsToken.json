@@ -4,6 +4,9 @@
     "wallet": {
       "title": "钱包地址"
     },
+    "time": {
+      "title": "当前区块时间"
+    },
     "release": {
       "title": "当前发行总量"
     },

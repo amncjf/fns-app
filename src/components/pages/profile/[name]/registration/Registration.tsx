@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -134,11 +134,11 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
     moonpayTransactionStatus,
   } = useMoonpayRegistration(dispatch, normalisedName, selected, item)
 
-  const pricingCallback = ({
-    years,
-    reverseRecord,
-    paymentMethodChoice,
-  }: RegistrationStepData['pricing']) => {
+  const [paymentMethodChoice, setPaymentMethodChoice] = useState<PaymentMethod>(
+    PaymentMethod.ethereum,
+  )
+
+  const pricingCallback = ({ years, reverseRecord }: RegistrationStepData['pricing']) => {
     if (paymentMethodChoice === PaymentMethod.moonpay) {
       initiateMoonpayRegistrationMutation.mutate(years)
       return
@@ -260,6 +260,8 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
             {
               pricing: (
                 <Pricing
+                  paymentMethodChoice={paymentMethodChoice}
+                  setPaymentMethodChoice={setPaymentMethodChoice}
                   resolverExists={resolverExists}
                   nameDetails={nameDetails}
                   callback={pricingCallback}
@@ -283,6 +285,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
                   registrationData={item}
                   callback={genericCallback}
                   onProfileClick={infoProfileCallback}
+                  paymentMethodChoice={paymentMethodChoice}
                 />
               ),
               transactions: (
@@ -291,6 +294,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
                   registrationData={item}
                   onStart={onStart}
                   callback={transactionsCallback}
+                  paymentMethodChoice={paymentMethodChoice}
                 />
               ),
               complete: (

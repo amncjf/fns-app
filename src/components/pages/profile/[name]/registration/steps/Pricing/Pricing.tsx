@@ -160,8 +160,8 @@ const PaymentChoice = ({
   reverseRecord,
   setReverseRecord,
 }: {
-  paymentMethodChoice: PaymentMethod | ''
-  setPaymentMethodChoice: Dispatch<SetStateAction<PaymentMethod | ''>>
+  paymentMethodChoice: PaymentMethod
+  setPaymentMethodChoice: Dispatch<SetStateAction<PaymentMethod>>
   hasEnoughEth: boolean
   hasEnoughFns: boolean
   hasPendingMoonpayTransaction: boolean
@@ -260,7 +260,7 @@ interface ActionButtonProps {
   address?: string
   hasPendingMoonpayTransaction: boolean
   hasFailedMoonpayTransaction: boolean
-  paymentMethodChoice: PaymentMethod | ''
+  paymentMethodChoice: PaymentMethod
   reverseRecord: boolean
   callback: (props: RegistrationStepData['pricing']) => void
   initiateMoonpayRegistrationMutation: ReturnType<
@@ -343,6 +343,8 @@ export const ActionButton = ({
 }
 
 type Props = {
+  paymentMethodChoice: PaymentMethod
+  setPaymentMethodChoice: Dispatch<SetStateAction<PaymentMethod>>
   nameDetails: ReturnType<typeof useNameDetails>
   resolverExists: boolean | undefined
   callback: (props: RegistrationStepData['pricing']) => void
@@ -355,6 +357,8 @@ type Props = {
 }
 
 const Pricing = ({
+  paymentMethodChoice,
+  setPaymentMethodChoice,
   nameDetails,
   callback,
   hasPrimaryName,
@@ -382,15 +386,13 @@ const Pricing = ({
 
   const previousMoonpayTransactionStatus = usePrevious(moonpayTransactionStatus)
 
-  const [paymentMethodChoice, setPaymentMethodChoice] = useState<PaymentMethod | ''>(
-    hasPendingMoonpayTransaction ? PaymentMethod.moonpay : '',
-  )
-
   // Keep radio button choice up to date
   useEffect(() => {
     if (moonpayTransactionStatus) {
       setPaymentMethodChoice(
-        hasPendingMoonpayTransaction || hasFailedMoonpayTransaction ? PaymentMethod.moonpay : '',
+        hasPendingMoonpayTransaction || hasFailedMoonpayTransaction
+          ? PaymentMethod.moonpay
+          : PaymentMethod.ethereum,
       )
     }
   }, [
@@ -429,7 +431,7 @@ const Pricing = ({
         }}
         highlighted
       />
-      <FullInvoice {...fullEstimate} />
+      <FullInvoice {...fullEstimate} paymentMethodChoice={paymentMethodChoice} />
       {hasPremium && gracePeriodEndDate ? (
         <TemporaryPremium startDate={gracePeriodEndDate} name={normalisedName} />
       ) : (

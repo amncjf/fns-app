@@ -55,7 +55,6 @@ export const EditFnsToken = ({ data, dispatch, onDismiss }: Props) => {
 
   const handleCreateTransaction = useCallback(
     (value: string | undefined) => {
-      console.log('handleCreateTransaction value:', value, ',name:', name)
       dispatch({
         name: 'setTransactions',
         payload: [

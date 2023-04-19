@@ -7,7 +7,14 @@ import { ReactElement, ReactNode } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import { ChainProviderFn, WagmiConfig, configureChains, createClient } from 'wagmi'
-import { filecoin, filecoinCalibration, filecoinHyperspace, goerli, localhost } from 'wagmi/chains'
+import {
+  filecoin,
+  filecoinCalibration,
+  filecoinHyperspace,
+  goerli,
+  hardhat,
+  localhost,
+} from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
@@ -97,6 +104,7 @@ const breakpoints = {
 const providerArray: ChainProviderFn<
   | typeof goerli
   | typeof localhost
+  | typeof hardhat
   | typeof filecoin
   | typeof filecoinHyperspace
   | typeof filecoinCalibration
@@ -149,7 +157,7 @@ if (process.env.NEXT_PUBLIC_PROVIDER) {
 }
 
 const { provider, chains } = configureChains(
-  [goerli, localhost, filecoin, filecoinHyperspace, filecoinCalibration],
+  [goerli, localhost, hardhat, filecoin, filecoinHyperspace, filecoinCalibration],
   providerArray,
 )
 

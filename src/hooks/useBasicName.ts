@@ -1,7 +1,6 @@
+import { truncateFormat } from '@fildomains/fnsjs/utils/format'
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
-
-import { truncateFormat } from '@fildomains/fnsjs/utils/format'
 
 import { ReturnedENS } from '@app/types'
 import { useFns } from '@app/utils/FnsProvider'
