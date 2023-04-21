@@ -59,7 +59,7 @@ const transaction = async (signer: JsonRpcSigner, fns: PublicFNS, data: Data) =>
     return parts[0]
   })
 
-  const price = await fns.getPrice(labels, duration, true)
+  const price = await fns.getPrice(labels, duration)
   const priceWithBuffer = price?.base.mul(110).div(100)
 
   if (!priceWithBuffer) throw new Error('No price found')

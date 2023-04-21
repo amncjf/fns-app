@@ -76,6 +76,8 @@ describe('getRegistrationStatus', () => {
       const priceData = {
         base: BigNumber.from(1),
         premium: BigNumber.from(1),
+        baseFns: BigNumber.from(1),
+        premiumFns: BigNumber.from(1),
       }
 
       const result = getRegistrationStatus({
@@ -96,6 +98,8 @@ describe('getRegistrationStatus', () => {
       const priceData = {
         base: BigNumber.from(1),
         premium: BigNumber.from(0),
+        baseFns: BigNumber.from(1),
+        premiumFns: BigNumber.from(0),
       }
 
       const result = getRegistrationStatus({

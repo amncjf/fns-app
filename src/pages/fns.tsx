@@ -5,7 +5,9 @@ import { useAccount } from 'wagmi'
 import { FnsSection } from '@app/components/pages/fns/FnsSection'
 import { WalletSection } from '@app/components/pages/profile/settings/WalletSection'
 import { useFnsToken } from '@app/hooks/useFnsToken'
+import { usePrimary } from '@app/hooks/usePrimary'
 import { useProtectedRoute } from '@app/hooks/useProtectedRoute'
+// import { useQueryParameterState } from '@app/hooks/useQueryParameterState'
 import { Content } from '@app/layouts/Content'
 
 const OtherWrapper = styled.div(
@@ -23,7 +25,9 @@ const OtherWrapper = styled.div(
 export default function Page() {
   const { t } = useTranslation('fns')
   const { address, isConnecting, isReconnecting } = useAccount()
-  const data = useFnsToken(address)
+  const { name } = usePrimary(address!, !address)
+  const data = useFnsToken(name)
+  // const [name, setName] = useQueryParameterState<string>('name', '')
 
   useProtectedRoute('/fns', isConnecting || isReconnecting ? true : address)
 

@@ -1,6 +1,9 @@
 {
   "title": "设置",
   "section": {
+    "name": {
+      "title": "我的名称"
+    },
     "wallet": {
       "title": "钱包地址"
     },

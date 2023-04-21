@@ -82,11 +82,13 @@ const useEstimateRegistration = (data: RegistrationProps | undefined) => {
 }
 
 type FullProps = {
+  paymentMethodChoice: PaymentMethod
   registration: Omit<RegistrationData, 'secret' | 'started' | 'paymentMethodChoice'>
   price: ReturnType<typeof useNameDetails>['priceData']
 }
 
 export const useEstimateFullRegistration = ({
+  paymentMethodChoice,
   registration: { reverseRecord, records: _records, resolver, years, clearRecords },
   price,
 }: FullProps) => {
@@ -127,7 +129,7 @@ export const useEstimateFullRegistration = ({
     premiumFeeFns,
     gasPrice,
     years,
-    paymentMethodChoice: PaymentMethod.ethereum,
+    paymentMethodChoice,
   }
 }
 

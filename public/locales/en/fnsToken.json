@@ -1,6 +1,9 @@
 {
   "title": "Set",
   "section": {
+    "name": {
+      "title": "My name"
+    },
     "wallet": {
       "title": "Wallet address"
     },

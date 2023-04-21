@@ -39,7 +39,8 @@ const EditResolverFormContainer = styled.div(({ theme }) => [
 
 type Data = {
   maxValue: BigNumber | undefined
-  name: string
+  action: string
+  name: string | undefined
   title: string
 }
 
@@ -50,7 +51,7 @@ export type Props = {
 export const EditFnsToken = ({ data, dispatch, onDismiss }: Props) => {
   const { t } = useTranslation('transactionFlow')
 
-  const { maxValue, name, title } = data
+  const { maxValue, name, title, action } = data
   const formRef = useRef<HTMLFormElement>(null)
 
   const handleCreateTransaction = useCallback(
@@ -58,9 +59,10 @@ export const EditFnsToken = ({ data, dispatch, onDismiss }: Props) => {
       dispatch({
         name: 'setTransactions',
         payload: [
-          makeTransactionItem(name as TransactionName, {
+          makeTransactionItem(action as TransactionName, {
             amount: maxValue ? parseFixed(value!, 18).toString() : undefined,
             title,
+            name,
           }),
         ],
       })

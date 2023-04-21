@@ -58,7 +58,7 @@ importers:
       '@ethersproject/units': ^5.7.0
       '@ethersproject/wallet': ^5.7.0
       '@ethersproject/web': ^5.7.1
-      '@fildomains/fnsjs': 0.52.14
+      '@fildomains/fnsjs': 0.52.17
       '@next/bundle-analyzer': ^12.2.5
       '@next/swc-linux-x64-gnu': 12.1.4
       '@nomiclabs/hardhat-ethers': npm:hardhat-deploy-ethers@0.3.0-beta.13
@@ -200,7 +200,7 @@ importers:
       '@ethersproject/transactions': 5.7.0
       '@ethersproject/units': 5.7.0
       '@ethersproject/web': 5.7.1
-      '@fildomains/fnsjs': 0.52.14_6zpvpzigupcdblombyllfjwbve
+      '@fildomains/fnsjs': 0.52.17_6zpvpzigupcdblombyllfjwbve
       '@rainbow-me/rainbowkit': 0.12.1_z2ubwtguxrajavdusmmghl5kju_vwgfuivoohbeopgq6vyae2p5py
       '@sentry/nextjs': 7.43.0_next@12.1.6+react@17.0.2
       '@svgr/webpack': 6.4.0
@@ -3741,8 +3741,8 @@ packages:
       '@ethersproject/properties': 5.7.0
       '@ethersproject/strings': 5.7.0
 
-  /@fildomains/fnsjs/0.52.14_6zpvpzigupcdblombyllfjwbve:
-    resolution: {integrity: sha512-TF4sECNhxkmzInTdBMq7dgJbBXa89ulW8Bzj9AI15iyKKDTFBa6ostT8/dW6vsGHdoamJQCNdzBSKx3TKg/kig==}
+  /@fildomains/fnsjs/0.52.17_6zpvpzigupcdblombyllfjwbve:
+    resolution: {integrity: sha512-Lj3mWEHPFTTcakOhBCZoN7KmzpCObOkC2mcKIT1nMme87MdyXsWkpeTZ2JKUNx3s2Qs451H4PDJet5RqzZkIbg==}
     peerDependencies:
       '@ethersproject/abi': ^5.6.4
       '@ethersproject/abstract-provider': ^5.7.0

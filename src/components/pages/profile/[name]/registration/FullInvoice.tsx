@@ -78,6 +78,7 @@ const FullInvoice = ({
       premiumFee,
       premiumFeeFns,
       paymentMethodChoice,
+      useFil,
     ],
   )
 

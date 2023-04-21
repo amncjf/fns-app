@@ -114,7 +114,11 @@ const Info = ({
 }: Props) => {
   const { t } = useTranslation('register')
 
-  const estimate = useEstimateFullRegistration({ registration: registrationData, price: priceData })
+  const estimate = useEstimateFullRegistration({
+    paymentMethodChoice,
+    registration: registrationData,
+    price: priceData,
+  })
 
   console.log('estimate:', estimate)
   return (

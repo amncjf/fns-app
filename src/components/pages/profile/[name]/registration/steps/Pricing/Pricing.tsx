@@ -26,6 +26,7 @@ import { ConnectButton } from '@app/components/ConnectButton'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useContractAddress } from '@app/hooks/useContractAddress'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
+import { useFnsBalance } from '@app/hooks/useFnsBalance'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 
@@ -171,7 +172,8 @@ const PaymentChoice = ({
   setReverseRecord: (reverseRecord: boolean) => void
 }) => {
   const { t } = useTranslation('register')
-  const hasEnough = paymentMethodChoice === PaymentMethod.ethereum ? hasEnoughEth : hasEnoughFns
+  const hasEnough =
+    paymentMethodChoice === PaymentMethod.ethereum ? hasEnoughEth : hasEnoughEth && hasEnoughFns
 
   return (
     <PaymentChoiceContainer>
@@ -196,9 +198,14 @@ const PaymentChoice = ({
           </ButtonContainer>
           <ButtonContainer>
             <StyledRadioButton
-              label={<RadioLabel>{t('steps.info.fns')}</RadioLabel>}
+              label={
+                <RadioLabel>
+                  {hasEnoughFns ? t('steps.info.fns') : t('steps.info.notEnoughFns')}
+                </RadioLabel>
+              }
               name="RadioButtonGroup"
               value={PaymentMethod.fns}
+              disabled={!hasEnoughFns}
               checked={paymentMethodChoice === PaymentMethod.fns || undefined}
             />
           </ButtonContainer>
@@ -404,6 +411,7 @@ const Pricing = ({
   ])
 
   const fullEstimate = useEstimateFullRegistration({
+    paymentMethodChoice,
     registration: {
       records: [{ key: 'FIL', value: resolverAddress, type: 'addr', group: 'address' }],
       clearRecords: resolverExists,
@@ -418,6 +426,12 @@ const Pricing = ({
 
   const yearlyRequiredBalance = totalYearlyFee?.mul(110).div(100)
   const totalRequiredBalance = yearlyRequiredBalance?.add(premiumFee || 0).add(estimatedGasFee || 0)
+
+  const fnsBalance = useFnsBalance(address!)
+  const hasEnoughFns =
+    fnsBalance.data && nameDetails.priceData
+      ? fnsBalance.data.gte(nameDetails.priceData.baseFns.add(nameDetails.priceData.premiumFns))
+      : true
 
   return (
     <StyledCard>
@@ -454,7 +468,7 @@ const Pricing = ({
           reverseRecord,
           setReverseRecord,
           hasEnoughEth: true,
-          hasEnoughFns: true,
+          hasEnoughFns,
           hasPendingMoonpayTransaction,
           hasFailedMoonpayTransaction,
         }}

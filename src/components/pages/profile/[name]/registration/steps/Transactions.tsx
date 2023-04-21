@@ -189,6 +189,7 @@ const Transactions = ({
 
   const makeCommitNameFlow = useCallback(() => {
     onStart()
+    console.log('commitName registrationParams:', registrationParams)
     createTransactionFlow(commitKey, {
       transactions: [makeTransactionItem('commitName', registrationParams)],
       requiresManualCleanup: true,
@@ -198,7 +199,7 @@ const Transactions = ({
   }, [commitKey, createTransactionFlow, nameDetails.normalisedName, onStart, registrationParams])
 
   const makeRegisterNameFlow = () => {
-    console.log('registrationParams:', registrationParams)
+    console.log('registerName registrationParams:', registrationParams)
     createTransactionFlow(registerKey, {
       transactions: [makeTransactionItem('registerName', registrationParams)],
       requiresManualCleanup: true,

@@ -42,9 +42,9 @@ export default function Page() {
 
   useEffect(() => {
     if (
-      currentChain?.id === 5 ||
       currentChain?.id === 314 ||
       currentChain?.id === 3141 ||
+      currentChain?.id === 314159 ||
       currentChain?.id === 1337 ||
       currentChain?.id === 31337
     ) {

@@ -3,6 +3,8 @@ import { useQuery } from 'wagmi'
 import { useContractAddress } from '@app/hooks/useContractAddress'
 import { ReturnedENS } from '@app/types'
 import { useFns } from '@app/utils/FnsProvider'
+import useOwners from "@app/hooks/useOwners";
+import { useExists } from "@app/hooks/useExists";
 
 type BaseBatchReturn = [
   ReturnedENS['getFnsSupply'],
@@ -17,9 +19,14 @@ type BaseBatchReturn = [
   ReturnedENS['getCurrentBlockTimestamp'],
 ]
 
-export const useFnsToken = (address: string | undefined) => {
+export const useFnsToken = (name: string | undefined) => {
   const fns = useFns()
 
+  const { data, status } = useExists(name!)
+
+  const address = data ? data.owner : '0x0000000000000000000000000000000000000000'
+
+  console.log('useFnsToken name:', name, ',address:', address)
   const sundayAddress = useContractAddress('Sunday')
   const { data: batchData } = useQuery(
     [
@@ -83,6 +90,9 @@ export const useFnsToken = (address: string | undefined) => {
   }
 
   return {
+    status,
+    name,
+    address,
     fnsSupply,
     sundaySupply,
     fnsBalance,

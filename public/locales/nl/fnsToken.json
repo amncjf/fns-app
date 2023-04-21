@@ -1,6 +1,9 @@
 {
   "title": "opgericht",
   "section": {
+    "name": {
+      "title": "mijn naam"
+    },
     "wallet": {
       "title": "portemonnee adres"
     },

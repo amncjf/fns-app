@@ -24,6 +24,8 @@ export type PublicRoute =
   | 'terms'
   | 'privacy'
   | 'oldApp'
+  | 'website'
+  | 'medium'
 export type ConnectedRoute = 'names' | 'token' | 'profile' | 'favourites' | 'settings'
 export type AnyRoute = PublicRoute | ConnectedRoute | 'unknown'
 
@@ -110,9 +112,23 @@ export const routes: RouteItemObj[] = [
     onlyDropdown: true,
   },
   {
+    name: 'website',
+    href: 'https://fildomains.com/',
+    label: 'navigation.website',
+    disabled: false,
+    connected: false,
+  },
+  {
     name: 'support',
     href: '/faq',
     label: 'navigation.support',
+    disabled: false,
+    connected: false,
+  },
+  {
+    name: 'medium',
+    href: 'https://fildomains.medium.com/',
+    label: 'navigation.medium',
     disabled: false,
     connected: false,
   },

@@ -5,7 +5,6 @@ import styled, { css } from 'styled-components'
 import { Button, Typography } from '@ensdomains/thorin'
 
 import RecordItem from '@app/components/RecordItem'
-import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { makeDisplay } from '@app/utils/currency'
 
@@ -61,8 +60,9 @@ const formatFnsExpiry = (timestamp: number, language: string) => {
 
 export const FnsSection = ({ data }: { data: any }) => {
   const { t, i18n } = useTranslation('fnsToken')
-  const { address } = useAccountSafely()
   const {
+    name,
+    address,
     fnsSupply,
     sundaySupply,
     fnsBalance,
@@ -75,23 +75,35 @@ export const FnsSection = ({ data }: { data: any }) => {
   } = data
   const { showDataInput } = useTransactionFlow()
   const handleClick = (
-    name: string,
+    action: string,
     title: string,
     maxValue: BigNumber | undefined = undefined,
   ) => {
     showDataInput(`fns-token-edit`, 'EditFnsToken', {
       maxValue,
+      action,
       name,
       title,
     })
   }
 
+  const haveEarnings = earnings.fns.add(earnings.fil).gt(0)
   return (
     <SectionContainer
-      title={t('section.wallet.title')}
-      action={<RecordItem type="text" data-testid="wallet-address" value={address!} />}
+      title={t('section.name.title')}
+      action={<RecordItem type="text" data-testid="wallet-address" value={name} />}
       fill={!!address}
     >
+      <ItemWrapper data-testid="primary-wrapper">
+        <SectionHeader $hideBorder={false}>
+          <Typography fontVariant="small" color="text">
+            {`${t('section.wallet.title')}：`}
+          </Typography>
+          <div>
+            <RecordItem type="text" data-testid="wallet-address" value={address!} />
+          </div>
+        </SectionHeader>
+      </ItemWrapper>
       {!!timestamp && (
         <ItemWrapper data-testid="primary-wrapper">
           <SectionHeader $hideBorder={false}>
@@ -124,17 +136,19 @@ export const FnsSection = ({ data }: { data: any }) => {
           <Typography fontVariant="small" color="text">{`${
             share.inited ? t('section.share.already') : t('section.share.title')
           }：${makeDisplay(share.fns, 5, 'fns')}, ${makeDisplay(share.fil, 5, 'fil')}`}</Typography>
-          <div>
-            {!share.inited && paused && (
-              <Button
-                data-testid="primary-section-button"
-                size="small"
-                onClick={() => handleClick('initShare', t('section.share.button'))}
-              >
-                {t('section.share.button')}
-              </Button>
-            )}
-          </div>
+          {sundaySupply.gt(0) && (
+            <div>
+              {!share.inited && paused && (
+                <Button
+                  data-testid="primary-section-button"
+                  size="small"
+                  onClick={() => handleClick('initShare', t('section.share.button'))}
+                >
+                  {t('section.share.button')}
+                </Button>
+              )}
+            </div>
+          )}
         </SectionHeader>
       </ItemWrapper>
       <ItemWrapper data-testid="primary-wrapper">
@@ -144,21 +158,23 @@ export const FnsSection = ({ data }: { data: any }) => {
               earnings.inited ? t('section.earnings.already') : t('section.earnings.title')
             }：${makeDisplay(earnings.fns, 5, 'fns')}, ${makeDisplay(earnings.fil, 5, 'fil')}`}
           </Typography>
-          <div>
-            <Button
-              data-testid="primary-section-button"
-              size="small"
-              disabled={!paused || earnings.inited}
-              onClick={() => handleClick('claimEarnings', t('section.earnings.button'))}
-            >
-              {/* eslint-disable-next-line no-nested-ternary */}
-              {!paused
-                ? `${t('section.notPaused')}:${t('section.earnings.button')}`
-                : earnings.inited
-                ? t('section.earnings.buttonAlready')
-                : t('section.earnings.button')}
-            </Button>
-          </div>
+          {haveEarnings && (
+            <div>
+              <Button
+                data-testid="primary-section-button"
+                size="small"
+                disabled={!paused || earnings.inited}
+                onClick={() => handleClick('claimEarnings', t('section.earnings.button'))}
+              >
+                {/* eslint-disable-next-line no-nested-ternary */}
+                {!paused
+                  ? `${t('section.notPaused')}:${t('section.earnings.button')}`
+                  : earnings.inited
+                  ? t('section.earnings.buttonAlready')
+                  : t('section.earnings.button')}
+              </Button>
+            </div>
+          )}
         </SectionHeader>
       </ItemWrapper>
       <ItemWrapper data-testid="primary-wrapper">

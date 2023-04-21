@@ -47,7 +47,7 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
           fns.getOwner.batch(normalisedName),
           fns.getWrapperData.batch(normalisedName),
           fns.getExpiry.batch(normalisedName),
-          fns.getPrice.batch(labels[0], yearsToSeconds(1), false),
+          fns.getPrice.batch(labels[0], yearsToSeconds(1)),
         )
       }
 
