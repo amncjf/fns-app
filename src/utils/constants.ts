@@ -22,28 +22,28 @@ interface ResolverAddresses {
 // Ordered by recency
 export const RESOLVER_ADDRESSES: ResolverAddresses = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  '314': ['0xd1fA99Bde6a85378df590B24188376280fA7919A'],
+  '314': ['0x28856841248E21e7650a81E4D35c846d268Bf239'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  '3141': ['0x55B372Ea4907A26a692BA41D0284E572d7A4e8da'],
+  '3141': ['0xD75719E7Ca2DdDd663911F7d667Bf0f1ac54BF1e'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '1337': ['0x0B306BF915C4d645ff596e518fAf3F9669b97016'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '31337': ['0x0B306BF915C4d645ff596e518fAf3F9669b97016'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  '314159': ['0x86bdC76cee571e8A5E5060971499e4Fd620Ff6D4'],
+  '314159': ['0xD75719E7Ca2DdDd663911F7d667Bf0f1ac54BF1e'],
 }
 
 export const NAMEWRAPPER_AWARE_RESOLVERS: ResolverAddresses = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  '314': ['0xd1fA99Bde6a85378df590B24188376280fA7919A'],
+  '314': ['0x28856841248E21e7650a81E4D35c846d268Bf239'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  '3141': ['0x55B372Ea4907A26a692BA41D0284E572d7A4e8da'],
+  '3141': ['0xD75719E7Ca2DdDd663911F7d667Bf0f1ac54BF1e'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '1337': ['0x0B306BF915C4d645ff596e518fAf3F9669b97016'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '31337': ['0x0B306BF915C4d645ff596e518fAf3F9669b97016'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  '314159': ['0x86bdC76cee571e8A5E5060971499e4Fd620Ff6D4'],
+  '314159': ['0xD75719E7Ca2DdDd663911F7d667Bf0f1ac54BF1e'],
 }
 
 export const RESOLVER_INTERFACE_IDS = {
