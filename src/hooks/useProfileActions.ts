@@ -1,7 +1,7 @@
+import { checkIsDecrypted } from '@fildomains/fnsjs/utils/labels'
+import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import { checkIsDecrypted } from '@fildomains/fnsjs/utils/labels'
 
 import { usePrimary } from '@app/hooks/usePrimary'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
@@ -40,6 +40,7 @@ export const useProfileActions = ({
   const { name: primaryName, loading: primaryLoading } = usePrimary(address || '')
   const { createTransactionFlow, showDataInput } = useTransactionFlow()
   const { t } = useTranslation('profile')
+  const router = useRouter()
 
   const profileActions = useMemo(() => {
     const actions: Action[] = []
@@ -131,6 +132,13 @@ export const useProfileActions = ({
         red: true,
         skip2LDEth: true,
         tooltipContent: t('errors.permissionRevoked'),
+      })
+    }
+
+    if (checkIsDecrypted(name)) {
+      actions.push({
+        label: t('tabs.fns.name'),
+        onClick: () => router.push({ pathname: '/fns', query: { name } }),
       })
     }
 

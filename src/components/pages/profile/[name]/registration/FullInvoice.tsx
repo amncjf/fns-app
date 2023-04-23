@@ -77,7 +77,6 @@ const FullInvoice = ({
       hasPremium,
       premiumFee,
       premiumFeeFns,
-      paymentMethodChoice,
       useFil,
     ],
   )

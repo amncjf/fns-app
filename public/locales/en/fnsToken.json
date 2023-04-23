@@ -14,7 +14,8 @@
       "title": "Current block time"
     },
     "pledge": {
-      "title": "Total amount of pledge pool"
+      "title": "Dispensable amount",
+      "total": "Pledge amount"
     },
     "share": {
       "title": "Total expected earnings for the period",

@@ -65,6 +65,7 @@ export const FnsSection = ({ data }: { data: any }) => {
     address,
     fnsSupply,
     sundaySupply,
+    sundayFnsBalance,
     fnsBalance,
     sundayBalance,
     share,
@@ -123,11 +124,18 @@ export const FnsSection = ({ data }: { data: any }) => {
       <ItemWrapper data-testid="primary-wrapper">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">
-            {`${t('section.pledge.title')}：${makeDisplay(sundaySupply, 5, 'fns')}, ${makeDisplay(
-              filBalance,
+            {`${t('section.pledge.total')}：${makeDisplay(sundaySupply, 5, 'fns')}`}
+          </Typography>
+        </SectionHeader>
+      </ItemWrapper>
+      <ItemWrapper data-testid="primary-wrapper">
+        <SectionHeader $hideBorder={false}>
+          <Typography fontVariant="small" color="text">
+            {`${t('section.pledge.title')}：${makeDisplay(
+              sundayFnsBalance.sub(sundaySupply),
               5,
-              'fil',
-            )}`}
+              'fns',
+            )}, ${makeDisplay(filBalance, 5, 'fil')}`}
           </Typography>
         </SectionHeader>
       </ItemWrapper>

@@ -14,7 +14,8 @@
       "title": "huidige bloktijd"
     },
     "pledge": {
-      "title": "Totaalbedrag van de onderpandpool"
+      "title": "Wegwerpbaar bedrag",
+      "total": "toegezegd bedrag"
     },
     "share": {
       "title": "totaal verwacht rendement",

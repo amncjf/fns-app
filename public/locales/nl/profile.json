@@ -12,6 +12,9 @@
   "editProfile": "Edit Profiel",
   "viewDetails": "Bekijk Details",
   "tabs": {
+    "fns": {
+      "name": "uitkering ontvangen"
+    },
     "profile": {
       "name": "Profiel",
       "actions": {

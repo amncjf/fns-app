@@ -7,7 +7,7 @@ import { WalletSection } from '@app/components/pages/profile/settings/WalletSect
 import { useFnsToken } from '@app/hooks/useFnsToken'
 import { usePrimary } from '@app/hooks/usePrimary'
 import { useProtectedRoute } from '@app/hooks/useProtectedRoute'
-// import { useQueryParameterState } from '@app/hooks/useQueryParameterState'
+import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { Content } from '@app/layouts/Content'
 
 const OtherWrapper = styled.div(
@@ -25,11 +25,12 @@ const OtherWrapper = styled.div(
 export default function Page() {
   const { t } = useTranslation('fns')
   const { address, isConnecting, isReconnecting } = useAccount()
-  const { name } = usePrimary(address!, !address)
-  const data = useFnsToken(name)
-  // const [name, setName] = useQueryParameterState<string>('name', '')
+  const { name: mainName } = usePrimary(address!, !address)
+  const router = useRouterWithHistory()
+  const name = router.query.name as string
 
-  useProtectedRoute('/fns', isConnecting || isReconnecting ? true : address)
+  const data = useFnsToken(!name || name.length === 0 ? mainName : name)
+  useProtectedRoute('/', isConnecting || isReconnecting ? true : address)
 
   return (
     <Content singleColumnContent title={t('title')}>
