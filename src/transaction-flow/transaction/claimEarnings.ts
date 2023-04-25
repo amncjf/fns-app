@@ -1,4 +1,5 @@
 import type { JsonRpcSigner } from '@ethersproject/providers'
+import { namehash } from '@fildomains/fnsjs/utils/normalise'
 
 import { PublicFNS, Transaction, TransactionDisplayItem } from '@app/types'
 
@@ -15,7 +16,7 @@ const displayItems = ({ title }: Data): TransactionDisplayItem[] => [
 ]
 
 const transaction = (signer: JsonRpcSigner, fns: PublicFNS, data: Data) => {
-  const tx = fns.claimEarnings.populateTransaction(data.name, { signer })
+  const tx = fns.claimEarnings.populateTransaction(namehash(data.name), { signer })
   return tx
 }
 
