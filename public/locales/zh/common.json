@@ -3,6 +3,8 @@
   "description": "您在 web3 上的身份，一个名称就能解析到您所有的加密地址和您的去中心化网站。",
   "loading": "加载中",
   "unsupportedNetwork": "不支持的网络",
+  "notFound": "404 未找到",
+  "etherscan": "区块浏览器",
   "action": {
     "cancel": "取消",
     "change": "更改",
@@ -39,7 +41,9 @@
     "finish": "完成",
     "skip": "跳过",
     "changeNetwork": "更改网络",
-    "understand": "我了解"
+    "understand": "我了解",
+    "feedback": "反馈",
+    "migrate": "迁移"
   },
   "unit": {
     "years_one": "{{count}} 年",
@@ -66,7 +70,11 @@
     "terms": "使用条款",
     "privacy": "隐私策略",
     "back": "返回",
-    "oldApp": "旧版 FNS App",
+    "oldApp": "旧版 ENS App",
+    "language": "语言",
+    "currency": "货币",
+    "ipfsApp": "IPFS ENS App",
+    "feedback": "反馈",
     "syncMessage": "正在进行网络同步，您在交易中更改的内容可能还看不到。"
   },
   "wallet": {
@@ -82,6 +90,9 @@
     "registered": "已注册",
     "expires": "到期时间",
     "noExpiry": "无限期",
+    "expiry": "到期",
+    "parent": "父名称",
+    "noParent": "无父名称",
     "registrant": "注册人",
     "controller": "管理员",
     "dnsOwner": "DNS 所有者",
@@ -107,6 +118,17 @@
     "expiredInMonths_other": "{{count}} 个月前已过期",
     "expiredInYears_one": "{{count}} 年前已过期",
     "expiredInYears_other": "{{count}} 年前已过期",
+    "gracePeriod": {
+      "expiresInYears_one": "宽限期将在 {{count}} 年后到期",
+      "expiresInYears_other": "宽限期将在 {{count}} 年后到期",
+      "expiresInMonths_one": "宽限期将在 {{count}} 个月后到期",
+      "expiresInMonths_other": "宽限期将在 {{count}} 个月后到期",
+      "expiresInDays_one": "宽限期将在 {{count}} 天后到期",
+      "expiresInDays_other": "宽限期将在 {{count}} 天后到期",
+      "expiresInHours_one": "宽限期将在 {{count}} 个小时后到期",
+      "expiresInHours_other": "宽限期将在 {{count}} 个小时后到期",
+      "expiresInHours_zero": "宽限期将在 1 小时内到期"
+    },
     "extend": "续期",
     "send": "发送",
     "transfer": "转移",
@@ -139,6 +161,7 @@
       "addSuccess": "添加成功",
       "sendName": "发送名称",
       "migrateProfile": "迁移个人资料",
+      "migrateProfileWithReset": "迁移个人资料",
       "migrateProfileWithSync": "迁移并更新个人资料",
       "wrapName": "包装名称",
       "updateResolver": "更新解析器",
@@ -160,6 +183,7 @@
       "changePermissions": "更改权限",
       "syncManager": "同步管理员",
       "updateProfileRecords": "更新个人资料",
+      "resetProfile": "重置个人资料",
       "claimEarnings": "领取收益",
       "initShare": "初始化分红",
       "pledge": "质押",
@@ -168,6 +192,7 @@
     "info": {
       "sendName": "设置名称的管理员和注册人",
       "migrateProfile": "将现有记录设置到新的解析器上",
+      "migrateProfileWithReset": "将现有记录设置到新的解析器上",
       "migrateProfileWithSync": "将现有记录设置到新的解析器上",
       "wrapName": "包装名称并设置新的解析器",
       "updateResolver": "将解析器更改为",
@@ -190,7 +215,8 @@
         "CANNOT_SET_RESOLVER": "设置解析器",
         "CANNOT_SET_TTL": "设置 TTL",
         "CANNOT_TRANSFER": "转移该名称",
-        "CANNOT_BURN_FUSES": "更改权限"
+        "CANNOT_BURN_FUSES": "更改权限",
+        "CANNOT_APPROVE": "更改续期管理员"
       }
     },
     "itemLabel": {
@@ -261,6 +287,12 @@
         "gasLimit": "这笔交易的网络费限额不够高，请再试一次。"
       }
     },
+    "error": {
+      "request": {
+        "INSUFFICIENT_FUNDS": "钱包余额不足",
+        "UNPREDICTABLE_GAS_LIMIT": "发生未知错误"
+      }
+    },
     "viewEtherscan": "在区块浏览器上查看",
     "viewMore": "查看详情"
   },
@@ -291,5 +323,9 @@
     "add": "添加",
     "placeholder": "选择一项",
     "empty": "未找到选项"
+  },
+  "testnetFaucet": {
+    "explanation": "Goerli 上的每个地址都可以申请 {{amount}} ETH 来测试 ENS 管理器 app 以及所有新合约。",
+    "note": "它可能在几分钟后才能出现在你的钱包里。"
   }
 }

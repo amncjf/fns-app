@@ -74,13 +74,15 @@ export const FnsSection = ({ data }: { data: any }) => {
     paused,
     timestamp,
   } = data
-  const { showDataInput } = useTransactionFlow()
+  const { prepareDataInput } = useTransactionFlow()
+  const showRevokePermissionsInput = prepareDataInput('FnsToken')
+
   const handleClick = (
     action: string,
     title: string,
     maxValue: BigNumber | undefined = undefined,
   ) => {
-    showDataInput(`fns-token-edit`, 'EditFnsToken', {
+    showRevokePermissionsInput(`fns-token-${name}`, {
       maxValue,
       action,
       name,
@@ -89,6 +91,8 @@ export const FnsSection = ({ data }: { data: any }) => {
   }
 
   const haveEarnings = earnings.fns.add(earnings.fil).gt(0)
+
+  console.log('FnsSection paused:', paused, ',earnings:', earnings, ',haveEarnings:', haveEarnings)
   return (
     <SectionContainer
       title={t('section.name.title')}

@@ -30,7 +30,7 @@ const nameItem: TransactionDisplayItem = {
 }
 
 describe('DisplayItems', () => {
-  mockUseChainId.mockReturnValue(1)
+  mockUseChainId.mockReturnValue(314)
   it('should show a generic item', () => {
     render(<DisplayItems displayItems={[genericItem]} />)
     expect(screen.getByText('transaction.itemLabel.GenericItem')).toBeVisible()
@@ -45,6 +45,7 @@ describe('DisplayItems', () => {
     mockUsePrimary.mockReturnValue({
       loading: false,
       name: 'test.fil',
+      beautifiedName: 'test.fil',
       status: 'success',
     })
     render(<DisplayItems displayItems={[addressItem]} />)

@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components'
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import FastForwardSVG from '@app/assets/FastForward.svg'
+import useBeautifiedName from '@app/hooks/useBeautifiedName'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 
 import { useTransactionFlow } from '../transaction-flow/TransactionFlowProvider'
@@ -120,6 +121,14 @@ const LocationAndUrl = styled.div(
   `,
 )
 
+export const getUserDefinedUrl = (url?: string) => {
+  if (!url) return undefined
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url
+  }
+  return ``
+}
+
 export const ProfileSnippet = ({
   name,
   getTextRecord,
@@ -138,11 +147,14 @@ export const ProfileSnippet = ({
   const router = useRouterWithHistory()
   const { t } = useTranslation('common')
 
-  const { showDataInput } = useTransactionFlow()
+  const { prepareDataInput } = useTransactionFlow()
+  const showExtendNamesInput = prepareDataInput('ExtendNames')
+
+  const beautifiedName = useBeautifiedName(name)
 
   const banner = getTextRecord?.('banner')?.value
   const description = getTextRecord?.('description')?.value
-  const url = getTextRecord?.('url')?.value
+  const url = getUserDefinedUrl(getTextRecord?.('url')?.value)
   const location = getTextRecord?.('location')?.value
   const recordName = getTextRecord?.('name')?.value
 
@@ -155,7 +167,7 @@ export const ProfileSnippet = ({
           prefix={<FastForwardSVG />}
           data-testid="extend-button"
           onClick={() => {
-            showDataInput(`extend-names-${name}`, 'ExtendNames', { names: [name], isSelf: canEdit })
+            showExtendNamesInput(`extend-names-${name}`, { names: [name], isSelf: canEdit })
           }}
         >
           {t('action.extend', { ns: 'common' })}
@@ -201,7 +213,7 @@ export const ProfileSnippet = ({
       <TextStack>
         <DetailStack>
           <Name fontVariant="headingTwo" data-testid="profile-snippet-name">
-            {name}
+            {beautifiedName}
           </Name>
           {recordName && (
             <NameRecord data-testid="profile-snippet-nickname">{recordName}</NameRecord>
@@ -218,7 +230,7 @@ export const ProfileSnippet = ({
               </Typography>
             )}
             {url && (
-              <a href={url} data-testid="profile-snippet-url">
+              <a href={url} data-testid="profile-snippet-url" target="_blank" rel="noreferrer">
                 <Typography color="blue" id="profile-url">
                   {url?.replace(/http(s?):\/\//g, '').replace(/\/$/g, '')}
                 </Typography>

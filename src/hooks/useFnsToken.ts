@@ -18,7 +18,7 @@ type BaseBatchReturn = [
   ReturnedENS['getCurrentBlockTimestamp'],
 ]
 
-export const useFnsToken = (name: string | undefined) => {
+export const useFnsToken = (name: string | null) => {
   const fns = useFns()
 
   const { data, status } = useExists(name!)

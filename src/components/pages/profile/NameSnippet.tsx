@@ -10,6 +10,7 @@ import { NFTWithPlaceholder } from '@app/components/NFTWithPlaceholder'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { ReturnedENS } from '@app/types'
 import { useFns } from '@app/utils/FnsProvider'
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { shortenAddress } from '@app/utils/utils'
 
 const Container = styled(CacheableComponent)(
@@ -58,7 +59,7 @@ const OwnerWithEns = styled.div(
 
 const NameOwnerItem = ({ address = '', network }: { address?: string; network: number }) => {
   const { getName } = useFns()
-  const { data } = useQuery(['getName', address], () => getName(address), {
+  const { data } = useQuery(useQueryKeys().nameSnippet(address), () => getName(address), {
     enabled: !!address,
   })
   const hasEns = data?.match && data?.name
@@ -141,8 +142,8 @@ export const NameDetailSnippet = ({
 }: {
   name: string
   expiryDate?: Date | null
-  ownerData: Exclude<ReturnedENS['getOwner'], undefined>
-  wrapperData: Exclude<ReturnedENS['getWrapperData'], undefined>
+  ownerData: Exclude<ReturnedENS['getOwner'], undefined | null>
+  wrapperData: Exclude<ReturnedENS['getWrapperData'], undefined | null>
   network: number
   showButton?: boolean
   dnsOwner?: string
@@ -214,8 +215,8 @@ export const NameSnippet = ({
   name: string
   network: number
   expiryDate?: Date | null
-  ownerData: Exclude<ReturnedENS['getOwner'], undefined>
-  wrapperData: Exclude<ReturnedENS['getWrapperData'], undefined>
+  ownerData: Exclude<ReturnedENS['getOwner'], undefined | null>
+  wrapperData: Exclude<ReturnedENS['getWrapperData'], undefined | null>
   showButton?: boolean
   dnsOwner?: string
   isCached: boolean

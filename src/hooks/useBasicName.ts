@@ -1,26 +1,34 @@
 import { truncateFormat } from '@fildomains/fnsjs/utils/format'
 import { useMemo } from 'react'
-import { useQuery } from 'wagmi'
+import { useAccount, useQuery } from 'wagmi'
 
 import { ReturnedENS } from '@app/types'
 import { useFns } from '@app/utils/FnsProvider'
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { emptyAddress } from '@app/utils/constants'
 import { getRegistrationStatus } from '@app/utils/registrationStatus'
-import { checkETH2LDName, checkETHName, isLabelTooLong, yearsToSeconds } from '@app/utils/utils'
+import { isLabelTooLong, yearsToSeconds } from '@app/utils/utils'
 
+import { usePccExpired } from './fuses/usePccExpired'
 import { useContractAddress } from './useContractAddress'
+import useRegistrationReducer from './useRegistrationReducer'
 import { useSupportsTLD } from './useSupportsTLD'
 import { useValidate } from './useValidate'
 
-type BaseBatchReturn = [ReturnedENS['getOwner'], ReturnedENS['getWrapperData']]
-type ETH2LDBatchReturn = [...BaseBatchReturn, ReturnedENS['getExpiry'], ReturnedENS['getPrice']]
+type BaseBatchReturn = [ReturnedENS['getOwner']]
+type NormalBatchReturn = [...BaseBatchReturn, ReturnedENS['getWrapperData']]
+type ETH2LDBatchReturn = [...NormalBatchReturn, ReturnedENS['getExpiry'], ReturnedENS['getPrice']]
 
 export const useBasicName = (name?: string | null, normalised?: boolean) => {
   const fns = useFns()
+  const { address } = useAccount()
 
-  const { name: _normalisedName, valid, labelCount, isNonASCII } = useValidate(name!, !name)
+  const { name: _normalisedName, isValid, ...validation } = useValidate(name!, !name)
 
   const normalisedName = normalised ? name! : _normalisedName
+
+  const selected = { name: normalisedName, address: address! }
+  const { item } = useRegistrationReducer(selected)
 
   const { data: supportedTLD, isLoading: supportedTLDLoading } = useSupportsTLD(normalisedName)
 
@@ -34,15 +42,18 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
     isFetchedAfterMount,
     status,
   } = useQuery(
-    ['batch', 'getOwner', 'getExpiry', normalisedName],
-    (): Promise<[] | BaseBatchReturn | ETH2LDBatchReturn | undefined> => {
+    useQueryKeys().basicName(normalisedName, item.stepIndex),
+    (): Promise<[] | BaseBatchReturn | NormalBatchReturn | ETH2LDBatchReturn | undefined> => {
+      // exception for "[root]", get owner of blank name
+      if (normalisedName === '[root]') {
+        return Promise.all([fns.getOwner('', 'registry')])
+      }
+
       const labels = normalisedName.split('.')
-      const isDotETH = checkETHName(labels)
-      if (checkETH2LDName(isDotETH, labels, true)) {
-        if (labels[0].length < 3) {
+      if (validation.isETH && validation.is2LD) {
+        if (validation.isShort) {
           return Promise.resolve([])
         }
-
         return fns.batch(
           fns.getOwner.batch(normalisedName),
           fns.getWrapperData.batch(normalisedName),
@@ -54,10 +65,9 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
       return fns.batch(fns.getOwner.batch(normalisedName), fns.getWrapperData.batch(normalisedName))
     },
     {
-      enabled: !!(fns.ready && name && valid),
+      enabled: !!(fns.ready && name && isValid),
     },
   )
-
   const [ownerData, _wrapperData, expiryData, priceData] = batchData || []
 
   const wrapperData = useMemo(() => {
@@ -71,7 +81,7 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
 
   const registrationStatus = batchData
     ? getRegistrationStatus({
-        name: normalisedName,
+        validation,
         ownerData,
         wrapperData,
         expiryData,
@@ -103,24 +113,14 @@ export const useBasicName = (name?: string | null, normalised?: boolean) => {
       ),
     [fns.ready, nameWrapperAddress, isWrapped, normalisedName],
   )
-  const pccExpired = useMemo(
-    () =>
-      !!(
-        ownerData?.ownershipLevel === 'registry' &&
-        ownerData.owner === nameWrapperAddress &&
-        wrapperData?.expiryDate &&
-        wrapperData.expiryDate < new Date()
-      ),
-    [ownerData, wrapperData, nameWrapperAddress],
-  )
+  const pccExpired = usePccExpired({ ownerData, wrapperData })
 
   const isLoading = !fns.ready || batchLoading || supportedTLDLoading
 
   return {
+    ...validation,
     normalisedName,
-    valid,
-    isNonASCII,
-    labelCount,
+    isValid,
     ownerData,
     wrapperData,
     priceData,

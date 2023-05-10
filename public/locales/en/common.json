@@ -3,6 +3,8 @@
   "description": "Your identity across web3, one name for all your crypto addresses, and your decentralised website.",
   "loading": "Loading",
   "unsupportedNetwork": "Unsupported network",
+  "notFound": "404 Not Found",
+  "etherscan": "Blockchain browser",
   "action": {
     "cancel": "Cancel",
     "change": "Change",
@@ -39,7 +41,9 @@
     "finish": "Finish",
     "skip": "Skip",
     "changeNetwork": "Change Network",
-    "understand": "I understand"
+    "understand": "I understand",
+    "feedback": "Feedback",
+    "migrate": "Migrate"
   },
   "unit": {
     "years_one": "{{count}} year",
@@ -66,7 +70,11 @@
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
     "back": "Back",
-    "oldApp": "Old FNS App",
+    "oldApp": "Old ENS App",
+    "language": "Language",
+    "currency": "Currency",
+    "ipfsApp": "IPFS ENS App",
+    "feedback": "Feedback",
     "syncMessage": "Syncing with the network. Changes from your transaction may not be visible yet."
   },
   "wallet": {
@@ -110,6 +118,17 @@
     "expiredInMonths_other": "Expired {{count}} months ago",
     "expiredInYears_one": "Expired {{count}} year ago",
     "expiredInYears_other": "Expired {{count}} years ago",
+    "gracePeriod": {
+      "expiresInYears_one": "Grace period expires in {{count}} year",
+      "expiresInYears_other": "Grace period expires in {{count}} years",
+      "expiresInMonths_one": "Grace period expires in {{count}} month",
+      "expiresInMonths_other": "Grace period expires in {{count}} months",
+      "expiresInDays_one": "Grace period expires in {{count}} day",
+      "expiresInDays_other": "Grace period expires in {{count}} days",
+      "expiresInHours_one": "Grace period expires in {{count}} hour",
+      "expiresInHours_other": "Grace period expires in {{count}} hours",
+      "expiresInHours_zero": "Grace period expires in less than an hour"
+    },
     "extend": "Extend",
     "send": "Send",
     "transfer": "Transfer",
@@ -142,6 +161,7 @@
       "addSuccess": "Add success",
       "sendName": "Send name",
       "migrateProfile": "Migrate profile",
+      "migrateProfileWithReset": "Migrate profile",
       "migrateProfileWithSync": "Migrate and update profile",
       "wrapName": "Wrap name",
       "updateResolver": "Update resolver",
@@ -163,6 +183,7 @@
       "changePermissions": "Change permissions",
       "syncManager": "Sync manager",
       "updateProfileRecords": "Update profile",
+      "resetProfile": "Reset profile",
       "claimEarnings": "Claim earnings",
       "initShare": "Init share",
       "pledge": "pledge",
@@ -171,6 +192,7 @@
     "info": {
       "sendName": "Set the controller and registrant of the name",
       "migrateProfile": "Set existing records on new resolver",
+      "migrateProfileWithReset": "Set existing records on new resolver",
       "migrateProfileWithSync": "Set existing records on new resolver",
       "wrapName": "Wrap name and set new resolver",
       "updateResolver": "Change resolver to",
@@ -198,7 +220,6 @@
       }
     },
     "itemLabel": {
-      "amount": "amount",
       "name": "Name",
       "address": "Address",
       "action": "Action",
@@ -207,7 +228,8 @@
       "subname": "Subname",
       "duration": "Duration",
       "cost": "Cost",
-      "update": "Update"
+      "update": "Update",
+      "resolver": "Resolver"
     },
     "itemValue": {
       "records_one": "{{count}} record",
@@ -265,6 +287,12 @@
         "gasLimit": "The gas limit on your transaction wasn't high enough, please try again."
       }
     },
+    "error": {
+      "request": {
+        "INSUFFICIENT_FUNDS": "Insufficient funds in wallet",
+        "UNPREDICTABLE_GAS_LIMIT": "An unknown error occurred"
+      }
+    },
     "viewEtherscan": "View on Blockchain Browser",
     "viewMore": "View More"
   },
@@ -295,5 +323,9 @@
     "add": "Add",
     "placeholder": "Select an option",
     "empty": "No options found"
+  },
+  "testnetFaucet": {
+    "explanation": "Each address on goerli can claim {{ amount }}ETH to test out the ENS manager app, as well as all the new contracts.",
+    "note": "It may take a few minutes to show up in your wallet."
   }
 }

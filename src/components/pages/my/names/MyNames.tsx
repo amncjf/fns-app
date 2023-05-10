@@ -48,7 +48,7 @@ const TabWrapperWithButtons = styled(TabWrapper)(
 const MyNames = () => {
   const { t } = useTranslation('names')
   const router = useRouter()
-  const { address: _address, isConnecting, isReconnecting } = useAccount()
+  const { address: _address } = useAccount()
   const address = (router.query.address as string) || (_address as string)
   const isSelf = true
   const chainId = useChainId()
@@ -66,7 +66,7 @@ const MyNames = () => {
   const [sortType, setSortType] = useQueryParameterState<SortType>('sort', 'expiryDate')
   const [sortDirection, setSortDirection] = useQueryParameterState<SortDirection>(
     'direction',
-    'desc',
+    'asc',
   )
   const [searchQuery, setSearchQuery] = useQueryParameterState<string>('search', '')
 
@@ -93,10 +93,12 @@ const MyNames = () => {
     setPage(1)
   }, [address])
 
-  const { showDataInput, getTransactionFlowStage } = useTransactionFlow()
+  const { prepareDataInput, getTransactionFlowStage } = useTransactionFlow()
+  const showExtendNamesInput = prepareDataInput('ExtendNames')
+
   const handleExtend = () => {
     if (selectedNames.length === 0) return
-    showDataInput(`extend-names-${selectedNames.join('-')}`, 'ExtendNames', {
+    showExtendNamesInput(`extend-names-${selectedNames.join('-')}`, {
       names: selectedNames,
       isSelf,
     })
@@ -120,8 +122,7 @@ const MyNames = () => {
     [mode],
   )
 
-  const loading =
-    isConnecting || isReconnecting || namesLoading || namesStatus === 'loading' || !router.isReady
+  const loading = namesLoading || namesStatus === 'loading' || !router.isReady
 
   useProtectedRoute('/', loading ? true : address && address !== '')
 
@@ -151,6 +152,7 @@ const MyNames = () => {
                   onClick={handleExtend}
                   data-testid="extend-names-button"
                   prefix={<FastForwardSVG />}
+                  disabled={selectedNames.length === 0}
                 >
                   {t('action.extend', { ns: 'common' })}
                 </Button>

@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import styled, { css } from 'styled-components'
 
-import { Colors } from '@ensdomains/thorin'
+import { Colors, Skeleton } from '@ensdomains/thorin'
 
 import { CurrencyDisplay } from '@app/types'
 
@@ -47,37 +47,43 @@ type Props = {
 }
 
 export const Invoice = ({ totalLabel = 'Estimated total', unit = 'fil', items }: Props) => {
-  const isfile = unit === 'fil'
-  const total = !isfile
+  const isFil = unit === 'fil'
+  const total = !isFil
     ? items[0].value
     : items
         .map(({ value }) => value)
         .filter((x) => !!x)
         .reduce((a, b) => a!.add(b!), BigNumber.from(0))
+  const filteredItems = items.map(({ value }) => value).filter((x) => !!x)
+  const hasEmptyItems = filteredItems.length !== items.length
 
   return (
     <Container>
       {items.map(({ label, value, color }, inx) => (
         <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
           <div>{label}</div>
-          <div data-testid={`invoice-item-${inx}-amount`}>
-            <CurrencyText fil={value} currency={!isfile && inx > 0 ? 'fil' : unit} />
-          </div>
+          <Skeleton loading={!value}>
+            <div data-testid={`invoice-item-${inx}-amount`}>
+              <CurrencyText fil={value} currency={!isFil && inx > 0 ? 'fil' : unit} />
+            </div>
+          </Skeleton>
         </LineItem>
       ))}
       <Total>
         <div>{totalLabel}</div>
-        <div data-testid="invoice-total">
-          {isfile ? (
-            <CurrencyText fil={total} currency={unit} />
-          ) : (
-            <>
+        <Skeleton loading={hasEmptyItems}>
+          <div data-testid="invoice-total">
+            {isFil ? (
               <CurrencyText fil={total} currency={unit} />
-              {'; '}
-              <CurrencyText fil={items[1].value} currency="fil" />
-            </>
-          )}
-        </div>
+            ) : (
+              <>
+                <CurrencyText fil={total} currency={unit} />
+                {'; '}
+                <CurrencyText fil={items[1].value} currency="fil" />
+              </>
+            )}
+          </div>
+        </Skeleton>
       </Total>
     </Container>
   )

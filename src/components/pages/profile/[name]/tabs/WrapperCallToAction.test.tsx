@@ -46,6 +46,7 @@ const mockCreateTransactionFlow = jest.fn()
 const mockResumeTransactionFlow = jest.fn()
 const mockGetResumeable = jest.fn()
 const mockShowDataInput = jest.fn()
+const mockPrepareDataInput = () => mockShowDataInput
 
 describe('WrapperCallToAction', () => {
   mockUseNFTImage.mockReturnValue({ isCompatible: true, image: '#' })
@@ -53,7 +54,7 @@ describe('WrapperCallToAction', () => {
     resumeTransactionFlow: mockResumeTransactionFlow,
     createTransactionFlow: mockCreateTransactionFlow,
     getResumable: mockGetResumeable,
-    showDataInput: mockShowDataInput,
+    prepareDataInput: mockPrepareDataInput,
   })
   mockUseEns.mockReturnValue({
     ready: true,
@@ -62,7 +63,7 @@ describe('WrapperCallToAction', () => {
     getProfile: mockGetProfile,
     contracts: mockContracts,
   })
-  mockUseChainId.mockReturnValue(1)
+  mockUseChainId.mockReturnValue(314)
   mockUseAccount.mockReturnValue({ address: '0x123' })
   mockUseNameDetails.mockReturnValue({
     ownerData: { owner: '0x123' },
@@ -114,6 +115,32 @@ describe('WrapperCallToAction', () => {
     expect(args[1].transactions[1].name).toEqual('wrapName')
     expect(args[1].transactions[1].data).toEqual({ name: 'test123.fil' })
   })
+  it('should create a transaction flow for wrapName when already using wrapper aware resolver', async () => {
+    mockUseNameDetails.mockReturnValue({
+      ownerData: { owner: '0x123' },
+      profile: {
+        resolverAddress: '0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63',
+        records: {
+          coinTypes: [
+            {
+              key: 'coin1',
+            },
+            {
+              key: 'coin2',
+            },
+          ],
+        },
+      },
+      isLoading: false,
+    })
+    render(<WrapperCallToAction name="test123.fil" />)
+    screen.getByTestId('wrapper-cta-button').click()
+    const args = mockCreateTransactionFlow.mock.lastCall
+
+    expect(args[0]).toBe('wrapName-test123.fil')
+    expect(args[1].transactions[1].name).toEqual('wrapName')
+    expect(args[1].transactions[1].data).toEqual({ name: 'test123.fil' })
+  })
 
   it('should create a transaction flow for a .fil 2LD with no profile', () => {
     mockUseNameDetails.mockReturnValue({
@@ -159,6 +186,33 @@ describe('WrapperCallToAction', () => {
     expect(args[1].transactions[0].data).toEqual({ name: 'test123.fil' })
     expect(args[1].transactions[1].name).toEqual('migrateProfile')
     expect(args[1].transactions[1].data).toEqual({ name: 'test123.fil', resolverAddress: '0x456' })
+  })
+  it('should create a transaction flow for a .fil 2LD with a profile, a different owner, and a name wrapper aware resolver', () => {
+    mockUseNameDetails.mockReturnValue({
+      ownerData: { owner: '0x124' },
+      profile: {
+        resolverAddress: '0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63',
+        records: {
+          coinTypes: [
+            {
+              key: 'coin1',
+            },
+            {
+              key: 'coin2',
+            },
+          ],
+        },
+      },
+      isLoading: false,
+    })
+    render(<WrapperCallToAction name="test123.fil" />)
+    screen.getByTestId('wrapper-cta-button').click()
+    const args = mockCreateTransactionFlow.mock.lastCall
+
+    expect(args[0]).toBe('wrapName-test123.fil')
+    expect(args[1].transactions[0].name).toEqual('wrapName')
+    expect(args[1].transactions[0].data).toEqual({ name: 'test123.fil' })
+    expect(args[1].transactions).toHaveLength(2)
   })
 
   it('should create a transaction flow for a subname with no registry approval', () => {
@@ -267,13 +321,12 @@ describe('WrapperCallToAction', () => {
     expect(args[0]).toBe(
       'wrapName-[b2fd3233fdc544d81e84c93822934ddd9b599f056b6a7f84f4de29378bf1cb15].test123.fil',
     )
-    expect(args[1]).toBe('UnknownLabels')
-    expect(args[2].name).toBe(
+    expect(args[1].name).toBe(
       '[b2fd3233fdc544d81e84c93822934ddd9b599f056b6a7f84f4de29378bf1cb15].test123.fil',
     )
     const {
       transactionFlowItem: { transactions },
-    } = args[2]
+    } = args[1]
     expect(transactions[0].name).toEqual('approveNameWrapper')
     expect(transactions[0].data).toEqual({ address: '0x123' })
     expect(transactions[1].name).toEqual('wrapName')

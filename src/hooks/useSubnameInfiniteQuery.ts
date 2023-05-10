@@ -20,12 +20,12 @@ export const useSubnameInfiniteQuery = (
 ) => {
   const { getSubnames } = useFns()
 
-  const queryKey = ['getSubnames', name, orderBy, orderDirection, search]
+  const queryKey = ['graph', 'getSubnames', 'infinite', name, orderBy, orderDirection, search]
   const { data, isLoading, isFetching, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery(
     queryKey,
     async ({ pageParam }) => {
       const result = await getSubnames({
-        name,
+        name: name === '[root]' ? '' : name,
         lastSubnames: pageParam,
         orderBy: orderBy === 'creationDate' ? 'createdAt' : 'labelName',
         orderDirection: orderDirection === 'asc' ? 'asc' : 'desc',

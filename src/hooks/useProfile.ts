@@ -5,10 +5,11 @@ import supportedAddresses from '@app/constants/supportedAddresses.json'
 import supportedProfileItems from '@app/constants/supportedGeneralRecordKeys.json'
 import supportedTexts from '@app/constants/supportedSocialRecordKeys.json'
 import { useFns } from '@app/utils/FnsProvider'
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 import useDecryptName from './useDecryptName'
 
-export const useProfile = (name: string, skip?: any) => {
+export const useProfile = (name: string, skip?: any, resolverAddress?: string) => {
   const { ready, getProfile } = useFns()
 
   const {
@@ -19,16 +20,17 @@ export const useProfile = (name: string, skip?: any) => {
     isFetched,
     // don't remove this line, it updates the isCachedData state (for some reason) but isn't needed to verify it
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    isFetching: _isFetching,
+    isFetching,
   } = useQuery(
-    ['graph', 'getProfile', name],
+    useQueryKeys().profile(name, resolverAddress),
     () =>
       getProfile(name, {
         fallback: {
           coinTypes: supportedAddresses,
           texts: [...supportedTexts, ...supportedProfileItems],
         },
-      }),
+        resolverAddress,
+      }).then((d) => d || null),
     {
       enabled: ready && !skip && name !== '',
     },
@@ -46,6 +48,7 @@ export const useProfile = (name: string, skip?: any) => {
     profile: returnProfile,
     loading: !ready || loading,
     status,
+    isFetching,
     isCachedData: status === 'success' && isFetched && !isFetchedAfterMount,
   }
 }

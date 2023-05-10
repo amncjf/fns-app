@@ -108,7 +108,7 @@ type Props = {
 const Info = ({
   paymentMethodChoice,
   registrationData,
-  nameDetails: { priceData },
+  nameDetails: { normalisedName, priceData },
   callback,
   onProfileClick,
 }: Props) => {
@@ -116,11 +116,11 @@ const Info = ({
 
   const estimate = useEstimateFullRegistration({
     paymentMethodChoice,
-    registration: registrationData,
+    name: normalisedName,
+    registrationData,
     price: priceData,
   })
 
-  console.log('estimate:', estimate)
   return (
     <StyledCard>
       <Heading>{t('steps.info.heading')}</Heading>

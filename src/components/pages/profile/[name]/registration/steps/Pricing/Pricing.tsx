@@ -88,7 +88,7 @@ const StyledHeading = styled(Heading)(
 const gridAreaStyle = ({ $name }: { $name: string }) => css`
   grid-area: ${$name};
 `
-
+Array.from({ length: 2 }, (_, i) => `steps.info.moonpayItems.${i}`)
 const PaymentChoiceContainer = styled.div`
   width: 100%;
 `
@@ -131,6 +131,57 @@ const RadioLabel = styled(Typography)(
     color: ${theme.colors.text};
   `,
 )
+styled.div(
+  ({ theme }) => css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: ${theme.space['4']};
+
+    ${mq.sm.min(css`
+      flex-direction: row;
+      align-items: stretch;
+    `)}
+  `,
+)
+
+styled.div(
+  ({ theme }) => css`
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: ${theme.space['4']};
+
+    padding: ${theme.space['4']};
+    border: 1px solid ${theme.colors.border};
+    border-radius: ${theme.radii.large};
+    text-align: center;
+
+    & > div:first-of-type {
+      width: ${theme.space['10']};
+      height: ${theme.space['10']};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: ${theme.fontSizes.extraLarge};
+      font-weight: ${theme.fontWeights.bold};
+      color: ${theme.colors.backgroundPrimary};
+      background: ${theme.colors.accentPrimary};
+      border-radius: ${theme.radii.full};
+    }
+
+    & > div:last-of-type {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  `,
+)
 
 const CheckboxWrapper = styled.div(
   () => css`
@@ -150,6 +201,50 @@ const OutlinedContainerTitle = styled(Typography)(
   gridAreaStyle,
 )
 
+const EthInnerCheckbox = ({
+  address,
+  hasPrimaryName,
+  reverseRecord,
+  setReverseRecord,
+  started,
+}: {
+  address: string
+  hasPrimaryName: boolean
+  reverseRecord: boolean
+  setReverseRecord: (val: boolean) => void
+  started: boolean
+}) => {
+  const { t } = useTranslation('register')
+  const breakpoints = useBreakpoint()
+
+  useEffect(() => {
+    if (!started) {
+      setReverseRecord(!hasPrimaryName)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setReverseRecord])
+
+  return (
+    <CheckboxWrapper $name="checkbox">
+      <Field hideLabel label={t('steps.pricing.primaryName')} inline reverse disabled={!address}>
+        {(ids) => (
+          <Toggle
+            {...ids?.content}
+            disabled={!address}
+            size={breakpoints.sm ? 'large' : 'medium'}
+            checked={reverseRecord}
+            onChange={(e) => {
+              e.stopPropagation()
+              setReverseRecord(e.target.checked)
+            }}
+            data-testid="primary-name-toggle"
+          />
+        )}
+      </Field>
+    </CheckboxWrapper>
+  )
+}
+
 const PaymentChoice = ({
   paymentMethodChoice,
   setPaymentMethodChoice,
@@ -157,23 +252,23 @@ const PaymentChoice = ({
   hasEnoughFns,
   hasPendingMoonpayTransaction,
   address,
-  breakpoints,
+  hasPrimaryName,
   reverseRecord,
   setReverseRecord,
+  started,
 }: {
   paymentMethodChoice: PaymentMethod
   setPaymentMethodChoice: Dispatch<SetStateAction<PaymentMethod>>
   hasEnoughEth: boolean
   hasEnoughFns: boolean
   hasPendingMoonpayTransaction: boolean
-  address?: string
-  breakpoints: ReturnType<typeof useBreakpoint>
+  address: string
+  hasPrimaryName: boolean
   reverseRecord: boolean
   setReverseRecord: (reverseRecord: boolean) => void
+  started: boolean
 }) => {
   const { t } = useTranslation('register')
-  const hasEnough =
-    paymentMethodChoice === PaymentMethod.ethereum ? hasEnoughEth : hasEnoughEth && hasEnoughFns
 
   return (
     <PaymentChoiceContainer>
@@ -209,54 +304,30 @@ const PaymentChoice = ({
               checked={paymentMethodChoice === PaymentMethod.fns || undefined}
             />
           </ButtonContainer>
-          {!hasEnough && (
+          {paymentMethodChoice === PaymentMethod.ethereum && !hasEnoughEth && (
             <>
               <Spacer $height="4" />
               <Helper type="warning" alignment="horizontal">
-                {paymentMethodChoice === PaymentMethod.ethereum
-                  ? t('steps.info.notEnoughEth')
-                  : t('steps.info.notEnoughFns')}
+                {t('steps.info.notEnoughEth')}
               </Helper>
               <Spacer $height="2" />
             </>
           )}
-          {hasEnough && (
-            <>
-              <Spacer $height="4" />
-              <OutlinedContainer>
-                <OutlinedContainerTitle $name="title">
-                  {t('steps.pricing.primaryName')}
-                </OutlinedContainerTitle>
-                <CheckboxWrapper $name="checkbox">
-                  <Field
-                    hideLabel
-                    label={t('steps.pricing.primaryName')}
-                    inline
-                    reverse
-                    disabled={!address}
-                  >
-                    {(ids) => (
-                      <Toggle
-                        {...ids?.content}
-                        disabled={!address}
-                        size={breakpoints.sm ? 'large' : 'medium'}
-                        checked={reverseRecord}
-                        onChange={(e) => {
-                          e.stopPropagation()
-                          setReverseRecord(e.target.checked)
-                        }}
-                        data-testid="primary-name-toggle"
-                      />
-                    )}
-                  </Field>
-                </CheckboxWrapper>
-                <OutlinedContainerDescription $name="description">
-                  {t('steps.pricing.primaryNameMessage')}
-                </OutlinedContainerDescription>
-              </OutlinedContainer>
-              <Spacer $height="2" />
-            </>
-          )}
+          <>
+            <Spacer $height="4" />
+            <OutlinedContainer>
+              <OutlinedContainerTitle $name="title">
+                {t('steps.pricing.primaryName')}
+              </OutlinedContainerTitle>
+              <EthInnerCheckbox
+                {...{ address, hasPrimaryName, reverseRecord, setReverseRecord, started }}
+              />
+              <OutlinedContainerDescription $name="description">
+                {t('steps.pricing.primaryNameMessage')}
+              </OutlinedContainerDescription>
+            </OutlinedContainer>
+            <Spacer $height="2" />
+          </>
         </RadioButtonContainer>
       </StyledRadioButtonGroup>
     </PaymentChoiceContainer>
@@ -267,7 +338,7 @@ interface ActionButtonProps {
   address?: string
   hasPendingMoonpayTransaction: boolean
   hasFailedMoonpayTransaction: boolean
-  paymentMethodChoice: PaymentMethod
+  paymentMethodChoice: PaymentMethod | ''
   reverseRecord: boolean
   callback: (props: RegistrationStepData['pricing']) => void
   initiateMoonpayRegistrationMutation: ReturnType<
@@ -376,16 +447,15 @@ const Pricing = ({
 }: Props) => {
   const { t } = useTranslation('register')
 
-  const breakpoints = useBreakpoint()
-  const { normalisedName, gracePeriodEndDate } = nameDetails
+  const { normalisedName, gracePeriodEndDate, beautifiedName } = nameDetails
 
   const { address } = useAccountSafely()
   const { data: balance } = useBalance({ address: address as `0x${string}` | undefined })
   const resolverAddress = useContractAddress('PublicResolver')
 
   const [years, setYears] = useState(registrationData.years)
-  const [reverseRecord, setReverseRecord] = useState(
-    registrationData.reverseRecord || !hasPrimaryName,
+  const [reverseRecord, setReverseRecord] = useState(() =>
+    registrationData.started ? registrationData.reverseRecord : !hasPrimaryName,
   )
 
   const hasPendingMoonpayTransaction = moonpayTransactionStatus === 'pending'
@@ -412,12 +482,14 @@ const Pricing = ({
 
   const fullEstimate = useEstimateFullRegistration({
     paymentMethodChoice,
-    registration: {
-      records: [{ key: 'FIL', value: resolverAddress, type: 'addr', group: 'address' }],
-      clearRecords: resolverExists,
-      resolver: resolverAddress,
+    name: normalisedName,
+    registrationData: {
+      ...registrationData,
       reverseRecord,
       years,
+      records: [{ key: 'ETH', value: resolverAddress, type: 'addr', group: 'address' }],
+      clearRecords: resolverExists,
+      resolver: resolverAddress,
     },
     price: nameDetails.priceData,
   })
@@ -435,7 +507,7 @@ const Pricing = ({
 
   return (
     <StyledCard>
-      <StyledHeading>{t('heading', { name: normalisedName })}</StyledHeading>
+      <StyledHeading>{t('heading', { name: beautifiedName })}</StyledHeading>
       <PlusMinusControl
         minValue={1}
         value={years}
@@ -459,20 +531,22 @@ const Pricing = ({
           />
         )
       )}
-      <PaymentChoice
-        {...{
-          paymentMethodChoice,
-          setPaymentMethodChoice,
-          address,
-          breakpoints,
-          reverseRecord,
-          setReverseRecord,
-          hasEnoughEth: true,
-          hasEnoughFns,
-          hasPendingMoonpayTransaction,
-          hasFailedMoonpayTransaction,
-        }}
-      />
+      {address && (
+        <PaymentChoice
+          {...{
+            paymentMethodChoice,
+            setPaymentMethodChoice,
+            hasEnoughEth: true,
+            hasEnoughFns,
+            hasPendingMoonpayTransaction,
+            hasPrimaryName,
+            address,
+            reverseRecord,
+            setReverseRecord,
+            started: registrationData.started,
+          }}
+        />
+      )}
       <MobileFullWidth>
         <ActionButton
           {...{

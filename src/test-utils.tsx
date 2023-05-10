@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RenderOptions, render } from '@testing-library/react'
 import { RenderHookOptions, renderHook } from '@testing-library/react-hooks'
 import userEvent from '@testing-library/user-event'
-import { MockConnector } from '@wagmi/core-cjs/connectors/mock'
+import { MockConnector } from '@wagmi/core/connectors/mock'
 import React, { FC, ReactElement } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { WagmiConfig, createClient } from 'wagmi'
@@ -14,30 +14,35 @@ import { ThorinGlobalStyles, lightTheme } from '@ensdomains/thorin'
 
 import { DeepPartial } from './types'
 
-jest.mock('@wagmi/core', () => jest.requireActual('@wagmi/core-cjs'))
+jest.mock('@app/hooks/useRegistrationReducer', () => jest.fn(() => ({ item: { stepIndex: 0 } })))
 
 jest.mock('wagmi', () => {
   const {
     useQuery,
     useQueryClient,
     useInfiniteQuery,
+    useMutation,
     createClient: _createClient,
     WagmiConfig: _WagmiConfig,
-  } = jest.requireActual('wagmi-cjs')
+  } = jest.requireActual('wagmi')
 
   return {
     useQuery,
     useQueryClient,
     useInfiniteQuery,
+    useMutation,
     createClient: _createClient,
     WagmiConfig: _WagmiConfig,
-    useAccount: jest.fn(),
-    useNetwork: jest.fn(),
+    useAccount: jest.fn(() => ({ address: '0x123' })),
+    useBalance: jest.fn(() => ({ data: { value: { lt: () => false } } })),
+    useNetwork: jest.fn(() => ({ chainId: 314 })),
+    useFeeData: jest.fn(),
     useProvider: jest.fn(),
     useSigner: jest.fn(),
     useSignTypedData: jest.fn(),
     useBlockNumber: jest.fn(),
     useSendTransaction: jest.fn(),
+    configureChains: jest.fn(() => ({})),
   }
 })
 
@@ -89,6 +94,10 @@ const wagmiClient = createClient({
   ],
   provider: () => new EthersProviderWrapper(),
 })
+
+jest.mock('@app/utils/query', () => ({
+  wagmiClientWithRefetch: wagmiClient,
+}))
 
 const AllTheProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (

@@ -23,7 +23,7 @@ const mockUseContractAddress = mockFunction(useContractAddress)
 const mockUseBreakpoint = mockFunction(useBreakpoint)
 
 mockUseBreakpoint.mockReturnValue({ sm: true, md: true, lg: true })
-mockUseChainId.mockReturnValue(1)
+mockUseChainId.mockReturnValue(314)
 mockUseChainName.mockReturnValue('mainnet')
 mockUseContractAddress.mockImplementation((contractName) => {
   if (contractName === 'NameWrapper') return 'wrapped'
@@ -63,7 +63,7 @@ describe('Token', () => {
       render(<Token {...{ name, isWrapped: false }} />)
       expect(screen.getByTestId('etherscan-nft-link')).toHaveAttribute(
         'href',
-        `https://etherscan.io/nft/unwrapped/${tokenId}`,
+        `https://filfox.info/nft/unwrapped/${tokenId}`,
       )
     })
     it('should provide correct etherscan link for wrapped name', () => {
@@ -74,7 +74,7 @@ describe('Token', () => {
       render(<Token {...{ name, isWrapped: true }} />)
       expect(screen.getByTestId('etherscan-nft-link')).toHaveAttribute(
         'href',
-        `https://etherscan.io/nft/wrapped/${tokenId}`,
+        `https://filfox.info/nft/wrapped/${tokenId}`,
       )
     })
   })

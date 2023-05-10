@@ -9,9 +9,10 @@ import extendNames from './extendNames'
 import importDNSSECName from './importDNSSECName'
 import initShare from './initShare'
 import migrateProfile from './migrateProfile'
-import migrateProfileWithSync from './migrateProfileWithSync'
+import migrateProfileWithReset from './migrateProfileWithReset'
 import pledge from './pledge'
 import registerName from './registerName'
+import resetProfile from './resetProfile'
 import setPrimaryName from './setPrimaryName'
 import syncManager from './syncManager'
 import testSendName from './testSendName'
@@ -33,13 +34,14 @@ export const transactions = {
   updateProfile,
   setPrimaryName,
   updateEthAddress,
-  migrateProfileWithSync,
+  migrateProfileWithReset,
   burnFuses,
   createSubname,
   extendNames,
   deleteSubname,
   commitName,
   registerName,
+  resetProfile,
   transferName,
   transferSubname,
   transferController,
@@ -57,9 +59,13 @@ export const transactions = {
 export type Transaction = typeof transactions
 export type TransactionName = keyof Transaction
 
+export type TransactionData<T extends TransactionName> = Parameters<
+  Transaction[T]['transaction']
+>[2]
+
 export const makeTransactionItem = <T extends TransactionName>(
   name: T,
-  data: Parameters<Transaction[T]['transaction']>[2],
+  data: TransactionData<T>,
 ) => ({
   name,
   data,

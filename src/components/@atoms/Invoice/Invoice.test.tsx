@@ -36,10 +36,10 @@ describe('Invoice', () => {
   it('should render correctly in usd mode', async () => {
     render(<Invoice items={items} totalLabel="total" unit="usd" />)
     expect(screen.getByText('line 1')).toBeVisible()
-    expect(screen.getByText('$1.00')).toBeVisible()
+    expect(screen.getByText('1.0000FNS')).toBeVisible()
     expect(screen.getByText('line 2')).toBeVisible()
-    expect(screen.getByText('$2.00')).toBeVisible()
+    expect(screen.getByText('2.0000FIL')).toBeVisible()
     expect(screen.getByText('total')).toBeVisible()
-    expect(screen.getByText('$3.00')).toBeVisible()
+    expect(screen.getByText('1.0000FNS')).toBeVisible()
   })
 })

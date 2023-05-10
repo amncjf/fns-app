@@ -1,15 +1,16 @@
 import { isAddress } from '@ethersproject/address'
-import pMemoize from 'p-memoize'
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
-import { useQuery } from 'wagmi'
+import { useQuery, useQueryClient } from 'wagmi'
 
 import { Input } from '@ensdomains/thorin'
 
 import { Spacer } from '@app/components/@atoms/Spacer'
 import { useFns } from '@app/utils/FnsProvider'
+import useDebouncedCallback from '@app/hooks/useDebouncedCallback';
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { DisplayItems } from './TransactionDialogManager/DisplayItems'
 
 
@@ -28,33 +29,48 @@ export const DogFood = (
       disabled,
       validations,
       label, 
-      hideLabel
+      hideLabel,
+      trigger
     // eslint-disable-next-line prettier/prettier
-    }: Pick<ReturnType<typeof useForm<any>>, 'register' | 'watch' | 'formState' | 'setValue'> 
+    }: Pick<ReturnType<typeof useForm<any>>, 'register' | 'watch' | 'formState' | 'setValue' | 'trigger'> 
     & { label?: string, validations?: any, disabled?: boolean, hideLabel?: boolean },
 ) => {
   const { t } = useTranslation('profile')
-  const { getProfile } = useFns()
-  const getRecordsMem = useRef(pMemoize(getProfile))
+  const { getAddr, ready } = useFns()
+  const queryClient = useQueryClient()
 
-  const inputWatch = watch('dogfoodRaw')
+  const inputWatch: string | undefined = watch('dogfoodRaw')
 
+  // Throttle the change of the input
+  const [ethNameInput, setEthNameInput] = useState('')
+  const throttledSetEthNameInput = useDebouncedCallback(setEthNameInput, 500)
+  useEffect(() => {
+      throttledSetEthNameInput((inputWatch || '').toLocaleLowerCase())
+  }, [inputWatch, throttledSetEthNameInput])
+
+  const queryKeyGenerator = useQueryKeys().dogfood 
+
+  // Attempt to get address of FNS name
   const { data: ethNameAddress } = useQuery(
-    ['ethNameAddress', inputWatch],
+     queryKeyGenerator(ethNameInput),
     async () => {
       try {
-      const result = await getRecordsMem.current(inputWatch)
-      return result?.address ?? '' 
+      const result = await getAddr(ethNameInput, '60')
+      return (result as any)?.addr || ''
       } catch (e) {
         return ''
       }
     },
-    { enabled: inputWatch?.includes('.') },
+    { enabled: !!ethNameInput?.includes('.') && ready },
   )
+
+  // Update react value of address
   const finalValue = inputWatch?.includes('.') ? ethNameAddress : inputWatch
   useEffect(() => { 
     setValue('address', finalValue)
-  }, [finalValue, setValue])
+    if (finalValue) trigger('dogfoodRaw')
+  }, [finalValue, setValue, trigger])
+
   const errorMessage = formState.errors.dogfoodRaw?.message
 
   return (
@@ -78,11 +94,13 @@ export const DogFood = (
             hasAddressRecord: async (value) => {
               if(value?.includes('.')) {
                 try {
-                  const result = await getRecordsMem.current(value)
-                  return result?.address ? undefined : 'FNS Name has no address record'
-                } catch (e) {
-                  return 'FNS Name has no address record'
+                  const result = await queryClient.getQueryData(queryKeyGenerator(value.toLowerCase()))
+                  if (result) { return undefined }
+                // eslint-disable-next-line no-empty
+                } catch (e){
+                  console.error('validation error: ', e)
                 }
+                return 'FNS Name has no address record'
                 }
               },
             ...validations

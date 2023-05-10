@@ -253,7 +253,7 @@ const MainMenu = ({ setCurrentView }: { setCurrentView: (view: 'main' | 'languag
         <HoverableSettingsItem onClick={() => setCurrentView('language')}>
           <div>
             <LanguageSVG />
-            <Typography weight="bold">Language</Typography>
+            <Typography weight="bold">{t('navigation.language')}</Typography>
           </div>
           <div>
             <Typography>
@@ -265,7 +265,7 @@ const MainMenu = ({ setCurrentView }: { setCurrentView: (view: 'main' | 'languag
         <SettingsItem>
           <div>
             <WalletSVG />
-            <Typography weight="bold">Currency</Typography>
+            <Typography weight="bold">{t('navigation.currency')}</Typography>
           </div>
           <div>
             <CurrencyToggle
@@ -278,20 +278,22 @@ const MainMenu = ({ setCurrentView }: { setCurrentView: (view: 'main' | 'languag
         </SettingsItem>
       </SettingsSection>
       <RoutesSection>
-        {disconnectedRoutes.map((route) => (
-          <BaseLink href={route.href} passHref key={route.href}>
-            <RouteItem>
-              <Typography>{t(route.label)}</Typography>
-            </RouteItem>
-          </BaseLink>
-        ))}
+        {disconnectedRoutes.map((route) => {
+          return (
+            <BaseLink href={route.href} passHref key={route.href}>
+              <RouteItem>
+                <Typography>{t(route.label)}</Typography>
+              </RouteItem>
+            </BaseLink>
+          )
+        })}
       </RoutesSection>
       <SocialSection>
         <SocialIcon Icon={SocialTwitter} color="#5298FF" href="https://twitter.com/fildomains" />
         <SocialIcon Icon={SocialGithub} color="#0F0F0F" href="https://github.com/fildomains" />
         <SocialIcon
           Icon={SocialDiscord}
-          color="#7F83FF"
+          color="#0F0F0F"
           href="https://discord.com/invite/j8v7MxZKV3"
         />
         <SocialIcon Icon={SocialMedium} color="#0F0F0F" href="https://fildomains.medium.com/" />

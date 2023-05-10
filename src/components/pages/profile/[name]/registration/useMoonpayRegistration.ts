@@ -1,10 +1,11 @@
 import { labelhash } from '@fildomains/fnsjs/utils/labels'
-import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
-import { useQuery } from 'wagmi'
+import { useMutation, useQuery } from 'wagmi'
 
+import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import useRegistrationReducer from '@app/hooks/useRegistrationReducer'
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { MOONPAY_WORKER_URL } from '@app/utils/constants'
 import { getLabelFromName } from '@app/utils/utils'
 
@@ -17,6 +18,7 @@ export const useMoonpayRegistration = (
   item: ReturnType<typeof useRegistrationReducer>['item'],
 ) => {
   const chainId = useChainId()
+  const { address } = useAccountSafely()
   const [hasMoonpayModal, setHasMoonpayModal] = useState(false)
   const [moonpayUrl, setMoonpayUrl] = useState('')
   const [isCompleted, setIsCompleted] = useState(false)
@@ -26,7 +28,7 @@ export const useMoonpayRegistration = (
     const label = getLabelFromName(normalisedName)
     const tokenId = labelhash(label)
 
-    const requestUrl = `${MOONPAY_WORKER_URL[chainId]}/signedurl?tokenId=${tokenId}&name=${normalisedName}&duration=${duration}`
+    const requestUrl = `${MOONPAY_WORKER_URL[chainId]}/signedurl?tokenId=${tokenId}&name=${normalisedName}&duration=${duration}&walletAddress=${address}`
     const response = await fetch(requestUrl)
     const textResponse = await response.text()
     setMoonpayUrl(textResponse)
@@ -44,7 +46,7 @@ export const useMoonpayRegistration = (
 
   // Monitor current transaction
   const { data: transactionData } = useQuery(
-    ['currentExternalTransactionId', currentExternalTransactionId],
+    useQueryKeys().moonpayRegistration(currentExternalTransactionId),
     async () => {
       const response = await fetch(
         `${MOONPAY_WORKER_URL[chainId]}/transactionInfo?externalTransactionId=${currentExternalTransactionId}`,

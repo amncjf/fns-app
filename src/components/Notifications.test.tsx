@@ -46,7 +46,7 @@ describe('Notifications', () => {
     xl: false,
   })
   mockUseChainName.mockReturnValue('mainnet')
-  mockUseChainId.mockReturnValue(1)
+  mockUseChainId.mockReturnValue(314)
   it('should not render a toast if there is no transactions', () => {
     render(<Notifications />)
     expect(screen.queryByTestId('toast-desktop')).not.toBeInTheDocument()

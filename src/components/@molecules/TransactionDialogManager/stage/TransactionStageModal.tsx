@@ -24,6 +24,7 @@ import {
   TransactionStage,
 } from '@app/transaction-flow/types'
 import { useFns } from '@app/utils/FnsProvider'
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { makeEtherscanLink } from '@app/utils/utils'
 
 import { DisplayItems } from '../DisplayItems'
@@ -166,6 +167,8 @@ type TxError = {
   error: Error
 }
 
+const SUPPORTED_REQUEST_ERRORS = ['INSUFFICIENT_FUNDS', 'UNPREDICTABLE_GAS_LIMIT']
+
 export const LoadBar = ({ status, sendTime }: { status: Status; sendTime: number | undefined }) => {
   const { t } = useTranslation()
 
@@ -245,6 +248,18 @@ export const handleBackToInput = (dispatch: Dispatch<TransactionFlowAction>) => 
   dispatch({ name: 'resetTransactionStep' })
 }
 
+export const uniqueTransactionIdentifierGenerator = (
+  txKey: ManagedDialogPropsTwo['txKey'],
+  currentStep: number,
+  transactionName: ManagedDialogPropsTwo['transaction']['name'],
+  transactionData: ManagedDialogPropsTwo['transaction']['data'],
+) => ({
+  key: txKey,
+  step: currentStep,
+  name: transactionName,
+  data: transactionData,
+})
+
 export const TransactionStageModal = ({
   actionName,
   currentStep,
@@ -271,12 +286,42 @@ export const TransactionStageModal = ({
     [recentTransactions, transaction.hash],
   )
 
+  const uniqueTxIdentifiers = useMemo(
+    () =>
+      uniqueTransactionIdentifierGenerator(
+        txKey,
+        currentStep,
+        transaction?.name,
+        transaction?.data,
+      ),
+    [txKey, currentStep, transaction?.name, transaction?.data],
+  )
+
+  // if not all unique identifiers are defined, there could be incorrect cached data
+  const isUniquenessDefined = useMemo(
+    // number check is for if step = 0
+    () => Object.values(uniqueTxIdentifiers).every((val) => typeof val === 'number' || !!val),
+    [uniqueTxIdentifiers],
+  )
+
+  const canEnableTransactionRequest = useMemo(
+    () =>
+      !!transaction &&
+      !!signer &&
+      !!fns &&
+      !(stage === 'sent' || stage === 'complete') &&
+      isUniquenessDefined,
+    [transaction, signer, fns, stage, isUniquenessDefined],
+  )
+
+  const queryKeys = useQueryKeys()
+
   const {
     data: request,
     isLoading: requestLoading,
     error: _requestError,
   } = useQuery(
-    ['prepareTx', txKey, currentStep],
+    queryKeys.transactionStageModal.prepareTransaction(uniqueTxIdentifiers),
     async () => {
       const populatedTransaction = await transactions[transaction.name].transaction(
         signer as JsonRpcSigner,
@@ -297,14 +342,14 @@ export const TransactionStageModal = ({
       }
     },
     {
-      enabled: !!transaction && !!signer && !!fns && !(stage === 'sent' || stage === 'complete'),
+      enabled: canEnableTransactionRequest,
       onError: console.error,
     },
   )
   const requestError = _requestError as TxError | null
   useInvalidateOnBlock({
-    enabled: !!transaction && !!signer && !!fns,
-    queryKey: ['prepareTx', txKey, currentStep],
+    enabled: canEnableTransactionRequest,
+    queryKey: queryKeys.transactionStageModal.prepareTransaction(uniqueTxIdentifiers),
   })
 
   const {
@@ -374,7 +419,7 @@ export const TransactionStageModal = ({
       return (
         <Button
           onClick={() => sendTransaction!()}
-          disabled={requestLoading || !sendTransaction}
+          disabled={!canEnableTransactionRequest || requestLoading || !sendTransaction}
           colorStyle="redSecondary"
           data-testid="transaction-modal-failed-button"
         >
@@ -404,9 +449,12 @@ export const TransactionStageModal = ({
         </Button>
       )
     }
+
     return (
       <Button
-        disabled={requestLoading || !sendTransaction || !!requestError}
+        disabled={
+          !canEnableTransactionRequest || requestLoading || !sendTransaction || !!requestError
+        }
         onClick={() => sendTransaction!()}
         data-testid="transaction-modal-confirm-button"
       >
@@ -414,6 +462,7 @@ export const TransactionStageModal = ({
       </Button>
     )
   }, [
+    canEnableTransactionRequest,
     currentStep,
     dispatch,
     onDismiss,
@@ -436,7 +485,7 @@ export const TransactionStageModal = ({
   const provider = useProvider()
 
   const { data: upperError } = useQuery(
-    ['txError', transaction.hash],
+    useQueryKeys().transactionStageModal.transactionError(transaction.hash),
     async () => {
       if (!transaction || !transaction.hash || transactionStatus !== 'failed') return null
       const a = await provider.getTransaction(transaction.hash!)
@@ -460,13 +509,13 @@ export const TransactionStageModal = ({
       return transactionError.message.split('(')[0].trim()
     }
     if (requestError) {
-      if (requestError.code === 'UNPREDICTABLE_GAS_LIMIT') {
-        return 'An unknown error occurred.'
+      if (SUPPORTED_REQUEST_ERRORS.includes(requestError.code)) {
+        return t(`transaction.error.request.${requestError.code}`)
       }
       return requestError.reason
     }
     return null
-  }, [stage, transactionError, requestError])
+  }, [t, stage, transactionError, requestError])
 
   return (
     <>

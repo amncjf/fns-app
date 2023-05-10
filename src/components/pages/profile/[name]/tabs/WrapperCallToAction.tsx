@@ -9,12 +9,14 @@ import { Button, Typography, mq } from '@ensdomains/thorin'
 import { NightSky } from '@app/assets/NightSky'
 import SparklesSVG from '@app/assets/Sparkles.svg'
 import { Card } from '@app/components/Card'
+import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useWrapperApprovedForAll from '@app/hooks/useWrapperApprovedForAll'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { makeIntroItem } from '@app/transaction-flow/intro'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { GenericTransaction, TransactionFlowItem } from '@app/transaction-flow/types'
+import { NAMEWRAPPER_AWARE_RESOLVERS } from '@app/utils/constants'
 
 const Container = styled(Card)(
   ({ theme }) => css`
@@ -95,6 +97,7 @@ export const WrapperCallToAction = ({ name }: { name: string }) => {
   const { t } = useTranslation('profile')
 
   const { address } = useAccount()
+  const chainId = useChainId()
   const { ownerData, profile, isLoading: isNameDetailsLoading } = useNameDetails(name)
   const hasOwnerData = !!ownerData && !isNameDetailsLoading
   const isOwner = ownerData?.owner === address
@@ -102,12 +105,17 @@ export const WrapperCallToAction = ({ name }: { name: string }) => {
 
   const hasExistingRecords = useMemo(() => {
     if (profile?.records) {
-      if (profile.records.contentHash) return true
       if (Object.keys(profile.records.coinTypes || {}).length > 0) return true
       if (Object.keys(profile.records.texts || {}).length > 0) return true
+      if (profile.records.contentHash) return true
+      if (profile.records.abi) return true
     }
     return false
   }, [profile])
+  const isUsingWrapperAwareResolver = useMemo(() => {
+    if (NAMEWRAPPER_AWARE_RESOLVERS[String(chainId)].includes(resolverAddress!)) return true
+    return false
+  }, [chainId, resolverAddress])
 
   const isSubdomain = name.split('.').length > 2
   const { approvedForAll, isLoading: approvalLoading } = useWrapperApprovedForAll(
@@ -115,8 +123,9 @@ export const WrapperCallToAction = ({ name }: { name: string }) => {
     isSubdomain,
   )
 
-  const { createTransactionFlow, resumeTransactionFlow, getResumable, showDataInput } =
+  const { createTransactionFlow, resumeTransactionFlow, getResumable, prepareDataInput } =
     useTransactionFlow()
+  const showUnknownLabelsInput = prepareDataInput('UnknownLabels')
   const resumable = getResumable(`wrapName-${name}`)
 
   const handleUpgradeClick = () => {
@@ -128,7 +137,7 @@ export const WrapperCallToAction = ({ name }: { name: string }) => {
         }),
       ]
       if (isOwner) {
-        if (hasExistingRecords) {
+        if (hasExistingRecords && !isUsingWrapperAwareResolver) {
           transactions.unshift(
             makeTransactionItem('migrateProfile', {
               name,
@@ -143,7 +152,7 @@ export const WrapperCallToAction = ({ name }: { name: string }) => {
             }),
           )
         }
-      } else if (!isSubdomain && hasExistingRecords) {
+      } else if (!isSubdomain && hasExistingRecords && !isUsingWrapperAwareResolver) {
         transactions.push(
           makeTransactionItem('migrateProfile', {
             name,
@@ -161,7 +170,7 @@ export const WrapperCallToAction = ({ name }: { name: string }) => {
       }
       const key = `wrapName-${name}`
       if (!checkIsDecrypted(name))
-        return showDataInput(key, 'UnknownLabels', {
+        return showUnknownLabelsInput(key, {
           name,
           key,
           transactionFlowItem,

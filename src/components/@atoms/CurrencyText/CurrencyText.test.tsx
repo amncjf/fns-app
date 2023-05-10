@@ -18,8 +18,8 @@ describe('CurrencyText', () => {
   })
 
   it('should append extra decimal to usd if it does not exist', async () => {
-    render(<CurrencyText fil={BigNumber.from('4000000000000000000')} currency="usd" />)
-    expect(screen.getByText('$4.00')).toBeVisible()
+    render(<CurrencyText fil={BigNumber.from('4000000000000000000')} currency="fns" />)
+    expect(screen.getByText('4.0000FNS')).toBeVisible()
   })
 
   it('should cut off at FIL at 4 decimals', async () => {

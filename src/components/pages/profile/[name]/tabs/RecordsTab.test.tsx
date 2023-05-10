@@ -19,7 +19,7 @@ describe('RecordsTab', () => {
     resolverAddress: '0x123',
     isWrapped: false,
   }
-  mockUseChainId.mockReturnValue(1)
+  mockUseChainId.mockReturnValue(314)
 
   it('should render if no records provided', () => {
     render(<RecordsTab {...baseMockData} />)

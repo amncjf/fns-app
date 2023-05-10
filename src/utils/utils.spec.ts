@@ -56,11 +56,11 @@ describe('canEditRecordsWhenWrappedCalc', () => {
     expect(result).toEqual(true)
   })
   it('should return true if the domain is wrapped and has a wrapper aware resolver', () => {
-    const result = canEditRecordsWhenWrappedCalc(true, NAMEWRAPPER_AWARE_RESOLVERS[5][0], 5)
+    const result = canEditRecordsWhenWrappedCalc(true, NAMEWRAPPER_AWARE_RESOLVERS[314][0], 314)
     expect(result).toEqual(true)
   })
   it('should return false if the domain is wrapped and does NOT have a wrapper aware resolver', () => {
-    const result = canEditRecordsWhenWrappedCalc(true, '0xaddress', 5)
+    const result = canEditRecordsWhenWrappedCalc(true, '0xaddress', 314)
     expect(result).toEqual(false)
   })
 })

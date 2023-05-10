@@ -26,6 +26,8 @@ const customJestConfig = {
     '@ensdomains/ensjs/(.*)$': '@ensdomains/ensjs/dist/cjs/$1',
     '@fildomains/fnsjs/(.*)$': '@fildomains/fnsjs/dist/cjs/$1',
     '@adraffy/ens-normalize': '@adraffy/ens-normalize/dist/index.cjs',
+    '^wagmi(.*)$': 'wagmi-cjs$1',
+    '@wagmi/core(.*)$': '@wagmi/core-cjs$1',
   },
   setupFilesAfterEnv: ['<rootDir>/jest/jest.setup.ts'],
   setupFiles: ['<rootDir>/jest/setEnvVars.js', 'jest-canvas-mock'],
@@ -76,7 +78,7 @@ const customJestConfig = {
       statements: 2.29,
     },
   },
-  collectCoverage: true,
+  collectCoverage: false,
   globals: {
     Uint8Array: Uint8Array,
   },

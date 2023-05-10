@@ -1,79 +1,24 @@
-import { useCallback } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled, { css } from 'styled-components'
 
-import { Button, Typography } from '@ensdomains/thorin'
-
-import DismissDialogButton from '@app/components/@atoms/DismissDialogButton/DismissDialogButton'
+import { useResolverStatus } from '@app/hooks/useResolverStatus'
+import { makeIntroItem } from '@app/transaction-flow/intro'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
 
-const Container = styled.div(
-  ({ theme }) => css`
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(
-      41.95% 17.64% at 50.14% 50.08%,
-      #fff 0%,
-      rgba(255, 255, 255, 0.81) 100%
-    );
-    backdrop-filter: blur(8px);
-    border-radius: ${theme.radii.extraLarge};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-  `,
-)
+import { InvalidResolverView } from './views/InvalidResolverView'
+import { MigrateProfileSelectorView } from './views/MigrateProfileSelectorView.tsx'
+import { MigrateProfileWarningView } from './views/MigrateProfileWarningView'
+import { MigrateRegistryView } from './views/MigrateRegistryView'
+import { NoResolverView } from './views/NoResolverView'
+import { ResetProfileView } from './views/ResetProfileView'
+import { ResolverNotNameWrapperAwareView } from './views/ResolverNotNameWrapperAwareView'
+import { ResolverOutOfDateView } from './views/ResolverOutOfDateView'
+import { ResolverOutOfSyncView } from './views/ResolverOutOfSyncView'
+import { TransferOrResetProfileView } from './views/TransferOrResetProfileView'
+import { UpdateResolverOrResetProfileView } from './views/UpdateResolverOrResetProfileView'
 
-const Content = styled.div(
-  ({ theme }) => css`
-    width: 90%;
-    max-width: ${theme.space['72']};
-    display: flex;
-    flex-direction: column;
-    gap: ${theme.space['9']};
-  `,
-)
-
-const Message = styled.div(
-  () => css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `,
-)
-
-const Title = styled(Typography)(
-  () => css`
-    text-align: center;
-  `,
-)
-
-const Subtitle = styled(Typography)(
-  () => css`
-    text-align: center;
-  `,
-)
-
-const DismissButtonWrapper = styled.div(
-  ({ theme }) => css`
-    position: absolute;
-    top: ${theme.space['2']};
-    right: ${theme.space['2']};
-    z-index: 10000;
-  `,
-)
-type SettingsDict = {
-  [key: string]: {
-    handler?: () => void
-    href?: string
-    as?: 'a'
-    dismissable: boolean
-  }
-}
+export type SelectedProfile = 'latest' | 'current' | 'reset'
 
 type Props = {
   name: string
@@ -84,16 +29,28 @@ type Props = {
   hasNoResolver?: boolean
   latestResolver: string
   oldResolver: string
-  onDismissOverlay?: () => void
+  status: ReturnType<typeof useResolverStatus>['status']
+  onDismissOverlay: () => void
 } & TransactionDialogPassthrough
+
+type View =
+  | 'invalidResolver'
+  | 'migrateProfileSelector'
+  | 'migrateProfileWarning'
+  | 'migrateRegistry'
+  | 'noResolver'
+  | 'resetProfile'
+  | 'resolverNotNameWrapperAware'
+  | 'resolverOutOfDate'
+  | 'resolverOutOfSync'
+  | 'transferOrResetProfile'
+  | 'updateResolverOrResetProfile'
 
 const ResolverWarningOverlay = ({
   name,
+  status,
   isWrapped,
   hasOldRegistry = false,
-  resumable = false,
-  hasMigratedProfile = false,
-  hasNoResolver = false,
   latestResolver,
   oldResolver,
   dispatch,
@@ -101,9 +58,46 @@ const ResolverWarningOverlay = ({
   onDismissOverlay,
 }: Props) => {
   const { t } = useTranslation('transactionFlow')
+  const [selectedProfile, setSelectedProfile] = useState<SelectedProfile>('latest')
 
-  const handleResumeTransaction = () => {
-    dispatch({ name: 'resumeFlow', key: `edit-profile-flow-${name}` })
+  const flow: View[] = useMemo(() => {
+    if (hasOldRegistry) return ['migrateRegistry']
+    if (!status?.hasResolver) return ['noResolver']
+    if (!status?.hasValidResolver) return ['invalidResolver']
+    if (!status?.isNameWrapperAware && isWrapped) return ['resolverNotNameWrapperAware']
+    if (!status?.isAuthorized) return ['invalidResolver']
+    if (status?.hasMigratedProfile && status.isMigratedProfileEqual)
+      return ['resolverOutOfSync', 'updateResolverOrResetProfile', 'resetProfile']
+    if (status?.hasMigratedProfile)
+      return [
+        'resolverOutOfSync',
+        'migrateProfileSelector',
+        ...(selectedProfile === 'current'
+          ? (['migrateProfileWarning'] as View[])
+          : (['resetProfile'] as View[])),
+      ]
+    return ['resolverOutOfDate', 'transferOrResetProfile']
+  }, [
+    hasOldRegistry,
+    isWrapped,
+    status?.hasResolver,
+    status?.isNameWrapperAware,
+    status?.hasValidResolver,
+    status?.isAuthorized,
+    status?.hasMigratedProfile,
+    status?.isMigratedProfileEqual,
+    selectedProfile,
+  ])
+
+  const [index, setIndex] = useState(0)
+  const view = flow[index]
+
+  const onIncrement = () => {
+    if (flow[index + 1]) setIndex(index + 1)
+  }
+
+  const onDecrement = () => {
+    if (flow[index - 1]) setIndex(index - 1)
   }
 
   const handleUpdateResolver = () => {
@@ -114,98 +108,168 @@ const ResolverWarningOverlay = ({
           name,
           contract: isWrapped ? 'nameWrapper' : 'registry',
           resolver: latestResolver,
-          oldResolver,
         }),
       ],
     })
-    dispatch({ name: 'setFlowStage', payload: 'transaction' })
-  }
-
-  const handleTransferProfile = () => {
     dispatch({
-      name: 'showDataInput',
-      payload: {
-        input: {
-          name: 'TransferProfile',
-          data: { name, isWrapped },
-        },
-      },
-      key: `edit-profile-${name}`,
+      name: 'setFlowStage',
+      payload: 'transaction',
     })
   }
 
-  /* eslint-disable no-nested-ternary */
-  const settingsKey = hasOldRegistry
-    ? 'oldRegistry'
-    : resumable
-    ? 'resumable'
-    : hasMigratedProfile
-    ? 'migrate'
-    : hasNoResolver
-    ? 'noResolver'
-    : 'default'
-
-  const settingsDict: SettingsDict = {
-    resumable: {
-      handler: handleResumeTransaction,
-      dismissable: true,
-    },
-    migrate: {
-      handler: handleUpdateResolver,
-      dismissable: true,
-    },
-    noResolver: {
-      handler: handleUpdateResolver,
-      dismissable: false,
-    },
-    oldRegistry: {
-      dismissable: false,
-      as: 'a',
-      href: `https://app.fildomains.com/name/${name}`,
-    },
-    default: {
-      handler: handleTransferProfile,
-      dismissable: true,
-    },
-  }
-  const { dismissable, handler, as, href } = settingsDict[settingsKey]
-  const title = t(`input.profileEditor.warningOverlay.${settingsKey}.title`)
-  const subtitle = t(`input.profileEditor.warningOverlay.${settingsKey}.subtitle`)
-  const action = t(`input.profileEditor.warningOverlay.${settingsKey}.action`)
-
-  const handleUpgrade = () => {
-    handler?.()
+  const handleMigrateProfile = () => {
+    dispatch({
+      name: 'startFlow',
+      key: `migrate-profile-${name}`,
+      payload: {
+        intro: {
+          title: ['input.profileEditor.intro.migrateProfile.title', { ns: 'transactionFlow' }],
+          content: makeIntroItem('GenericWithDescription', {
+            description: t('input.profileEditor.intro.migrateProfile.description'),
+          }),
+        },
+        transactions: [
+          makeTransactionItem('migrateProfile', {
+            name,
+          }),
+          makeTransactionItem('updateResolver', {
+            name,
+            contract: isWrapped ? 'nameWrapper' : 'registry',
+            resolver: latestResolver,
+          }),
+        ],
+      },
+    })
   }
 
-  const handleDismiss = useCallback(() => {
-    if (dismissable) return onDismissOverlay?.()
-    onDismiss?.()
-  }, [dismissable, onDismiss, onDismissOverlay])
+  const handleResetProfile = () => {
+    dispatch({
+      name: 'startFlow',
+      key: `reset-profile-${name}`,
+      payload: {
+        intro: {
+          title: ['input.profileEditor.intro.resetProfile.title', { ns: 'transactionFlow' }],
+          content: makeIntroItem('GenericWithDescription', {
+            description: t('input.profileEditor.intro.resetProfile.description'),
+          }),
+        },
+        transactions: [
+          makeTransactionItem('resetProfile', {
+            name,
+            resolver: latestResolver,
+          }),
+          makeTransactionItem('updateResolver', {
+            name,
+            contract: isWrapped ? 'nameWrapper' : 'registry',
+            resolver: latestResolver,
+          }),
+        ],
+      },
+    })
+  }
 
-  return (
-    <>
-      <Container data-testid="warning-overlay">
-        <Content>
-          <Message>
-            <Title fontVariant="headingFour">{title}</Title>
-            <Subtitle color="grey">{subtitle}</Subtitle>
-          </Message>
-          <Button
-            as={as}
-            href={href}
-            target="_blank"
-            onClick={handleUpgrade}
-            data-testid="profile-editor-overlay-button"
-          >
-            {action}
-          </Button>
-        </Content>
-      </Container>
-      <DismissButtonWrapper data-testid="warning-overlay-dismiss">
-        <DismissDialogButton onClick={handleDismiss} data-testid="dismiss-dialog-button" />
-      </DismissButtonWrapper>
-    </>
-  )
+  const handleMigrateCurrentProfileToLatest = async () => {
+    dispatch({
+      name: 'startFlow',
+      key: `migrate-profile-with-reset-${name}`,
+      payload: {
+        intro: {
+          title: [
+            'input.profileEditor.intro.migrateCurrentProfile.title',
+            { ns: 'transactionFlow' },
+          ],
+          content: makeIntroItem('GenericWithDescription', {
+            description: t('input.profileEditor.intro.migrateCurrentProfile.description'),
+          }),
+        },
+        transactions: [
+          makeTransactionItem('migrateProfileWithReset', {
+            name,
+            resolver: latestResolver,
+          }),
+          makeTransactionItem('updateResolver', {
+            name,
+            contract: isWrapped ? 'nameWrapper' : 'registry',
+            resolver: latestResolver,
+          }),
+        ],
+      },
+    })
+  }
+
+  const viewsMap: { [key in View]: any } = {
+    migrateRegistry: <MigrateRegistryView name={name} onCancel={onDismiss} />,
+    invalidResolver: <InvalidResolverView onConfirm={handleUpdateResolver} onCancel={onDismiss} />,
+    migrateProfileSelector: (
+      <MigrateProfileSelectorView
+        name={name}
+        currentResolver={oldResolver}
+        latestResolver={latestResolver}
+        hasCurrentProfile={status?.hasProfile}
+        selected={selectedProfile}
+        onChangeSelected={setSelectedProfile}
+        onBack={onDecrement}
+        onNext={() => {
+          if (selectedProfile === 'latest') handleUpdateResolver()
+          else onIncrement()
+        }}
+      />
+    ),
+    migrateProfileWarning: (
+      <MigrateProfileWarningView
+        onBack={onDecrement}
+        onNext={handleMigrateCurrentProfileToLatest}
+      />
+    ),
+    noResolver: <NoResolverView onCancel={onDismiss} onConfirm={handleUpdateResolver} />,
+    resetProfile: <ResetProfileView onBack={onDecrement} onNext={handleResetProfile} />,
+    resolverNotNameWrapperAware: (
+      <ResolverNotNameWrapperAwareView
+        selected={selectedProfile}
+        hasProfile={status?.hasProfile}
+        onChangeSelected={setSelectedProfile}
+        onCancel={onDismiss}
+        onNext={() => {
+          if (selectedProfile === 'reset' || !status?.hasProfile) handleUpdateResolver()
+          else handleMigrateProfile()
+        }}
+      />
+    ),
+    resolverOutOfDate: (
+      <ResolverOutOfDateView
+        onSkip={onDismissOverlay}
+        onCancel={onDismiss}
+        onConfirm={onIncrement}
+      />
+    ),
+    resolverOutOfSync: (
+      <ResolverOutOfSyncView onSkip={onDismissOverlay} onCancel={onDismiss} onNext={onIncrement} />
+    ),
+    transferOrResetProfile: (
+      <TransferOrResetProfileView
+        selected={selectedProfile}
+        onChangeSelected={setSelectedProfile}
+        onBack={onDecrement}
+        onNext={() => {
+          if (selectedProfile === 'reset') handleUpdateResolver()
+          else handleMigrateProfile()
+        }}
+      />
+    ),
+    updateResolverOrResetProfile: (
+      <UpdateResolverOrResetProfileView
+        selected={selectedProfile}
+        onChangeSelected={setSelectedProfile}
+        onBack={onDecrement}
+        onNext={() => {
+          if (selectedProfile === 'reset') onIncrement()
+          else handleUpdateResolver()
+        }}
+      />
+    ),
+  }
+
+  return viewsMap[view]
 }
 
 export default ResolverWarningOverlay

@@ -4,14 +4,16 @@
 import { Dispatch, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
-import { useAccount } from 'wagmi'
+import { WagmiConfig, useAccount } from 'wagmi'
 
 import { Dialog } from '@ensdomains/thorin'
 
 import { transactions } from '@app/transaction-flow/transaction'
+import { wagmiClientWithRefetch } from '@app/utils/query'
 
 import { DataInputComponents } from '../../../transaction-flow/input'
 import { InternalTransactionFlow, TransactionFlowAction } from '../../../transaction-flow/types'
+// import InputComponentWrapper from './InputComponentWrapper'
 import { IntroStageModal } from './stage/Intro'
 import { TransactionStageModal } from './stage/TransactionStageModal'
 
@@ -54,14 +56,18 @@ export const TransactionDialogManager = ({
       if (selectedItem.input && selectedItem.currentFlowStage === 'input') {
         const Component = DataInputComponents[selectedItem.input.name]
         return (
-          <Component
-            {...{
-              data: selectedItem.input.data,
-              transactions: selectedItem.transactions,
-              dispatch,
-              onDismiss,
-            }}
-          />
+          <WagmiConfig client={wagmiClientWithRefetch}>
+            <Component
+              {...{
+                data: selectedItem.input.data,
+                transactions: selectedItem.transactions,
+                dispatch,
+                onDismiss,
+              }}
+            />
+            {/* <InputComponentWrapper>
+            </InputComponentWrapper> */}
+          </WagmiConfig>
         )
       }
       if (selectedItem.intro && selectedItem.currentFlowStage === 'intro') {
@@ -108,11 +114,6 @@ export const TransactionDialogManager = ({
     return null
   }, [selectedKey, selectedItem, onDismiss, dispatch, t])
 
-  const onCloseDialog = useMemo(() => {
-    if (selectedItem?.disableBackgroundClick && selectedItem?.currentFlowStage === 'input') return
-    return onDismiss
-  }, [onDismiss, selectedItem?.disableBackgroundClick, selectedItem?.currentFlowStage])
-
   const onDismissDialog = useCallback(() => {
     if (selectedItem?.disableBackgroundClick && selectedItem?.currentFlowStage === 'input') return
     dispatch({
@@ -125,7 +126,7 @@ export const TransactionDialogManager = ({
       variant="blank"
       open={!!state.selectedKey}
       onDismiss={onDismissDialog}
-      onClose={onCloseDialog}
+      onClose={onDismiss}
     >
       {InnerComponent}
     </Dialog>

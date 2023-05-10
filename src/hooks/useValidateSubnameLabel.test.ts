@@ -6,6 +6,7 @@ import { DeepPartial } from '@app/types'
 import { useFns } from '@app/utils/FnsProvider'
 import { emptyAddress } from '@app/utils/constants'
 
+import { usePccExpired } from './fuses/usePccExpired'
 import { useGetWrapperData } from './useGetWrapperData'
 import { useValidateSubnameLabel } from './useValidateSubnameLabel'
 
@@ -14,6 +15,7 @@ const BYTE256 =
 
 jest.mock('@app/utils/FnsProvider')
 jest.mock('@app/hooks/useGetWrapperData')
+jest.mock('@app/hooks/fuses/usePccExpired')
 
 const mockUseEns = mockFunction(useFns)
 const mockGetOwner = jest.fn()
@@ -23,6 +25,7 @@ mockUseEns.mockReturnValue({
 })
 
 const mockUseGetWrapperData = mockFunction(useGetWrapperData)
+const mockUsePccExpired = mockFunction(usePccExpired)
 
 type OwnerData = Awaited<ReturnType<ReturnType<typeof useFns>['getOwner']>>
 const makeOwnerData = (
@@ -263,11 +266,7 @@ const groups = [
           valid: false,
           isLoading: false,
           error: 'pccBurned',
-          expiryLabel: new Date('2020-01-01').toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          }),
+          expiryLabel: 'Jan 1, 2020',
         },
       },
       {
@@ -298,6 +297,21 @@ const groups = [
           error: 'invalidCharacters',
         },
       },
+      {
+        description: 'should return valid if label is expired subname',
+        name: 'wrapped.fil',
+        isWrapped: true,
+        label: 'hello.world',
+        ownerData: makeOwnerData('nameWrapper'),
+        wrapperData: makeWrapperData(),
+        skipWaitForNextUpdate: true,
+        pccBurned: true,
+        result: {
+          valid: false,
+          isLoading: false,
+          error: 'invalidCharacters',
+        },
+      },
     ],
   },
 ]
@@ -322,9 +336,10 @@ describe('useValidateSubnameLabel', () => {
             wrapperData: test.wrapperData,
             isLoading: false,
           })
+          mockUsePccExpired.mockReturnValue(!!(test as any).pccExpired)
 
           const { result, waitForNextUpdate } = renderHook(() =>
-            useValidateSubnameLabel(test.name, test.label, test.isWrapped),
+            useValidateSubnameLabel(test.name, test.label, test.isWrapped, 'en-US'),
           )
           if (!test.skipWaitForNextUpdate) await waitForNextUpdate()
           expect(result.current).toEqual(test.result)

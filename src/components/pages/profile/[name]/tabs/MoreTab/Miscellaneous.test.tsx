@@ -24,7 +24,7 @@ mockUseAccount.mockReturnValue({ address: '0x123' })
 mockUseChainName.mockReturnValue('mainnet')
 mockUseRegistrationData.mockReturnValue({ data: undefined })
 mockUseSelfAbilities.mockReturnValue({})
-mockUseTransactionFlow.mockReturnValue({})
+mockUseTransactionFlow.mockReturnValue({ prepareDataInput: () => () => {} })
 
 describe('Miscellaneous', () => {
   it('should not render anything if no expiryDate provided', () => {
@@ -51,7 +51,7 @@ describe('Miscellaneous', () => {
     render(<Miscellaneous name="x.test.fil" expiryDate={new Date()} isCachedData={false} />)
     expect(screen.getByTestId('etherscan-registration-link')).toHaveAttribute(
       'href',
-      'https://etherscan.io/tx/0x123',
+      'https://filfox.info/tx/0x123',
     )
   })
 })

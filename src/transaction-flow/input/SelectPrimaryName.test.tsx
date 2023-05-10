@@ -54,7 +54,7 @@ describe('SelectPrimaryName', () => {
     disconnect: jest.fn(),
   })
   mockNamePill.mockImplementation(mockComponent as any)
-  mockUseChainId.mockReturnValue(1)
+  mockUseChainId.mockReturnValue(314)
   mockUseEns.mockReturnValue({
     gqlInstance: {
       gql: (str: string) => str,

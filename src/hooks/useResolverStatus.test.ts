@@ -1,254 +1,241 @@
 import { mockFunction, renderHook } from '@app/test-utils'
 
-import { useFns } from '../utils/FnsProvider'
+import { NAMEWRAPPER_AWARE_RESOLVERS, emptyAddress } from '@app/utils/constants'
+
+import { ReturnedENS } from '../types/index'
+import { useChainId } from './useChainId'
 import { useContractAddress } from './useContractAddress'
 import { useProfile } from './useProfile'
+import { useResolverIsAuthorized } from './useResolverIsAuthorized'
 import { useResolverStatus } from './useResolverStatus'
 
-jest.mock('@app/utils/FnsProvider')
-jest.mock('@app/hooks/useContractAddress')
+const makeProfile = ({
+  texts: _texts,
+  coinTypes: _coinTypes,
+  contentHash: _contentHash,
+  abi: _abi,
+  resolverAddress: _resolverAddress,
+}: {
+  texts?: { key: string; value: string }[]
+  coinTypes?: { coin: string; addr: string }[]
+  contentHash?: { protocolType: string; decoded: string }
+  abi?: { contentType: number; data: string }
+  resolverAddress?: string
+}) => {
+  const texts = Object.entries(
+    [{ key: 'test', value: 'test' }, ...(_texts || [])].reduce((acc, { key, value }) => ({
+      ...acc,
+      [key]: value,
+    })),
+  ).map(([key, value]) => ({ key, value, type: 'text' }))
+  const coinTypes = Object.entries(
+    [{ coin: 'ETH', addr: '0x123' }, ...(_coinTypes || [])].reduce((acc, { coin, addr }) => ({
+      ...acc,
+      [coin]: addr,
+    })),
+  ).map(([coin, addr]) => ({ coin, addr, type: 'addr' }))
+  const contentHash = _contentHash || { protocolType: 'ipfs', decoded: '0x123' }
+  const abi = _abi || { contentType: 1, data: '[{}]' }
+  const resolverAddress = typeof _resolverAddress === 'undefined' ? '0xresolver' : _resolverAddress
+  return {
+    records: {
+      texts,
+      coinTypes,
+      contentHash,
+      abi,
+    },
+    resolverAddress,
+  } as unknown as ReturnedENS['getProfile']
+}
+
 jest.mock('@app/hooks/useProfile')
-
-const mockUseContractAddress = mockFunction(useContractAddress)
 const mockUseProfile = mockFunction(useProfile)
-const mockUseEns = mockFunction(useFns)
+mockUseProfile.mockReturnValue({
+  loading: false,
+  profile: makeProfile({}),
+})
 
-const mockLocalStorage = jest.fn()
-const mockGetItem = jest.fn()
-const mockGetProfile = jest.fn()
+jest.mock('@app/hooks/useContractAddress')
+const mockUseContractAddress = mockFunction(useContractAddress)
+mockUseContractAddress.mockReturnValue('0xlatest')
 
-const defaultProfile = {
-  records: {
-    texts: [
-      {
-        key: 'test',
-        value: 'test',
-        type: 'text',
-      },
-    ],
-    coinTypes: [
-      {
-        coin: 'ETH',
-        addr: '0x123',
-        type: 'addr',
-        key: '60',
-      },
-    ],
-    contentHash: {
-      protocolType: 'ipfs',
-      decoded: '0x123',
-    },
+jest.mock('@app/hooks/useChainId')
+const mockUseChainId = mockFunction(useChainId)
+mockUseChainId.mockReturnValue(314)
+
+jest.mock('@app/hooks/useResolverIsAuthorized')
+const mockUseResolverIsAuthorized = mockFunction(useResolverIsAuthorized)
+mockUseResolverIsAuthorized.mockReturnValue({
+  isAuthorized: true,
+  isValid: true,
+  isLoading: false,
+})
+
+const makeResult = (keys?: string[], isLoading = false) => ({
+  status: {
+    hasResolver: false,
+    hasLatestResolver: false,
+    hasValidResolver: false,
+    isAuthorized: false,
+    hasProfile: false,
+    hasMigratedProfile: false,
+    isMigratedProfileEqual: false,
+    isNameWrapperAware: false,
+    ...(keys || []).reduce((acc, key) => {
+      return {
+        ...acc,
+        [key]: true,
+      }
+    }, {}),
   },
-  resolverAddress: 'another_resolver',
-}
-
-const setup = (overrides?: any) => {
-  mockUseContractAddress.mockReturnValue(overrides?.useContractAddress || 'latest_resolver')
-
-  mockUseProfile.mockReturnValue(
-    overrides?.useProfile || {
-      profile: defaultProfile,
-      loading: false,
-    },
-  )
-
-  mockUseEns.mockReturnValue({
-    getProfile: mockGetProfile,
-    ready: true,
-  })
-
-  mockGetProfile.mockReturnValue(overrides?.getProfile)
-
-  mockLocalStorage.mockReturnValue({
-    getItem: mockGetItem,
-  })
-  window.localStorage = mockLocalStorage()
-
-  mockGetItem.mockReturnValue(overrides?.getItem || '')
-}
+  isLoading,
+})
 
 describe('useResolverStatus', () => {
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
+  afterEach(() => {})
 
-  it('should return hasResolver is false if profile does not have resolver', async () => {
-    setup({
-      useProfile: {
-        profile: { resolverAddress: undefined },
-        loading: false,
-      },
+  describe('missing parameters', () => {
+    it('should return default values if no name is passed', () => {
+      const { result } = renderHook(() => useResolverStatus('', makeProfile({})))
+      expect(result.current).toEqual(makeResult())
     })
 
-    const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
-    await waitForNextUpdate()
-    expect(result.current).toEqual({
-      status: {
-        hasResolver: false,
-        hasLatestResolver: false,
-        hasMigratedProfile: false,
-        isMigratedProfileEqual: false,
-      },
-      loading: false,
+    it('should return default values if no profile is passed', () => {
+      const { result } = renderHook(() => useResolverStatus('test.fil', undefined as any))
+      expect(result.current).toEqual(makeResult())
     })
   })
 
-  it('should return hasLatestResolver is true if profile has the latest resolver', async () => {
-    setup({
-      useProfile: {
-        profile: { resolverAddress: 'latest_resolver' },
-        loading: false,
-      },
-    })
-
-    const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
-    await waitForNextUpdate()
-    expect(result.current).toEqual({
-      status: {
-        hasResolver: true,
-        hasLatestResolver: true,
-        hasMigratedProfile: true,
-        isMigratedProfileEqual: true,
-      },
-      loading: false,
-    })
-  })
-
-  describe('when profile does NOT have the latest resolver', () => {
-    it('should return hasLatestResolver is false', async () => {
-      setup()
-      const { result, waitForNextUpdate } = renderHook(() =>
-        useResolverStatus('another_resolver.fil'),
+  describe('loading', () => {
+    it('should return isLoading true if useResolverIsAuthorized loading', () => {
+      mockUseResolverIsAuthorized.mockReturnValueOnce({
+        isAuthorized: true,
+        isLoading: true,
+      })
+      const { result } = renderHook(() =>
+        useResolverStatus('test.fil', makeProfile({}), { skipCompare: false }),
       )
-      await waitForNextUpdate()
-      expect(result.current).toEqual({
-        status: {
-          hasResolver: true,
-          hasLatestResolver: false,
-          hasMigratedProfile: false,
-          isMigratedProfileEqual: false,
-        },
-        loading: false,
-      })
-    })
-
-    it('should return hasMigratedProfile and hasCreatedProfile is false if getProfile returns undefined', async () => {
-      setup({
-        getProfile: undefined,
-      })
-      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
-      await waitForNextUpdate()
-      expect(result.current).toEqual({
-        status: {
-          hasResolver: true,
-          hasLatestResolver: false,
-          hasMigratedProfile: false,
-          isMigratedProfileEqual: false,
-        },
-        loading: false,
-      })
-    })
-
-    it('should return hasCreatedProfile is false if getProfile returns records with an empty object ', async () => {
-      setup({
-        getProfile: {
-          records: {},
-        },
-      })
-      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
-      await waitForNextUpdate()
-      expect(result.current).toEqual({
-        status: {
-          hasResolver: true,
-          hasLatestResolver: false,
-          hasMigratedProfile: false,
-          isMigratedProfileEqual: false,
-        },
-        loading: false,
-      })
-    })
-
-    it('should return hasMigratedProfile is true if getProfile returns different records from useProfile ', async () => {
-      setup({
-        getProfile: {
-          records: {
-            texts: [
-              {
-                key: 'different',
-                value: 'value',
-              },
-            ],
-          },
-        },
-      })
-      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
-      await waitForNextUpdate()
-      expect(result.current).toEqual({
-        status: {
-          hasResolver: true,
-          hasLatestResolver: false,
-          hasMigratedProfile: true,
-          isMigratedProfileEqual: false,
-        },
-        loading: false,
-      })
-    })
-
-    it('should return isMigratedProfileEqual is true if getProfile returns the same records as useProfile ', async () => {
-      setup({
-        getProfile: defaultProfile,
-      })
-      const { result, waitForNextUpdate } = renderHook(() => useResolverStatus('test.fil'))
-      await waitForNextUpdate()
-      expect(result.current).toEqual({
-        status: {
-          hasResolver: true,
-          hasLatestResolver: false,
-          hasMigratedProfile: true,
-          isMigratedProfileEqual: true,
-        },
-        loading: false,
-      })
+      expect(result.current).toEqual(makeResult(['hasResolver', 'hasProfile'], true))
     })
   })
 
-  describe('when using skipCompare flag in options', () => {
-    it('should NOT compare resolver profiles if skipCompare is true', async () => {
-      setup({
-        getProfile: defaultProfile,
-      })
-      const { result, waitForNextUpdate } = renderHook(() =>
-        useResolverStatus('test.fil', false, { skipCompare: true }),
-      )
-      await waitForNextUpdate()
-      expect(result.current).toEqual({
-        status: {
-          hasResolver: true,
-          hasLatestResolver: false,
-          hasMigratedProfile: false,
-          isMigratedProfileEqual: false,
-        },
-        loading: false,
-      })
-    })
-  })
-
-  it('should compare resolver profiles if skipCompare is false', async () => {
-    setup({
-      getProfile: defaultProfile,
-    })
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useResolverStatus('test.fil', false, { skipCompare: false }),
+  it('should return default if profile does not have resolver', () => {
+    const { result } = renderHook(() =>
+      useResolverStatus('test.fil', makeProfile({ resolverAddress: '' }), { skipCompare: false }),
     )
-    await waitForNextUpdate()
-    expect(result.current).toEqual({
+    expect(result.current).toEqual(makeResult())
+  })
+
+  it('should return default if profile resolver is empty address', () => {
+    const { result } = renderHook(() =>
+      useResolverStatus('test.fil', makeProfile({ resolverAddress: emptyAddress }), {
+        skipCompare: false,
+      }),
+    )
+    expect(result.current).toEqual(makeResult())
+  })
+
+  it('should return authorized results if skipCompare is true', () => {
+    const { result } = renderHook(() =>
+      useResolverStatus('test.fil', makeProfile({}), { skipCompare: true }),
+    )
+    expect(result.current).toEqual(
+      makeResult(['hasResolver', 'hasValidResolver', 'isAuthorized', 'hasProfile']),
+    )
+  })
+
+  it('should return isAuthorized is false if authorization fails', () => {
+    mockUseResolverIsAuthorized.mockReturnValueOnce({
+      isAuthorized: false,
+      isValid: false,
+      isLoading: false,
+    })
+    const { result } = renderHook(() =>
+      useResolverStatus('test.fil', makeProfile({}), { skipCompare: true }),
+    )
+    expect(result.current).toEqual(makeResult(['hasResolver', 'hasProfile']))
+  })
+
+  it('should return isNameWrapperAware is true if resolver is in list', () => {
+    const { result } = renderHook(() =>
+      useResolverStatus(
+        'test.fil',
+        makeProfile({ resolverAddress: NAMEWRAPPER_AWARE_RESOLVERS[314][0] }),
+        { skipCompare: true },
+      ),
+    )
+    expect(result.current).toEqual(
+      makeResult([
+        'hasResolver',
+        'hasValidResolver',
+        'isAuthorized',
+        'hasProfile',
+        'isNameWrapperAware',
+      ]),
+    )
+  })
+
+  it('should return authorized results if latestResolverProfile is loading', () => {
+    mockUseProfile.mockReturnValueOnce({
+      loading: true,
+      profile: makeProfile({}),
+    })
+    const { result } = renderHook(() => useResolverStatus('test.fil', makeProfile({})))
+    expect(result.current).toEqual(
+      makeResult(['hasResolver', 'hasValidResolver', 'isAuthorized', 'hasProfile'], true),
+    )
+  })
+
+  it('should return isMigratedProfileEqual is false if profile is not equal to latestResolverProfile', () => {
+    mockUseProfile.mockReturnValueOnce({
+      loading: false,
+      profile: makeProfile({ texts: [{ key: 'test', value: 'different' }] }),
+    })
+    const { result } = renderHook(() => useResolverStatus('test.fil', makeProfile({})))
+    expect(result.current).toEqual(
+      makeResult([
+        'hasResolver',
+        'hasValidResolver',
+        'isAuthorized',
+        'hasProfile',
+        'hasMigratedProfile',
+      ]),
+    )
+  })
+
+  it('should return isMigratedProfileEqual is true if profile is equal to latestResolverProfile', () => {
+    mockUseProfile.mockReturnValueOnce({
+      loading: false,
+      profile: makeProfile({}),
+    })
+    const { result } = renderHook(() => useResolverStatus('test.fil', makeProfile({})))
+    console.log('result:', result, ',result.current:', result.current)
+    /*
+    {
       status: {
         hasResolver: true,
-        hasLatestResolver: false,
-        hasMigratedProfile: true,
-        isMigratedProfileEqual: true,
+          hasLatestResolver: false,
+          hasValidResolver: true,
+          isAuthorized: true,
+          isNameWrapperAware: undefined,
+          hasProfile: true,
+          hasMigratedProfile: true,
+          isMigratedProfileEqual: true
       },
-      loading: false,
-    })
+      isLoading: false
+    }
+
+     */
+
+    expect(result.current).toEqual(
+      makeResult([
+        'hasResolver',
+        'hasValidResolver',
+        'isAuthorized',
+        'hasProfile',
+        'hasMigratedProfile',
+        'isMigratedProfileEqual',
+      ]),
+    )
   })
 })

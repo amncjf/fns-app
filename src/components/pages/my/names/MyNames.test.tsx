@@ -30,7 +30,7 @@ const expectQuery = (address: string, page: number) => {
     address,
     sort: {
       type: 'expiryDate',
-      orderDirection: 'desc',
+      orderDirection: 'asc',
     },
     page,
     resultsPerPage: 10,
@@ -40,7 +40,7 @@ const expectQuery = (address: string, page: number) => {
 
 describe('MyNames', () => {
   mockContent.mockImplementation(({ children }) => <div>{children.trailing}</div>)
-  mockUseChainId.mockReturnValue(1)
+  mockUseChainId.mockReturnValue(314)
   mockUseRouter.mockReturnValue({
     query: {},
     isReady: true,

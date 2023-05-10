@@ -185,8 +185,14 @@ export const Header = () => {
 
   let RouteItems: ReactNode
 
+  let routesNoSearchWithFavourites = routesNoSearch
+
+  if (globalThis?.localStorage?.getItem('ensFavourites')) {
+    routesNoSearchWithFavourites = [...routesNoSearchWithFavourites]
+  }
+
   if (!isInitial && isConnected) {
-    RouteItems = routesNoSearch.map((route) => (
+    RouteItems = routesNoSearchWithFavourites.map((route) => (
       <RouteItem
         key={route.name}
         route={route}
@@ -220,7 +226,6 @@ export const Header = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchWrapperRef.current])
 
-  // @ts-ignore
   return (
     <HeaderWrapper id="header">
       <NavContainer>

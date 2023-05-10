@@ -2,6 +2,7 @@ import { useQuery } from 'wagmi'
 
 import { ReturnedENS } from '@app/types'
 import { useFns } from '@app/utils/FnsProvider'
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 import { emptyAddress } from '../utils/constants'
 
@@ -13,6 +14,7 @@ export const useHasSubnames = (name: string) => {
   const { getSubnames, ready } = useFns()
 
   const isSubname = name && name.split('.').length > 2
+  const enabled = !!(ready && name && isSubname)
 
   const {
     data: hasSubnames,
@@ -24,38 +26,42 @@ export const useHasSubnames = (name: string) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isFetching: _isFetching,
   } = useQuery(
-    ['getSubnames', name],
+    useQueryKeys().hasSubnames(name),
     async () => {
       let cursor: Subnames = []
       let done = false
 
       while (!done) {
-        // eslint-disable-next-line no-await-in-loop
-        const { subnames } = await getSubnames({
-          name,
-          lastSubnames: cursor,
-          orderBy: 'labelName',
-          orderDirection: 'desc',
-          pageSize: FETCH_PAGE_SIZE,
-        })
-        const anyHasOwner = subnames.some((subname) => subname.owner !== emptyAddress)
-        if (anyHasOwner) {
-          return true
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          const { subnames } = await getSubnames({
+            name,
+            lastSubnames: cursor,
+            orderBy: 'labelName',
+            orderDirection: 'desc',
+            pageSize: FETCH_PAGE_SIZE,
+          })
+          const anyHasOwner = subnames.some((subname) => subname.owner !== emptyAddress)
+          if (anyHasOwner) {
+            return true
+          }
+          done = subnames.length !== FETCH_PAGE_SIZE
+          cursor = subnames
+        } catch {
+          return false
         }
-        done = subnames.length !== FETCH_PAGE_SIZE
-        cursor = subnames
       }
 
       return false
     },
     {
-      enabled: !!(ready && name && isSubname),
+      enabled,
     },
   )
 
   return {
     hasSubnames,
     isLoading,
-    isCachedData: status === 'success' && isFetched && !isFetchedAfterMount,
+    isCachedData: enabled && status === 'success' && isFetched && !isFetchedAfterMount,
   }
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useQuery } from 'wagmi'
 
 import { useFns } from '@app/utils/FnsProvider'
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 export const useExists = (name: string, skip?: any) => {
   const { ready, getOwner } = useFns()
@@ -12,7 +13,7 @@ export const useExists = (name: string, skip?: any) => {
     data,
     isLoading: loading,
     status,
-  } = useQuery(['getOwner', name], () => getOwner(name), {
+  } = useQuery(useQueryKeys().exists(name), () => getOwner(name).then((d) => d || null), {
     enabled: ready && !skip && name !== '',
   })
 

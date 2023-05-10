@@ -15,9 +15,9 @@ export default function Page() {
 
   const initial = useInitial()
 
-  const { address, isConnecting, isReconnecting } = useAccount()
-  const accountLoading = isConnecting || isReconnecting
+  const { address } = useAccount()
 
+  console.log('profile address:', address)
   const primary = usePrimary(address as string, !address)
   const { name: ensName, loading: primaryLoading } = primary
 
@@ -26,7 +26,7 @@ export default function Page() {
   const nameDetails = useNameDetails(name)
   const { isLoading: detailsLoading, registrationStatus, gracePeriodEndDate } = nameDetails
 
-  const isLoading = detailsLoading || primaryLoading || accountLoading || initial
+  const isLoading = detailsLoading || primaryLoading || initial
 
   if (isViewingExpired && gracePeriodEndDate && gracePeriodEndDate > new Date()) {
     router.push(`/profile/${name}`)

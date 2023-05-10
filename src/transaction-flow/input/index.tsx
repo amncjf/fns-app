@@ -1,4 +1,7 @@
 import dynamic from 'next/dynamic'
+import { useContext, useEffect } from 'react'
+
+import DynamicLoadingContext from '@app/components/@molecules/TransactionDialogManager/DynamicLoadingContext'
 
 import TransactionLoader from '../TransactionLoader'
 import type { Props as AdvancedEditorProps } from './AdvancedEditor/AdvancedEditor-flow'
@@ -24,10 +27,21 @@ const dynamicHelper = <P,>(name: string) =>
         /* webpackExclude: /\.test.tsx$/ */
         `./${name}-flow`
       ),
-    { loading: () => <TransactionLoader /> },
+    {
+      loading: () => {
+        /* eslint-disable react-hooks/rules-of-hooks */
+        const setLoading = useContext(DynamicLoadingContext)
+        useEffect(() => {
+          setLoading(true)
+          return () => setLoading(false)
+        }, [setLoading])
+        return <TransactionLoader isComponentLoader />
+        /* eslint-enable react-hooks/rules-of-hooks */
+      },
+    },
   )
 
-const EditFnsToken = dynamicHelper<FnsTokenProps>('FnsToken/FnsToken')
+const FnsToken = dynamicHelper<FnsTokenProps>('FnsToken/FnsToken')
 const EditResolver = dynamicHelper<EditResolverProps>('EditResolver/EditResolver')
 const SelectPrimaryName = dynamicHelper<SelectPrimaryNameProps>('SelectPrimaryName')
 const AdvancedEditor = dynamicHelper<AdvancedEditorProps>('AdvancedEditor/AdvancedEditor')
@@ -46,7 +60,7 @@ const DeleteEmancipatedSubnameWarning = dynamicHelper<DeleteEmancipatedSubnameWa
 )
 
 export const DataInputComponents = {
-  EditFnsToken,
+  FnsToken,
   EditResolver,
   ProfileEditor,
   AdvancedEditor,

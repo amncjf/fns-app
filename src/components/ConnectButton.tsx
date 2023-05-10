@@ -16,6 +16,7 @@ import {
 } from '@ensdomains/thorin'
 import { DropdownItem } from '@ensdomains/thorin/dist/types/components/molecules/Dropdown/Dropdown'
 
+import useHasPendingTransactions from '@app/hooks/transactions/useHasPendingTransactions'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useAvatar } from '@app/hooks/useAvatar'
 import { useChainId } from '@app/hooks/useChainId'
@@ -127,17 +128,18 @@ export const ConnectButton = ({ isTabBar, large, inHeader }: Props) => {
 const HeaderProfile = ({ address }: { address: string }) => {
   const { t } = useTranslation('common')
 
-  const { name } = usePrimary(address!, !address)
+  const { name, beautifiedName } = usePrimary(address!, !address)
   const chainId = useChainId()
   const { avatar } = useAvatar(name || undefined, chainId)
   const zorb = useZorb(address, 'address')
   const { disconnect } = useDisconnect()
   const { copy, copied } = useCopied(300)
+  const hasPendingTransactions = useHasPendingTransactions()
 
   return (
     <Profile
       address={address}
-      ensName={name || undefined}
+      ensName={beautifiedName || undefined}
       dropdownItems={
         [
           ...(name
@@ -165,6 +167,7 @@ const HeaderProfile = ({ address }: { address: string }) => {
             ),
             as: 'a',
             icon: <CogSVG />,
+            showIndicator: hasPendingTransactions,
           },
           <SectionDivider key="divider" />,
           {

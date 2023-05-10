@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 
 import { Button, Dialog, mq } from '@ensdomains/thorin'
 
-import EditFnsTokenForm from '@app/components/@molecules/EditFnsToken/EditFnsTokenForm'
+import FnsTokenForm from '@app/components/@molecules/FnsToken/FnsTokenForm'
 import useFnsTokenEditor from '@app/hooks/useFnsTokenEditor'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
 
@@ -48,7 +48,7 @@ export type Props = {
   data: Data
 } & TransactionDialogPassthrough
 
-export const EditFnsToken = ({ data, dispatch, onDismiss }: Props) => {
+export const FnsToken = ({ data, dispatch, onDismiss }: Props) => {
   const { t } = useTranslation('transactionFlow')
 
   const { maxValue, name, title, action } = data
@@ -85,7 +85,7 @@ export const EditFnsToken = ({ data, dispatch, onDismiss }: Props) => {
         <form data-testid="edit-fns-token-form" onSubmit={fnsTokenForm.handleSubmit} ref={formRef}>
           {!!maxValue && (
             <EditResolverFormContainer>
-              <EditFnsTokenForm {...{ ...fnsTokenForm, maxValue }} />
+              <FnsTokenForm {...{ ...fnsTokenForm, maxValue }} />
             </EditResolverFormContainer>
           )}
           <Dialog.Footer
@@ -110,4 +110,4 @@ export const EditFnsToken = ({ data, dispatch, onDismiss }: Props) => {
   )
 }
 
-export default EditFnsToken
+export default FnsToken

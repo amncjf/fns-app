@@ -2,13 +2,20 @@ import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
 
 import { useFns } from '@app/utils/FnsProvider'
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { emptyAddress } from '@app/utils/constants'
 import { isLabelTooLong } from '@app/utils/utils'
 
+import { usePccExpired } from './fuses/usePccExpired'
 import { useGetWrapperData } from './useGetWrapperData'
 import { useValidate } from './useValidate'
 
-export const useValidateSubnameLabel = (name: string, label: string, isWrapped: boolean) => {
+export const useValidateSubnameLabel = (
+  name: string,
+  label: string,
+  isWrapped: boolean,
+  locales?: Intl.LocalesArgument,
+) => {
   const { getOwner, ready } = useFns()
 
   const isParentTLD = name.split('.').length === 1
@@ -16,10 +23,13 @@ export const useValidateSubnameLabel = (name: string, label: string, isWrapped: 
   const skipValidation = !label || !name || !ready || isParentTLD
   const validation = useValidate(label, skipValidation)
 
-  const skipGetOwner = skipValidation || !validation.valid || validation.labelCount > 1
+  const skipGetOwner = skipValidation || !validation.isValid || validation.labelCount > 1
   const { data: ownership, isLoading: isGetOwnerLoading } = useQuery(
-    [validation.name, 'createSubname', 'getOwner'],
-    () => getOwner(`${validation.name}.${name}`),
+    useQueryKeys().validateSubnameLabel(validation.name),
+    async () => {
+      const owner = await getOwner(`${validation.name}.${name}`)
+      return owner || null
+    },
     {
       refetchOnMount: true,
       enabled: !skipGetOwner,
@@ -33,6 +43,8 @@ export const useValidateSubnameLabel = (name: string, label: string, isWrapped: 
   )
   const isPCCBurned = !!wrapperData?.parent?.PARENT_CANNOT_CONTROL
 
+  const pccExpired = usePccExpired({ ownerData: ownership, wrapperData })
+
   const isLoading = isGetOwnerLoading || isGetWrapperDataLoading || !ready
 
   const { valid, error, expiryLabel } = useMemo(() => {
@@ -45,7 +57,7 @@ export const useValidateSubnameLabel = (name: string, label: string, isWrapped: 
         valid: false,
         error: 'pccBurned',
         expiryLabel: wrapperData.expiryDate
-          ? new Date(wrapperData.expiryDate).toLocaleDateString(undefined, {
+          ? new Date(wrapperData.expiryDate).toLocaleDateString(locales, {
               year: 'numeric',
               month: 'short',
               day: 'numeric',
@@ -53,14 +65,26 @@ export const useValidateSubnameLabel = (name: string, label: string, isWrapped: 
           : undefined,
       }
     }
-    if (validation.labelCount > 1 || !validation.valid)
+    if (validation.labelCount > 1 || !validation.isValid)
       return { valid: false, error: 'invalidCharacters' }
-    if (!ownership?.owner || (ownership.owner && ownership.owner === emptyAddress))
+    if (
+      !ownership?.owner ||
+      (ownership.owner && ownership.owner === emptyAddress) ||
+      (isWrapped && pccExpired)
+    )
       return { valid: true, error: undefined }
     return { valid: false, error: 'alreadyExists' }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ownership?.owner, label, validation.valid, isWrapped, isPCCBurned, isParentTLD])
+  }, [
+    ownership?.owner,
+    label,
+    validation.isValid,
+    isWrapped,
+    isPCCBurned,
+    isParentTLD,
+    pccExpired,
+    validation.labelCount,
+    wrapperData?.expiryDate,
+  ])
 
   return {
     valid,

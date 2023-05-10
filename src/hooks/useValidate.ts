@@ -1,79 +1,62 @@
-import { isAddress } from '@ethersproject/address'
-import {
-  checkIsDecrypted,
-  checkLabel,
-  isEncodedLabelhash,
-  saveName,
-} from '@fildomains/fnsjs/utils/labels'
-import { parseInput, validateName } from '@fildomains/fnsjs/utils/validation'
-import { useEffect, useState } from 'react'
 import { useQuery } from 'wagmi'
 
-// eslint-disable-next-line no-control-regex
-const nonAsciiRegex = /[^\x00-\x7F]+/g
+import { ParsedInputResult, parseInput } from '@fildomains/fnsjs/utils/validation'
 
-const validate = (input: string) => {
-  let normalisedName = ''
-  let inputType: ReturnType<typeof parseInput> | undefined
-  let valid: boolean | undefined
-  let isNonASCII: boolean | undefined
-  try {
-    let decodedInput = decodeURIComponent(input)
-    if (!checkIsDecrypted(decodedInput))
-      decodedInput = decodedInput
-        .split('.')
-        .map((label) => (isEncodedLabelhash(label) ? checkLabel(label) || label : label))
-        .join('.')
-    normalisedName = validateName(decodedInput)
-    inputType = parseInput(normalisedName)
-    isNonASCII = nonAsciiRegex.test(normalisedName)
-    // @ts-ignore
-    valid = inputType.type !== 'unknown' && inputType.info !== 'unsupported'
-    if (valid) {
-      saveName(normalisedName)
-    }
-    // eslint-disable-next-line no-empty
-  } catch {
-    valid = false
+import { Prettify } from '@app/types'
+import { tryBeautify } from '@app/utils/beautify'
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
+
+export type ValidationResult = Prettify<
+  Partial<Omit<ParsedInputResult, 'normalised' | 'labelDataArray'>> & {
+    name: string
+    beautifiedName: string
+    isNonASCII: boolean | undefined
+    labelCount: number
+    labelDataArray: ParsedInputResult['labelDataArray']
   }
-  return {
-    name: normalisedName,
-    valid,
-    isNonASCII,
-    type: inputType,
-    labelCount: normalisedName.split('.').length,
+>
+
+const tryDecodeURIComponent = (input: string) => {
+  try {
+    return decodeURIComponent(input)
+  } catch {
+    return input
   }
 }
 
-export const useValidate = (input: string, skip?: any) => {
-  const { data } = useQuery(['validate', input], () => validate(input), {
+export const validate = (input: string) => {
+  const decodedInput = tryDecodeURIComponent(input)
+  const { normalised: name, ...parsedInput } = parseInput(decodedInput)
+  const isNonASCII = parsedInput.labelDataArray.some((dataItem) => dataItem.type !== 'ASCII')
+  const outputName = name || input
+
+  return {
+    ...parsedInput,
+    name: outputName,
+    beautifiedName: tryBeautify(outputName),
+    isNonASCII,
+    labelCount: parsedInput.labelDataArray.length,
+  }
+}
+
+const defaultData = Object.freeze({
+  name: '',
+  beautifiedName: '',
+  isNonASCII: undefined,
+  labelCount: 0,
+  type: undefined,
+  isValid: undefined,
+  isShort: undefined,
+  is2LD: undefined,
+  isETH: undefined,
+  labelDataArray: [],
+})
+
+export const useValidate = (input: string, skip?: any): ValidationResult => {
+  const { data } = useQuery(useQueryKeys().validate(input), () => validate(input), {
     enabled: !skip,
-    initialData: () =>
-      skip
-        ? { valid: undefined, type: undefined, name: '', isNonASCII: undefined, labelCount: 0 }
-        : validate(input),
+    initialData: () => (skip ? defaultData : validate(input)),
   })
 
   return data
-}
-
-export const useValidateOrAddress = (input: string, skip?: any) => {
-  const [inputIsAddress, setIsAddress] = useState(false)
-  const { valid, type, name, labelCount } = useValidate(input, skip)
-
-  useEffect(() => {
-    if (!skip) {
-      if (isAddress(input)) {
-        setIsAddress(true)
-      } else {
-        setIsAddress(false)
-      }
-    }
-  }, [input, skip])
-
-  if (inputIsAddress) {
-    return { valid: true, type: 'address', output: input }
-  }
-
-  return { valid, type, output: name, labelCount }
 }

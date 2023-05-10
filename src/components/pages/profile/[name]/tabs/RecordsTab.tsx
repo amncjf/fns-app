@@ -10,6 +10,7 @@ import { Outlink } from '@app/components/Outlink'
 import RecordItem from '@app/components/RecordItem'
 import { useChainId } from '@app/hooks/useChainId'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+import { emptyAddress } from '@app/utils/constants'
 import { getContentHashLink } from '@app/utils/contenthash'
 import { canEditRecordsWhenWrappedCalc } from '@app/utils/utils'
 
@@ -174,14 +175,10 @@ export const RecordsTab = ({
     }
   }, [name, network, contentHash])
 
-  const { showDataInput } = useTransactionFlow()
+  const { prepareDataInput } = useTransactionFlow()
+  const showAdvancedEditorInput = prepareDataInput('AdvancedEditor')
   const handleShowEditor = () =>
-    showDataInput(
-      `advanced-editor-${name}`,
-      `AdvancedEditor`,
-      { name },
-      { disableBackgroundClick: true },
-    )
+    showAdvancedEditorInput(`advanced-editor-${name}`, { name }, { disableBackgroundClick: true })
 
   const chainId = useChainId()
 
@@ -262,7 +259,7 @@ export const RecordsTab = ({
               {abi ? (
                 <>
                   <SectionTitle data-testid="abi-heading" fontVariant="bodyBold">
-                    ABI
+                    {t('details.tabs.records.abi')}
                   </SectionTitle>
                 </>
               ) : (
@@ -275,7 +272,7 @@ export const RecordsTab = ({
           {abi && <RecordItem type="text" value={abi.data} />}
         </RecordSection>
       </AllRecords>
-      {canEdit && (
+      {canEdit && resolverAddress !== emptyAddress && (
         <Actions>
           <div>
             {canEditRecordsWhenWrapped ? (
