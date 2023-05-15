@@ -8,8 +8,8 @@ import {
 import { useLocalStorageReducer } from '@app/hooks/useLocalStorage'
 
 export const randomSecret = () => {
-  // the first 4 bytes of the namehash of enslabs.eth
-  const platformSource = '9923eb94'
+  // the first 4 bytes of the namehash of fnslabs.fil
+  const platformSource = 'ffa4de42'
   // v3
   const version = '00000003'
   const bytes = Buffer.allocUnsafe(24)

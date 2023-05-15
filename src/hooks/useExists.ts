@@ -23,5 +23,5 @@ export const useExists = (name: string, skip?: any) => {
     }
   }, [ready, name, skip, data])
 
-  return { exists, loading, status, data }
+  return { exists, loading, status, data, owner: data && data.owner }
 }

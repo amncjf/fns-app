@@ -1,11 +1,16 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
 import { Button, Typography } from '@ensdomains/thorin'
 
 import RecordItem from '@app/components/RecordItem'
+import { useContractAddress } from '@app/hooks/useContractAddress'
+import useCurrentBlockTimestamp from '@app/hooks/useCurrentBlockTimestamp'
+import { useExists } from '@app/hooks/useExists'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+import { useFns } from '@app/utils/FnsProvider'
 import { makeDisplay } from '@app/utils/currency'
 
 import { SectionContainer } from './Section'
@@ -58,11 +63,85 @@ const formatFnsExpiry = (timestamp: number, language: string) => {
   })} ${expiry.toLocaleTimeString(locales)}`
 }
 
-export const FnsSection = ({ data }: { data: any }) => {
+const getEarnings = async (fns: any, sundayAddress: string, address: string) => {
+  const data = await fns.batch(
+    fns.getFnsSupply.batch(),
+    fns.getSundaySupply.batch(),
+    fns.getFnsBalance.batch(address),
+    fns.getSundayBalance.batch(address),
+    fns.getShare.batch(0),
+    fns.getEarnings.batch(address, 0),
+    fns.getSundayPaused.batch(),
+    fns.getBalance.batch(sundayAddress),
+    fns.getFnsBalance.batch(sundayAddress),
+  )
+
+  const [
+    fnsSupply,
+    sundaySupply,
+    fnsBalance,
+    sundayBalance,
+    share,
+    earnings,
+    paused,
+    filBalance,
+    sundayFnsBalance,
+  ] = data || []
+
+  if (share && !share.inited) {
+    share.fns = sundayFnsBalance.sub(sundaySupply).div(64)
+    share.fil = filBalance.div(64)
+  }
+
+  if (earnings && !earnings.inited && sundayBalance.gt(0)) {
+    earnings.fns = share!.fns.mul(sundayBalance).div(sundaySupply)
+    earnings.fil = share!.fil.mul(sundayBalance).div(sundaySupply)
+  }
+
+  const queryData = {
+    fnsSupply,
+    sundaySupply,
+    sundayFnsBalance,
+    fnsBalance,
+    sundayBalance,
+    share,
+    earnings,
+    paused,
+    filBalance,
+  }
+
+  return queryData
+}
+
+export const FnsSection = ({ name }: { name: any }) => {
   const { t, i18n } = useTranslation('fnsToken')
+  const fns = useFns()
+  const sundayAddress = useContractAddress('Sunday')
+  const { owner: address } = useExists(name!)
+  const currentBlockTimestamp = useCurrentBlockTimestamp()
+  const [result, setResult] = useState<{
+    fnsSupply: BigNumber
+    sundaySupply: BigNumber
+    sundayFnsBalance: BigNumber
+    fnsBalance: BigNumber
+    sundayBalance: BigNumber
+    share: any
+    earnings: any
+    filBalance: BigNumber
+    paused: boolean
+  }>({
+    fnsSupply: BigNumber.from(0),
+    sundaySupply: BigNumber.from(0),
+    sundayFnsBalance: BigNumber.from(0),
+    fnsBalance: BigNumber.from(0),
+    sundayBalance: BigNumber.from(0),
+    share: null,
+    earnings: null,
+    filBalance: BigNumber.from(0),
+    paused: true,
+  })
+
   const {
-    name,
-    address,
     fnsSupply,
     sundaySupply,
     sundayFnsBalance,
@@ -72,8 +151,14 @@ export const FnsSection = ({ data }: { data: any }) => {
     earnings,
     filBalance,
     paused,
-    timestamp,
-  } = data
+  } = result
+
+  useMemo(async () => {
+    if (address) {
+      const ret = await getEarnings(fns, sundayAddress, address)
+      setResult(ret)
+    }
+  }, [name, currentBlockTimestamp])
   const { prepareDataInput } = useTransactionFlow()
   const showRevokePermissionsInput = prepareDataInput('FnsToken')
 
@@ -90,16 +175,18 @@ export const FnsSection = ({ data }: { data: any }) => {
     })
   }
 
-  const haveEarnings = earnings.fns.add(earnings.fil).gt(0)
+  if (earnings == null) {
+    return <></>
+  }
 
-  console.log('FnsSection paused:', paused, ',earnings:', earnings, ',haveEarnings:', haveEarnings)
+  const haveEarnings = !!earnings && earnings.fns.add(earnings.fil).gt(0)
   return (
     <SectionContainer
       title={t('section.name.title')}
       action={<RecordItem type="text" data-testid="wallet-address" value={name} />}
       fill={!!address}
     >
-      <ItemWrapper data-testid="primary-wrapper">
+      <ItemWrapper data-testid="fns-section-1">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">
             {`${t('section.wallet.title')}：`}
@@ -109,30 +196,28 @@ export const FnsSection = ({ data }: { data: any }) => {
           </div>
         </SectionHeader>
       </ItemWrapper>
-      {!!timestamp && (
-        <ItemWrapper data-testid="primary-wrapper">
-          <SectionHeader $hideBorder={false}>
-            <Typography fontVariant="small" color="text">{`${t(
-              'section.time.title',
-            )}：${formatFnsExpiry(timestamp.toNumber(), i18n.language)}`}</Typography>
-          </SectionHeader>
-        </ItemWrapper>
-      )}
-      <ItemWrapper data-testid="primary-wrapper">
+      <ItemWrapper data-testid="fns-section-2">
+        <SectionHeader $hideBorder={false}>
+          <Typography fontVariant="small" color="text">{`${t(
+            'section.time.title',
+          )}：${formatFnsExpiry(currentBlockTimestamp || 0, i18n.language)}`}</Typography>
+        </SectionHeader>
+      </ItemWrapper>
+      <ItemWrapper data-testid="fns-section-3">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">{`${t(
             'section.release.title',
           )}：${makeDisplay(fnsSupply, 5, 'fns')}`}</Typography>
         </SectionHeader>
       </ItemWrapper>
-      <ItemWrapper data-testid="primary-wrapper">
+      <ItemWrapper data-testid="fns-section-primary-wrapper">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">
             {`${t('section.pledge.total')}：${makeDisplay(sundaySupply, 5, 'fns')}`}
           </Typography>
         </SectionHeader>
       </ItemWrapper>
-      <ItemWrapper data-testid="primary-wrapper">
+      <ItemWrapper data-testid="fns-section-4">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">
             {`${t('section.pledge.title')}：${makeDisplay(
@@ -143,7 +228,7 @@ export const FnsSection = ({ data }: { data: any }) => {
           </Typography>
         </SectionHeader>
       </ItemWrapper>
-      <ItemWrapper data-testid="primary-wrapper">
+      <ItemWrapper data-testid="fns-section-5">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">{`${
             share.inited ? t('section.share.already') : t('section.share.title')
@@ -163,7 +248,7 @@ export const FnsSection = ({ data }: { data: any }) => {
           )}
         </SectionHeader>
       </ItemWrapper>
-      <ItemWrapper data-testid="primary-wrapper">
+      <ItemWrapper data-testid="fns-section-6">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">
             {`${
@@ -189,7 +274,7 @@ export const FnsSection = ({ data }: { data: any }) => {
           )}
         </SectionHeader>
       </ItemWrapper>
-      <ItemWrapper data-testid="primary-wrapper">
+      <ItemWrapper data-testid="fns-section-7">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">
             {`${t('section.fnsBalance.title')}：${makeDisplay(fnsBalance, 5, 'fns')}`}{' '}
@@ -208,7 +293,7 @@ export const FnsSection = ({ data }: { data: any }) => {
           </div>
         </SectionHeader>
       </ItemWrapper>
-      <ItemWrapper data-testid="primary-wrapper">
+      <ItemWrapper data-testid="fns-section-8">
         <SectionHeader $hideBorder={false}>
           <Typography fontVariant="small" color="text">
             {`${t('section.sundayBalance.title')}：${makeDisplay(sundayBalance, 5, 'fns')}`}{' '}

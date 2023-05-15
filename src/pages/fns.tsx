@@ -4,7 +4,6 @@ import { useAccount } from 'wagmi'
 
 import { FnsSection } from '@app/components/pages/fns/FnsSection'
 import { WalletSection } from '@app/components/pages/profile/settings/WalletSection'
-import { useFnsToken } from '@app/hooks/useFnsToken'
 import { usePrimary } from '@app/hooks/usePrimary'
 import { useProtectedRoute } from '@app/hooks/useProtectedRoute'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
@@ -27,9 +26,8 @@ export default function Page() {
   const { address, isConnecting, isReconnecting } = useAccount()
   const { name: mainName } = usePrimary(address!, !address)
   const router = useRouterWithHistory()
-  const name = router.query.name as string
+  const name = router.query.name ? router.query.name : (mainName as string)
 
-  const data = useFnsToken(!name || name.length === 0 ? mainName : name)
   useProtectedRoute('/', isConnecting || isReconnecting ? true : address)
 
   return (
@@ -38,7 +36,7 @@ export default function Page() {
         trailing: (
           <OtherWrapper>
             <WalletSection />
-            {!!data.fnsSupply && <FnsSection data={data} />}
+            <FnsSection name={name} />
           </OtherWrapper>
         ),
       }}

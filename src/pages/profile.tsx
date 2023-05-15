@@ -16,8 +16,6 @@ export default function Page() {
   const initial = useInitial()
 
   const { address } = useAccount()
-
-  console.log('profile address:', address)
   const primary = usePrimary(address as string, !address)
   const { name: ensName, loading: primaryLoading } = primary
 
