@@ -98,6 +98,7 @@ export const useQueryKeys = () => {
       name,
       'resolverExists',
     ],
+    getEarnings: (addr: string | null | undefined) => [...globalKeys, 'graph', 'getEarnings', addr],
     resolverHasInterfaces: (interfaceNames: string, resolverAddress?: string) => [
       ...globalKeys,
       'validateResolver',

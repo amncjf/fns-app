@@ -3,17 +3,27 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { Button, Typography } from '@ensdomains/thorin'
+import { Button, Helper, Spinner, Typography, mq } from '@ensdomains/thorin'
 
+import { Outlink } from '@app/components/Outlink'
 import RecordItem from '@app/components/RecordItem'
 import { useContractAddress } from '@app/hooks/useContractAddress'
 import useCurrentBlockTimestamp from '@app/hooks/useCurrentBlockTimestamp'
-import { useExists } from '@app/hooks/useExists'
+import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { useFns } from '@app/utils/FnsProvider'
 import { makeDisplay } from '@app/utils/currency'
 
 import { SectionContainer } from './Section'
+
+const EmptyDetailContainer = styled.div(
+  ({ theme }) => css`
+    padding: ${theme.space['4']};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
+)
 
 const ItemWrapper = styled.div(
   ({ theme }) => css`
@@ -40,7 +50,46 @@ const SectionHeader = styled.div<{ $hideBorder?: boolean }>(
   `,
 )
 
-const formatFnsExpiry = (timestamp: number, language: string) => {
+const StyledOutlink = styled(Outlink)<{ $error: boolean }>(
+  ({ theme, $error }) =>
+    $error &&
+    css`
+      > div {
+        color: ${theme.colors.red};
+      }
+      color: ${theme.colors.red};
+    `,
+)
+
+const Card = styled.div(
+  ({ theme }) => css`
+    padding: ${theme.space['3.5']};
+    border-radius: ${theme.radii['3xLarge']};
+    background-color: ${theme.colors.background};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: ${theme.space.full};
+    gap: ${theme.space['4']};
+    max-height: 75vh;
+    overflow-y: auto;
+
+    ${mq.sm.min(css`
+      width: initial;
+      min-width: ${theme.space['128']};
+    `)}
+  `,
+)
+
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const formatFnsExpiry = (timestamp: number, language: string) => {
   let locales
   if (language === 'zh') {
     locales = 'zh-CN'
@@ -113,11 +162,17 @@ const getEarnings = async (fns: any, sundayAddress: string, address: string) => 
   return queryData
 }
 
-export const FnsSection = ({ name }: { name: any }) => {
+export const FnsSection = ({
+  name,
+  address,
+}: {
+  name: string
+  address: string | null | undefined
+}) => {
   const { t, i18n } = useTranslation('fnsToken')
+  const router = useRouterWithHistory()
   const fns = useFns()
   const sundayAddress = useContractAddress('Sunday')
-  const { owner: address } = useExists(name!)
   const currentBlockTimestamp = useCurrentBlockTimestamp()
   const [result, setResult] = useState<{
     fnsSupply: BigNumber
@@ -175,8 +230,28 @@ export const FnsSection = ({ name }: { name: any }) => {
     })
   }
 
+  if (address == null) {
+    return (
+      <Container>
+        <Card>
+          <Helper type="error">{t('fns.helper')}</Helper>
+          <div>
+            <StyledOutlink $error={false} href="https://github.com/fildomains" target="_blank">
+              {t('section.share.help')}
+            </StyledOutlink>
+          </div>
+          <Button onClick={() => router.push(`/`)}>{t('fns.action')}</Button>
+        </Card>
+      </Container>
+    )
+  }
+
   if (earnings == null) {
-    return <></>
+    return (
+      <EmptyDetailContainer>
+        <Spinner color="accent" size="large" />
+      </EmptyDetailContainer>
+    )
   }
 
   const haveEarnings = !!earnings && earnings.fns.add(earnings.fil).gt(0)
@@ -188,7 +263,7 @@ export const FnsSection = ({ name }: { name: any }) => {
     >
       <ItemWrapper data-testid="fns-section-1">
         <SectionHeader $hideBorder={false}>
-          <Typography fontVariant="small" color="text">
+          <Typography fontVariant="large" color="text">
             {`${t('section.wallet.title')}：`}
           </Typography>
           <div>
@@ -198,28 +273,28 @@ export const FnsSection = ({ name }: { name: any }) => {
       </ItemWrapper>
       <ItemWrapper data-testid="fns-section-2">
         <SectionHeader $hideBorder={false}>
-          <Typography fontVariant="small" color="text">{`${t(
+          <Typography fontVariant="large" color="text">{`${t(
             'section.time.title',
           )}：${formatFnsExpiry(currentBlockTimestamp || 0, i18n.language)}`}</Typography>
         </SectionHeader>
       </ItemWrapper>
       <ItemWrapper data-testid="fns-section-3">
         <SectionHeader $hideBorder={false}>
-          <Typography fontVariant="small" color="text">{`${t(
+          <Typography fontVariant="large" color="text">{`${t(
             'section.release.title',
           )}：${makeDisplay(fnsSupply, 5, 'fns')}`}</Typography>
         </SectionHeader>
       </ItemWrapper>
       <ItemWrapper data-testid="fns-section-primary-wrapper">
         <SectionHeader $hideBorder={false}>
-          <Typography fontVariant="small" color="text">
+          <Typography fontVariant="large" color="text">
             {`${t('section.pledge.total')}：${makeDisplay(sundaySupply, 5, 'fns')}`}
           </Typography>
         </SectionHeader>
       </ItemWrapper>
       <ItemWrapper data-testid="fns-section-4">
         <SectionHeader $hideBorder={false}>
-          <Typography fontVariant="small" color="text">
+          <Typography fontVariant="large" color="text">
             {`${t('section.pledge.title')}：${makeDisplay(
               sundayFnsBalance.sub(sundaySupply),
               5,
@@ -230,27 +305,19 @@ export const FnsSection = ({ name }: { name: any }) => {
       </ItemWrapper>
       <ItemWrapper data-testid="fns-section-5">
         <SectionHeader $hideBorder={false}>
-          <Typography fontVariant="small" color="text">{`${
+          <Typography fontVariant="large" color="text">{`${
             share.inited ? t('section.share.already') : t('section.share.title')
           }：${makeDisplay(share.fns, 5, 'fns')}, ${makeDisplay(share.fil, 5, 'fil')}`}</Typography>
-          {sundaySupply.gt(0) && (
-            <div>
-              {!share.inited && paused && (
-                <Button
-                  data-testid="primary-section-button"
-                  size="small"
-                  onClick={() => handleClick('initShare', t('section.share.button'))}
-                >
-                  {t('section.share.button')}
-                </Button>
-              )}
-            </div>
-          )}
+          <div>
+            <StyledOutlink $error={false} href="https://github.com/fildomains" target="_blank">
+              {t('section.share.help')}
+            </StyledOutlink>
+          </div>
         </SectionHeader>
       </ItemWrapper>
       <ItemWrapper data-testid="fns-section-6">
         <SectionHeader $hideBorder={false}>
-          <Typography fontVariant="small" color="text">
+          <Typography fontVariant="large" color="text">
             {`${
               earnings.inited ? t('section.earnings.already') : t('section.earnings.title')
             }：${makeDisplay(earnings.fns, 5, 'fns')}, ${makeDisplay(earnings.fil, 5, 'fil')}`}
@@ -276,7 +343,7 @@ export const FnsSection = ({ name }: { name: any }) => {
       </ItemWrapper>
       <ItemWrapper data-testid="fns-section-7">
         <SectionHeader $hideBorder={false}>
-          <Typography fontVariant="small" color="text">
+          <Typography fontVariant="large" color="text">
             {`${t('section.fnsBalance.title')}：${makeDisplay(fnsBalance, 5, 'fns')}`}{' '}
           </Typography>
           <div>
@@ -295,7 +362,7 @@ export const FnsSection = ({ name }: { name: any }) => {
       </ItemWrapper>
       <ItemWrapper data-testid="fns-section-8">
         <SectionHeader $hideBorder={false}>
-          <Typography fontVariant="small" color="text">
+          <Typography fontVariant="large" color="text">
             {`${t('section.sundayBalance.title')}：${makeDisplay(sundayBalance, 5, 'fns')}`}{' '}
           </Typography>
           <div>

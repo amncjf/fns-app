@@ -1,6 +1,6 @@
 import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
 import { AllCurrentFuses } from '@fildomains/fnsjs/utils/fuses'
-import { filecoin, filecoinCalibration, filecoinHyperspace } from 'wagmi/chains'
+import { filecoinCalibration, filecoinHyperspace } from 'wagmi/chains'
 
 import { NAMEWRAPPER_AWARE_RESOLVERS, networkName } from './constants'
 

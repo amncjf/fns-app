@@ -1,7 +1,6 @@
+import type { Name } from '@fildomains/fnsjs/functions/getNames'
 import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'wagmi'
-
-import type { Name } from '@fildomains/fnsjs/functions/getNames'
 
 import { useFns } from '@app/utils/FnsProvider'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'

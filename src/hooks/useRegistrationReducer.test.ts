@@ -10,7 +10,7 @@ Object.defineProperty(window, 'crypto', {
 
 describe('useRegistrationReducer', () => {
   it('randomSecret should add platform and version referral prefix', async () => {
-    const platformSource = '9923eb94'
+    const platformSource = 'ffa4de42'
     const version = '00000003'
     const secret = randomSecret()
     expect(secret.length).toEqual(66)
