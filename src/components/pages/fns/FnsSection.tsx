@@ -213,7 +213,7 @@ export const FnsSection = ({
       const ret = await getEarnings(fns, sundayAddress, address)
       setResult(ret)
     }
-  }, [name, currentBlockTimestamp])
+  }, [name, currentBlockTimestamp, address, fns, sundayAddress])
   const { prepareDataInput } = useTransactionFlow()
   const showRevokePermissionsInput = prepareDataInput('FnsToken')
 

@@ -148,10 +148,10 @@ const FnsEarnings = ({ address }: { address: string | null | undefined }) => {
                       <Typography fontVariant="small" weight="light">{`${t(
                         'fnsEarnings.earnings',
                       )}：${makeDisplay(BigNumber.from(earning.fns), 5, 'fns')}, ${makeDisplay(
-                        BigNumber.from(earning.fns),
+                        BigNumber.from(earning.fil),
                         5,
-                        'fns',
-                      )}, ${makeDisplay(BigNumber.from(earning.fil), 5, 'fil')}`}</Typography>
+                        'fil',
+                      )}`}</Typography>
                       <Typography fontVariant="small" weight="light">{`${t(
                         'fnsEarnings.time',
                       )}：${formatFnsExpiry(
